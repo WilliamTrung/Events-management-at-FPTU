@@ -30,7 +30,6 @@ public class GoogleUtils {
         String response = Request.Get(link).execute().returnContent().asString();
         UserDTO user = new Gson().fromJson(response, UserDTO.class);
         return user;
-
     }
 
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/EventManagementFPT">
+    <Resource 
+        name="DBConnection"
+        type="javax.sql.DataSource"
+        auth="Container"
+        driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+        url="jdbc:sqlserver://localhost:1433;databaseName=EventManagementFPT"
+        username="sa"
+        password="123">
+    </Resource>
+</Context>

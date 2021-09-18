@@ -14,10 +14,13 @@ public class UserDTO {
     private String email;
     private String username;
     private String statusId;
-    private String roleId;    
+    private String roleId;
     private boolean verified_email;
+    private String hd;
+    private String picture;
     public UserDTO() {
     }
+
 
     public UserDTO(String id, String email, String username, String statusId, String roleId) {
         this.id = id;
@@ -47,12 +50,28 @@ public class UserDTO {
         return roleId;
     }
 
+    public String getHd() {
+        return hd;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
 
     public void setVerified_email(boolean verified_email) {
         this.verified_email = verified_email;
+    }
+
+    public void setHd(String hd) {
+        this.hd = hd;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public boolean isVerified_email() {
