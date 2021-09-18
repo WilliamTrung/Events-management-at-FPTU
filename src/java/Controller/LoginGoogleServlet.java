@@ -1,5 +1,6 @@
 package Controller;
 
+import DTO.UserDTO;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
@@ -9,8 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import GoogleAPI.GooglePojo;
 import GoogleAPI.GoogleUtils;
+import javax.servlet.http.HttpSession;
 
 
 @WebServlet("/login-google")
@@ -26,30 +27,26 @@ public class LoginGoogleServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String code = request.getParameter("code");
+        String code;
         String url = FAIL;
+        try {
+            code = request.getParameter("code");      
         if (code == null || code.isEmpty()) {
             url = FAIL;
         } else {
-
             String accessToken = GoogleUtils.getToken(code);
-            GooglePojo googlePojo = GoogleUtils.getUserInfo(accessToken);
-            String id = googlePojo.getId();
-            String name = googlePojo.getName();
-
-            String givenName = googlePojo.getGiven_name();
-            String oName = googlePojo.getFamily_name();
-            String email = googlePojo.getEmail();          
-
-            request.setAttribute("id", id);
-            request.setAttribute("gName", givenName);
-            request.setAttribute("fName", oName);
-            request.setAttribute("name", name);
-            request.setAttribute("email", email);
+            UserDTO user = GoogleUtils.getUserInfo(accessToken);
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("CURRENT_USER", user);
+            
             url = SUCCESS;
         }
-        request.getRequestDispatcher(url).forward(request, response);
-
+        } catch (Exception e) {
+            request.setAttribute("SYSTEM_ERROR", e);
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
+        }            
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
