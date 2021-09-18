@@ -1,5 +1,6 @@
 package GoogleAPI;
 
+import DTO.UserDTO;
 import java.io.IOException;
 
 import org.apache.http.client.ClientProtocolException;
@@ -24,12 +25,11 @@ public class GoogleUtils {
         return accessToken;
     }
 
-    public static GooglePojo getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
+    public static UserDTO getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = Constants.GOOGLE_LINK_GET_USER_INFO + accessToken;
         String response = Request.Get(link).execute().returnContent().asString();
-        GooglePojo googlePojo = new Gson().fromJson(response, GooglePojo.class);
-        System.out.println(googlePojo);
-        return googlePojo;
+        UserDTO user = new Gson().fromJson(response, UserDTO.class);
+        return user;
 
     }
 
