@@ -120,4 +120,30 @@ public class EventDAO {
         }
         return flag;
     }
+    
+    public boolean deleteEvent(int eventID) throws SQLException {
+        boolean result = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = Utils.DBConnection.getConnection1();
+            if (conn != null) {
+                String sql = " DELETE tblUsers "
+                        + " WHERE userID=? ";
+                stm = conn.prepareStatement(sql);
+                stm.setInt(1, eventID);
+                result = stm.executeUpdate() > 0 ? true : false;
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
+    }
 }
