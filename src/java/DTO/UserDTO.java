@@ -21,19 +21,26 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO(String id, String email, String username, String statusId, String roleId, String hd, String picture) {
-        this.id = id;
+    public UserDTO(String userId, String email, String username, String statusId, String roleId, boolean verified_email, String hd, String picture) {
+        this.id = userId;
         this.email = email;
         this.username = username;
         this.statusId = statusId;
         this.roleId = roleId;
+        this.verified_email = verified_email;
         this.hd = hd;
         this.picture = picture;
     }
 
-    public String getId() {
+    public String getUserId() {
         return id;
     }
+
+    public void setUserId(String userId) {
+        this.id = userId;
+    }
+
+    
 
     public String getEmail() {
         return email;
@@ -59,9 +66,6 @@ public class UserDTO {
         return picture;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public void setVerified_email(boolean verified_email) {
         this.verified_email = verified_email;

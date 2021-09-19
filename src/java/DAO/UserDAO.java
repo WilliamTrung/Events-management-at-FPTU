@@ -17,76 +17,58 @@ import java.sql.ResultSet;
  * @author WilliamTrung
  */
 public class UserDAO {
-    public UserDTO checkUser(UserDTO user){
+    public UserDTO loginUser(UserDTO user){
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
-            conn = DBConnection.getConnection1();
+            conn = DBConnection.getConnection();
             if (conn!=null) {
-                String sql = "SELECT username "
+                String sql = "SELECT username, roleId, statusId "
                         + "FROM tblUsers "
-                        + "WHERE id = ?";
+                        + "WHERE userId = ?";
                 stm = conn.prepareStatement(sql);
-                stm.setString(2, user.getId());
+                stm.setString(1, user.getUserId());
                 
                 rs = stm.executeQuery();
                 if(rs.next()){
                     user.setUsername(rs.getString("username"));
+                    user.setRoleId(rs.getString("roleId"));
+                    user.setStatusId(rs.getString("statusId"));
                 } else {
-                    
+                    if(createUser(user, conn)==false){
+                        user=null;
+                    }
                 }
             }
         } catch (Exception e) {
             log("Error at UserDAO - checkUser" + e.toString());
+            user = null;
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
         }
         return user;
     }
-    private UserDTO createUser(UserDTO user){
-        Connection conn = null;
+    private boolean createUser(UserDTO user, Connection conn){
         PreparedStatement stm = null;
-        ResultSet rs = null;
+        boolean check = false;
         try {
-            conn = DBConnection.getConnection1();
             if (conn!=null) {
-                String sql = "INSERT INTO tblUsers(id, email, username, statusId, roleId, hd, picture) "
-                        + "VALUES(?,?,?,?,?,?,?)";
+                String sql = "INSERT INTO tblUsers(userId, email, username, statusId, roleId) "
+                        + "VALUES(?,?,?,?,?)";
                 stm = conn.prepareStatement(sql);
-                stm.setString(2, user.getId());
-                
-                rs = stm.executeQuery();
-                if(rs.next()){
-                    
-                } else {
-                    
-                }
+                stm.setString(1, user.getUserId());
+                stm.setString(2, user.getEmail());
+                stm.setString(3, (user.getEmail().split("@"))[0]);//get the email without @fpt.edu.vn as the username
+                stm.setString(4, "A");// status == ACTIVE
+                stm.setString(5, "US"); // USER role
+                check = stm.executeUpdate() > 0;             
             }
         } catch (Exception e) {
             log("Error at UserDAO - createUser" + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, null);
         }
-        return user;
-    }
-    private UserDTO loginUser(UserDTO user){
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            conn = DBConnection.getConnection1();
-            if (conn!=null) {
-                String sql = "SELECT id, statusId, roleId FROM tblUsers WHERE id = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(2, user.getId());
-                
-                rs = stm.executeQuery();
-                if(rs.next()){
-                    
-                } else {
-                    
-                }
-            }
-        } catch (Exception e) {
-            log("Error at UserDAO - loginUser" + e.toString());
-        }
-        return user;
+        return check;
     }
 }

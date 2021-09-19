@@ -12,13 +12,17 @@
         <title>Index Page</title>
     </head>
     <body>
-        ${sessionScope.CURRENT_USER.id}
+        UserId: ${sessionScope.CURRENT_USER.userId}
         </br>
-        ${sessionScope.CURRENT_USER.email}
+        Email: ${sessionScope.CURRENT_USER.email}
         </br>
-        ${sessionScope.CURRENT_USER.picture}
+        Picture: ${sessionScope.CURRENT_USER.picture}
         </br>
-        ${sessionScope.CURRENT_USER.hd}
+        Username: ${sessionScope.CURRENT_USER.username}
+        </br>
+        StatusId: ${sessionScope.CURRENT_USER.statusId}
+        </br>
+        RoleId: ${sessionScope.CURRENT_USER.roleId}
         </br>
     </body>
 </html>
