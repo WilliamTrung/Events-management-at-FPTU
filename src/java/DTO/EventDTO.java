@@ -5,22 +5,26 @@
  */
 package DTO;
 
+import java.sql.Date;
+
+
+
 /**
  *
  * @author Admin
  */
 public class EventDTO {
-    private String eventId;
+    private int eventId;
     private String userId;
     private String title;
     private String description;
     private String location;
-    private String createDatetime;
-    private String startDatetime;
-    private String endDatetime;
+    private Date createDatetime;
+    private Date startDatetime;
+    private Date endDatetime;
     private String statusId;
 
-    public EventDTO(String eventId, String userId, String title, String description, String location, String createDatetime, String startDatetime, String endDatetime, String statusId) {
+    public EventDTO(int eventId, String userId, String title, String description, String location, Date createDatetime, Date startDatetime, Date endDatetime, String statusId) {
         this.eventId = eventId;
         this.userId = userId;
         this.title = title;
@@ -32,11 +36,12 @@ public class EventDTO {
         this.statusId = statusId;
     }
 
-    public String getEventId() {
+    
+    public int getEventId() {
         return eventId;
     }
 
-    public void setEventId(String eventId) {
+    public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 
@@ -72,27 +77,27 @@ public class EventDTO {
         this.location = location;
     }
 
-    public String getCreateDatetime() {
+    public Date getCreateDatetime() {
         return createDatetime;
     }
 
-    public void setCreateDatetime(String createDatetime) {
+    public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
     }
 
-    public String getStartDatetime() {
+    public Date getStartDatetime() {
         return startDatetime;
     }
 
-    public void setStartDatetime(String startDatetime) {
+    public void setStartDatetime(Date startDatetime) {
         this.startDatetime = startDatetime;
     }
 
-    public String getEndDatetime() {
+    public Date getEndDatetime() {
         return endDatetime;
     }
 
-    public void setEndDatetime(String endDatetime) {
+    public void setEndDatetime(Date endDatetime) {
         this.endDatetime = endDatetime;
     }
 
@@ -103,8 +108,6 @@ public class EventDTO {
     public void setStatusId(String statusId) {
         this.statusId = statusId;
     }
-
-    public EventDTO() {
-    }
-
+    
+    
 }
