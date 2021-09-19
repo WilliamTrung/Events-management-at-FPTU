@@ -11,6 +11,8 @@ import static java.rmi.server.LogStream.log;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -42,7 +44,7 @@ public class UserDAO {
                 }
             }
         } catch (Exception e) {
-            log("Error at UserDAO - checkUser" + e.toString());
+            log("Error at UserDAO - checkUser: " + e.toString());
             user = null;
         } finally {
             DBConnection.closeQueryConnection(conn, stm, rs);
@@ -65,10 +67,36 @@ public class UserDAO {
                 check = stm.executeUpdate() > 0;             
             }
         } catch (Exception e) {
-            log("Error at UserDAO - createUser" + e.toString());
+            log("Error at UserDAO - createUser: " + e.toString());
         } finally {
             DBConnection.closeQueryConnection(conn, stm, null);
         }
         return check;
+    }
+    public List<UserDTO> getListUsers(String search){
+        List<UserDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT userId, email, username, statusId, roleId "
+                    + "FROM tblUsers WHERE username like ?";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, "%" + search + "%");
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String userId = rs.getString("userId");
+                String email = rs.getString("email");
+                String username = rs.getString("username");
+                String statusId = rs.getString("statusId");
+                String roleId = rs.getString("roleId");
+                
+                list.add(new UserDTO(userId, email, username, statusId, roleId, true, sql, statusId))
+            }
+        } catch (Exception e) {
+            log("Error at UserDAO - getListUsers: " + e.toString());
+        }
+        return list;
     }
 }
