@@ -19,6 +19,7 @@ import java.util.List;
  *
  * @author Admin
  */
+/*
 public class EventDAO {
 
     public List<EventDTO> getListEvent(String search) throws SQLException {
@@ -124,3 +125,4 @@ public class EventDAO {
         return check;
     }
 }
+*/
