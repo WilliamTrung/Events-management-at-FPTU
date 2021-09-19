@@ -9,6 +9,7 @@ import DTO.EventDTO;
 import Utils.DBConnection;
 import static java.rmi.server.LogStream.log;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,14 +36,14 @@ public class EventDAO {
             stm.setString(1, "%" + search + "%");
             rs = stm.executeQuery();
             while (rs.next()) {
-                String eventId = rs.getString("eventId");
+                int eventId = rs.getInt("eventId");
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
                 String description = rs.getString("description");
                 String location = rs.getString("location");
-                String createDatetime = rs.getString("createDatetime");
-                String startDatetime = rs.getString("startDatetime");
-                String endDatetime = rs.getString("endDatetime");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDatetime = rs.getDate("startDatetime");
+                Date endDatetime = rs.getDate("endDatetime");
                 String statusId = rs.getString("statusId");
                 list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId));
             }
@@ -63,22 +64,22 @@ public class EventDAO {
             String sql = "INSERT INTO tblEvents (eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId)"
                     + "VALUES (?,?,?,?,?,?,?,?)";
             stm = conn.prepareStatement(sql);
-            String eventId = newEvent.getEventId();
+            int eventId = newEvent.getEventId();
             String userId = newEvent.getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
             String location = newEvent.getLocation();
-            String createDatetime = newEvent.getCreateDatetime();
-            String startDatetime = newEvent.getStartDatetime();
-            String endDatetime = newEvent.getEndDatetime();
-            stm.setString(1, eventId);
+            Date createDatetime = newEvent.getCreateDatetime();
+            Date startDatetime = newEvent.getStartDatetime();
+            Date endDatetime = newEvent.getEndDatetime();
+            stm.setInt(1, eventId);
             stm.setString(2, userId);
             stm.setString(3, title);
             stm.setString(4, description);
             stm.setString(5, location);
-            stm.setString(6, createDatetime);
-            stm.setString(7, startDatetime);
-            stm.setString(8, endDatetime);
+            stm.setDate(6, createDatetime);
+            stm.setDate(7, startDatetime);
+            stm.setDate(8, endDatetime);
             stm.setString(9, "Pending");
             flag = stm.executeUpdate(sql) > 0;
         } catch (Exception e) {
@@ -98,23 +99,23 @@ public class EventDAO {
             String sql = "UPDATE tblEvents SET title=?, description=?, location=?, createDatetime=?, startDatetime=?, endDatetime=?,statusId=?"
                     + "WHERE eventId=? AND userId=?";
             stm = conn.prepareStatement(sql);
-            String eventId = newEvent.getEventId();
+            int eventId = newEvent.getEventId();
             String userId = newEvent.getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
             String location = newEvent.getLocation();
-            String createDatetime = newEvent.getCreateDatetime();
-            String startDatetime = newEvent.getStartDatetime();
-            String endDatetime = newEvent.getEndDatetime();
+            Date createDatetime = newEvent.getCreateDatetime();
+            Date startDatetime = newEvent.getStartDatetime();
+            Date endDatetime = newEvent.getEndDatetime();
             String statusId = newEvent.getStatusId();
             stm.setString(1, title);
             stm.setString(2, description);
             stm.setString(3, location);
-            stm.setString(4, createDatetime);
-            stm.setString(5, startDatetime);
-            stm.setString(6, endDatetime);
+            stm.setDate(4, createDatetime);
+            stm.setDate(5, startDatetime);
+            stm.setDate(6, endDatetime);
             stm.setString(7, statusId);
-            stm.setString(8, eventId);
+            stm.setInt(8, eventId);
             stm.setString(9, userId);
             check = stm.executeUpdate(sql) > 0;
         } catch (Exception e) {
@@ -123,6 +124,32 @@ public class EventDAO {
             DBConnection.closeQueryConnection(conn, stm, null);
         }
         return check;
+    }
+    
+    public boolean deleteEvent(int eventID) throws SQLException {
+        boolean result = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = Utils.DBConnection.getConnection1();
+            if (conn != null) {
+                String sql = " DELETE tblEvents "
+                        + " WHERE eventID=? ";
+                stm = conn.prepareStatement(sql);
+                stm.setInt(1, eventID);
+                result = stm.executeUpdate() > 0 ? true : false;
+            }
+        } catch (Exception e) {
+
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (conn != null) {
+                conn.close();
+            }
+        }
+        return result;
     }
 }
 */

@@ -92,7 +92,7 @@ public class UserDAO {
                 String statusId = rs.getString("statusId");
                 String roleId = rs.getString("roleId");
                 
-                list.add(new UserDTO(userId, email, username, statusId, roleId, true, null, null));
+                list.add(new UserDTO(userId, email, username, statusId, roleId, true, sql, statusId));
             }
         } catch (Exception e) {
             log("Error at UserDAO - getListUsers: " + e.toString());
