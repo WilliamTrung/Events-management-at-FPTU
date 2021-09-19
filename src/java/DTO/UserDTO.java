@@ -21,13 +21,14 @@ public class UserDTO {
     public UserDTO() {
     }
 
-
-    public UserDTO(String id, String email, String username, String statusId, String roleId) {
+    public UserDTO(String id, String email, String username, String statusId, String roleId, String hd, String picture) {
         this.id = id;
         this.email = email;
         this.username = username;
         this.statusId = statusId;
         this.roleId = roleId;
+        this.hd = hd;
+        this.picture = picture;
     }
 
     public String getId() {
