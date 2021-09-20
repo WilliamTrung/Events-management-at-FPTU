@@ -38,11 +38,16 @@ public class LoginGoogleServlet extends HttpServlet {
                 String accessToken = GoogleUtils.getToken(code);
                 UserDTO user = GoogleUtils.getUserInfo(accessToken);
                 UserDAO ud = new UserDAO();
-                if(user.isVerified_email() == true) {
+                
+                //check condition if email is valid and is fpt email
+                if(user.isVerified_email() == true && user.getHd().equals("@fpt.edu.vn")) {
                     user = ud.loginUser(user);
                     if (user != null) {
                         HttpSession session = request.getSession();
                         session.setAttribute("CURRENT_USER", user);
+                        if(user.getRoleId().equals("AD")){
+                            session.setAttribute("MODE", "USER_MODE");
+                        }
                         url = SUCCESS;
                     } else {                       
                         request.setAttribute("USER_LOGIN_ERROR", "Cannot login!");
