@@ -1,0 +1,10 @@
+Tạo 2 project:
+	Project A:
+		Liên tục dc cập nhật từ Github (Pull về).
+		Không được thao tác trên đây vì sẽ gây conflict file.
+	Project B:
+		Hoạt động độc lập với A.
+		Làm các tính năng mới + update trên B.
+		Copy A vào B khi:
+			A là bản mới nhất.
+			Chắc chắn thằng Trung đã push bản cập nhật mới nhất.
