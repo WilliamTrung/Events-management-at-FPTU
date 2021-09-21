@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final String SUCCESS = "index.jsp";
+    private final String SUCCESS = "login.jsp";
     private final String FAIL = "login.jsp";
 
     public LoginGoogleServlet() {
@@ -47,6 +47,7 @@ public class LoginGoogleServlet extends HttpServlet {
                             HttpSession session = request.getSession();
                             session.setAttribute("CURRENT_USER", user);
                             //check if login user is an admin
+                            String test = user.getRoleId();
                             if (user.getRoleId().equals("AD")) {
                                 session.setAttribute("MODE", "USER_MODE");
                             }

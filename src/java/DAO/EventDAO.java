@@ -20,7 +20,7 @@ import java.util.List;
  *
  * @author Admin
  */
-/*
+
 public class EventDAO {
 
     public List<EventDTO> getListEvent(String search) throws SQLException {
@@ -34,6 +34,37 @@ public class EventDAO {
                     + "FROM tblEvents WHERE title like ?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int eventId = rs.getInt("eventId");
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String location = rs.getString("location");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDatetime = rs.getDate("startDatetime");
+                Date endDatetime = rs.getDate("endDatetime");
+                String statusId = rs.getString("statusId");
+                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId));
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getListEvent: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return list;
+    }
+    public List<EventDTO> getListAllEvent(String search) throws SQLException {
+        List<EventDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId "
+                    + "FROM tblEvents WHERE title like ?";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, "%%");
             rs = stm.executeQuery();
             while (rs.next()) {
                 int eventId = rs.getInt("eventId");
@@ -152,4 +183,3 @@ public class EventDAO {
         return result;
     }
 }
-*/

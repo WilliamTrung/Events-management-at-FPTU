@@ -40,6 +40,9 @@ public class UserDAO {
                 } else {
                     if(createUser(user, conn)==false){
                         user=null;
+                    } else {
+                        UserDTO loginUser = new UserDTO(user.getUserId(), user.getEmail(), user.getUsername(), "A", "US", true, user.getHd(), user.getPicture());
+                        user = loginUser;
                     }
                 }
             }
