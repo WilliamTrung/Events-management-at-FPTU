@@ -21,20 +21,26 @@
             <c:param name="search" value=""></c:param>    
             <c:param name="action" value="LoadUsers"></c:param>           
         </c:url>
+        <c:url var="logoutLink" value="MainController">
+            <c:param name="action" value="Logout"/>
+        </c:url>
+        <c:if test="${not empty sessionScope.CURRENT_USER}">
+            <div>
+                <c:if test="${empty sessionScope.MODE}">
+                    <a href="mainPage.jsp"></i>Main Page</a>
+                    <a href="${view_event}">Events</a>   
+                </c:if>
 
-        <div>
-            <c:if test="${empty sessionScope.MODE}">
-                <a href="mainPage.jsp"></i>Main Page</a>
-                <a href="${view_event}">Events</a>   
-            </c:if>
+                <c:if test="${sessionScope.MODE eq 'USER_MODE'}">
+                    <a href="${view_user}">Switch to Admin mode</a>
+                </c:if>  
+                <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
+                    <a href="${view_event}">Switch to User mode</a>
+                </c:if>  
+                <a href="${logoutLink}">Logout</a>  
 
-            <c:if test="${sessionScope.MODE eq 'USER_MODE'}">
-                <a href="${view_user}">Switch to Admin mode</a>
-            </c:if>  
-            <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
-                <a href="${view_event}">Switch to User mode</a>
-            </c:if>  
-        </div>          
+            </div> 
+        </c:if>
         <div class="container-fluid">
             <h1>FPT EventManagement</h1>
         </div>
