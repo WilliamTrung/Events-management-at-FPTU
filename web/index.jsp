@@ -12,6 +12,8 @@
         <title>Index Page</title>
     </head>
     <body>
+        
+        
         UserId: ${sessionScope.CURRENT_USER.userId}
         </br>
         Email: ${sessionScope.CURRENT_USER.email}

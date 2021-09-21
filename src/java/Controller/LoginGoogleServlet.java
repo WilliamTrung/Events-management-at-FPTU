@@ -38,23 +38,29 @@ public class LoginGoogleServlet extends HttpServlet {
                 String accessToken = GoogleUtils.getToken(code);
                 UserDTO user = GoogleUtils.getUserInfo(accessToken);
                 UserDAO ud = new UserDAO();
-                
                 //check condition if email is valid and is fpt email
-                if(user.isVerified_email() == true && user.getHd().equals("@fpt.edu.vn")) {
-                    user = ud.loginUser(user);
-                    if (user != null) {
-                        HttpSession session = request.getSession();
-                        session.setAttribute("CURRENT_USER", user);
-                        if(user.getRoleId().equals("AD")){
-                            session.setAttribute("MODE", "USER_MODE");
+                //user.getHd()==null when the email's tail is @gmail.com
+                if (user.getHd() != null) {
+                    if (user.isVerified_email() == true && user.getHd().equals("fpt.edu.vn")) {
+                        user = ud.loginUser(user);
+                        if (user != null) {
+                            HttpSession session = request.getSession();
+                            session.setAttribute("CURRENT_USER", user);
+                            //check if login user is an admin
+                            if (user.getRoleId().equals("AD")) {
+                                session.setAttribute("MODE", "USER_MODE");
+                            }
+                            url = SUCCESS;
+                        } else {
+                            request.setAttribute("LOGIN_ERROR", "Cannot retrieve user's information!");
+                            url = FAIL;
                         }
-                        url = SUCCESS;
-                    } else {                       
-                        request.setAttribute("USER_LOGIN_ERROR", "Cannot login!");
+                    } else {
+                        request.setAttribute("LOGIN_ERROR", "Email is not valid!");
                         url = FAIL;
                     }
                 } else {
-                    request.setAttribute("USER_INVALID", "Email is not valid!");
+                    request.setAttribute("LOGIN_ERROR", "Email is not valid!");
                     url = FAIL;
                 }
             }
