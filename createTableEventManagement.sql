@@ -25,7 +25,7 @@ CREATE TABLE tblUsers(
 	email NVARCHAR(50) NOT NULL UNIQUE,
 	username NVARCHAR(50) NOT NULL,
 	statusId NVARCHAR(5) REFERENCES tblStatusUser,
-	roleId NVARCHAR(5) REFERENCES tblRoles,
+	roleId NVARCHAR(5) REFERENCES tblRoles
 );
 CREATE TABLE tblStatusEvent(
 	statusId NVARCHAR(5) PRIMARY KEY,
@@ -37,6 +37,7 @@ CREATE TABLE tblEvents(
 	title NVARCHAR(50) NOT NULL,
 	description NVARCHAR(130) NOT NULL,
 	location NVARCHAR(100) NOT NULL,
+	seat INT NOT NULL,
 	createDatetime DATETIME NOT NULL,
 	startDatetime DATETIME NOT NULL,
 	endDatetime DATETIME NOT NULL,
