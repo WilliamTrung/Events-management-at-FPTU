@@ -30,7 +30,7 @@ public class EventDAO {
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId"
+            String sql = "SELECT eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, seat,statusId"
                     + "FROM tblEvents WHERE title like ?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
@@ -44,8 +44,9 @@ public class EventDAO {
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDatetime = rs.getDate("startDatetime");
                 Date endDatetime = rs.getDate("endDatetime");
+                int seat = rs.getInt("seat");
                 String statusId = rs.getString("statusId");
-                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId));
+                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, seat,statusId));
             }
         } catch (Exception e) {
             log("Error at EventDAO - getListEvent: " + e.toString());
@@ -54,14 +55,14 @@ public class EventDAO {
         }
         return list;
     }
-    public List<EventDTO> getListAllEvent(String search) throws SQLException {
+    public List<EventDTO> getListAllEvent() throws SQLException {
         List<EventDTO> list = new ArrayList<>();
         Connection conn = null;
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId "
+            String sql = "SELECT eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, seat, statusId "
                     + "FROM tblEvents WHERE title like ?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%%");
@@ -75,8 +76,9 @@ public class EventDAO {
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDatetime = rs.getDate("startDatetime");
                 Date endDatetime = rs.getDate("endDatetime");
+                int seat = rs.getInt("seat");
                 String statusId = rs.getString("statusId");
-                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId));
+                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, seat, statusId));
             }
         } catch (Exception e) {
             log("Error at EventDAO - getListEvent: " + e.toString());

@@ -19,7 +19,6 @@
         %>
     </head>
     <body>
-        <%@include file="header.jsp"%>
         <%
             if (session.getAttribute("CURRENT_USER") == null) {
                 response.sendRedirect("login.jsp");

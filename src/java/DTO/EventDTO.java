@@ -22,21 +22,9 @@ public class EventDTO {
     private Date createDatetime;
     private Date startDatetime;
     private Date endDatetime;
+    private int seat;
     private String statusId;
 
-    public EventDTO(int eventId, String userId, String title, String description, String location, Date createDatetime, Date startDatetime, Date endDatetime, String statusId) {
-        this.eventId = eventId;
-        this.userId = userId;
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.createDatetime = createDatetime;
-        this.startDatetime = startDatetime;
-        this.endDatetime = endDatetime;
-        this.statusId = statusId;
-    }
-
-    
     public int getEventId() {
         return eventId;
     }
@@ -101,6 +89,14 @@ public class EventDTO {
         this.endDatetime = endDatetime;
     }
 
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
+    }
+
     public String getStatusId() {
         return statusId;
     }
@@ -108,6 +104,20 @@ public class EventDTO {
     public void setStatusId(String statusId) {
         this.statusId = statusId;
     }
-    
-    
+
+    public EventDTO(int eventId, String userId, String title, String description, String location, Date createDatetime, Date startDatetime, Date endDatetime, int seat, String statusId) {
+        this.eventId = eventId;
+        this.userId = userId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.createDatetime = createDatetime;
+        this.startDatetime = startDatetime;
+        this.endDatetime = endDatetime;
+        this.seat = seat;
+        this.statusId = statusId;
+    }
+
+    public EventDTO() {
+    }
 }
