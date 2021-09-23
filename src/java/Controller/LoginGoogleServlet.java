@@ -49,10 +49,11 @@ public class LoginGoogleServlet extends HttpServlet {
                         if (user != null) {
                             HttpSession session = request.getSession();
                             EventDAO eDao = new EventDAO();
+                            
                             List<EventDTO> list_event = eDao.getListEvent("");
                             //check if login user is an admin
-                            String test = user.getRoleId();
-                            if (user.getRoleId().equals("AD")) {
+                            String test = user.getRole();
+                            if (user.getRole().equals("AD")) {
                                 session.setAttribute("MODE", "USER_MODE");
                             }
                             session.setAttribute("CURRENT_USER", user);

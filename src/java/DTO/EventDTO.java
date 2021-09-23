@@ -15,16 +15,38 @@ import java.sql.Date;
  */
 public class EventDTO {
     private int eventId;
-    private String userId;
+    private UserDTO user;
     private String title;
     private String description;
-    private String location;
+    private LocationDTO location;
     private Date createDatetime;
     private Date startDatetime;
     private Date endDatetime;
-    private int seat;
     private String statusId;
+    private String picture;
 
+    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, Date endDatetime, String statusId, String picture) {
+        this.eventId = eventId;
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.createDatetime = createDatetime;
+        this.startDatetime = startDatetime;
+        this.endDatetime = endDatetime;
+        this.statusId = statusId;
+        this.picture = picture;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+    
+    
     public int getEventId() {
         return eventId;
     }
@@ -33,12 +55,12 @@ public class EventDTO {
         this.eventId = eventId;
     }
 
-    public String getUserId() {
-        return userId;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -57,11 +79,11 @@ public class EventDTO {
         this.description = description;
     }
 
-    public String getLocation() {
+    public LocationDTO getLocation() {
         return location;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(LocationDTO location) {
         this.location = location;
     }
 
@@ -89,14 +111,6 @@ public class EventDTO {
         this.endDatetime = endDatetime;
     }
 
-    public int getSeat() {
-        return seat;
-    }
-
-    public void setSeat(int seat) {
-        this.seat = seat;
-    }
-
     public String getStatusId() {
         return statusId;
     }
@@ -104,20 +118,6 @@ public class EventDTO {
     public void setStatusId(String statusId) {
         this.statusId = statusId;
     }
-
-    public EventDTO(int eventId, String userId, String title, String description, String location, Date createDatetime, Date startDatetime, Date endDatetime, int seat, String statusId) {
-        this.eventId = eventId;
-        this.userId = userId;
-        this.title = title;
-        this.description = description;
-        this.location = location;
-        this.createDatetime = createDatetime;
-        this.startDatetime = startDatetime;
-        this.endDatetime = endDatetime;
-        this.seat = seat;
-        this.statusId = statusId;
-    }
-
-    public EventDTO() {
-    }
+ 
+    
 }

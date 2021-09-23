@@ -3,39 +3,46 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Controller;
+package DAO;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
-public class LogoutController extends HttpServlet {
-    private final String SUCCESS = "login.jsp";
-    private final String FAIL = "login.jsp";
+@WebServlet(name = "LocationDAO", urlPatterns = {"/LocationDAO"})
+public class LocationDAO extends HttpServlet {
 
+    /**
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
+     * methods.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = FAIL;
-        try {        
-            HttpSession session = request.getSession(false);
-            if(session != null){                
-                session.invalidate();
-                url=SUCCESS;
-            }
-        } catch (Exception e) {
-            log("Error at LOGOUT:  "+e.toString());
-        }finally{
-            response.sendRedirect(url);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet LocationDAO</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet LocationDAO at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

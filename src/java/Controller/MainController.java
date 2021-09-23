@@ -47,12 +47,12 @@ public class MainController extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
         try {
             if (action.equals("LoadUsers")) {
-                if (user.getRoleId().equals("AD")) {
+                if (user.getRole().equals("ADMIN")) {
                     session.setAttribute("MODE", "ADMIN_MODE");
                 }
                 url = ADMIN_SEARCH_USER;
             } else if (action.equals("LoadEvents")) {
-                if (user.getRoleId().equals("AD")) {
+                if (user.getRole().equals("ADMIN")) {
                     session.setAttribute("MODE", "USER_MODE");
                 }
                 url = USER_SEARCH_EVENT;
