@@ -20,7 +20,7 @@
         <c:url var="view_user" value="MainController">
             <c:param name="search" value=""></c:param>    
             <c:param name="action" value="LoadUsers"></c:param>           
-        </c:url>
+        </c:url>    
         <c:url var="logoutLink" value="MainController">
             <c:param name="action" value="Logout"/>
         </c:url>

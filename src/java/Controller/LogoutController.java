@@ -5,7 +5,6 @@
  */
 package Controller;
 
-import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,56 +13,31 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "LogoutController", urlPatterns = {"/LogoutController"})
+public class LogoutController extends HttpServlet {
+    private final String SUCCESS = "login.jsp";
+    private final String FAIL = "login.jsp";
 
-    private final String ERROR = "error.jsp";
-    private final String USER = "";
-    private final String LOGOUT = "LogoutController";
-    private final String ADMIN_SEARCH_USER = "ViewUserController";
-    private final String USER_SEARCH_EVENT = "ViewEventController";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        String url = ERROR;
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-        try {
-            if (action.equals("LoadUsers")) {
-                if (user.getRoleId().equals("AD")) {
-                    session.setAttribute("MODE", "ADMIN_MODE");
-                }
-                url = ADMIN_SEARCH_USER;
-            } else if (action.equals("LoadEvents")) {
-                if (user.getRoleId().equals("AD")) {
-                    session.setAttribute("MODE", "USER_MODE");
-                }
-                url = USER_SEARCH_EVENT;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
+        String url = FAIL;
+        try {        
+            HttpSession session = request.getSession(false);
+            if(session != null){                
+                session.invalidate();
+                url=SUCCESS;
             }
         } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
-            log("Error at MainController: " + e.toString());
+            log("Error at LOGOUT:  "+e.toString());
+        }finally{
+            response.sendRedirect(url);
         }
-        request.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

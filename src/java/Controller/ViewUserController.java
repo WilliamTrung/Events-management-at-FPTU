@@ -5,65 +5,43 @@
  */
 package Controller;
 
+import DAO.UserDAO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
-
-    private final String ERROR = "error.jsp";
-    private final String USER = "";
-    private final String LOGOUT = "LogoutController";
-    private final String ADMIN_SEARCH_USER = "ViewUserController";
-    private final String USER_SEARCH_EVENT = "ViewEventController";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@WebServlet(name = "ViewUserController", urlPatterns = {"/ViewUserController"})
+public class ViewUserController extends HttpServlet {
+    private final String SUCCESS = "userManagement.jsp";
+    private final String FAIL = "userManagement.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        String url = ERROR;
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-        try {
-            if (action.equals("LoadUsers")) {
-                if (user.getRoleId().equals("AD")) {
-                    session.setAttribute("MODE", "ADMIN_MODE");
-                }
-                url = ADMIN_SEARCH_USER;
-            } else if (action.equals("LoadEvents")) {
-                if (user.getRoleId().equals("AD")) {
-                    session.setAttribute("MODE", "USER_MODE");
-                }
-                url = USER_SEARCH_EVENT;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
-            }
-        } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
-            log("Error at MainController: " + e.toString());
-        }
+        String url = FAIL;
+        String search = request.getParameter("search");
+        
+        UserDAO uDao = new UserDAO();
+        List<UserDTO>list=uDao.getListUsers(search);
+        
+        if(list!=null){
+            if(!list.isEmpty()){
+                request.setAttribute("LIST_USER", list);
+                url = SUCCESS;
+            } 
+        } else {
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve list users!");
+        }        
         request.getRequestDispatcher(url).forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,6 +1,8 @@
 package Controller;
 
+import DAO.EventDAO;
 import DAO.UserDAO;
+import DTO.EventDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 
@@ -12,13 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import GoogleAPI.GoogleUtils;
+import java.util.List;
 import javax.servlet.http.HttpSession;
 
 @WebServlet("/login-google")
 public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final String SUCCESS = "login.jsp";
+    private final String SUCCESS = "mainPage.jsp";
     private final String FAIL = "login.jsp";
 
     public LoginGoogleServlet() {
@@ -45,12 +48,15 @@ public class LoginGoogleServlet extends HttpServlet {
                         user = ud.loginUser(user);
                         if (user != null) {
                             HttpSession session = request.getSession();
-                            session.setAttribute("CURRENT_USER", user);
+                            EventDAO eDao = new EventDAO();
+                            List<EventDTO> list_event = eDao.getListEvent("");
                             //check if login user is an admin
                             String test = user.getRoleId();
                             if (user.getRoleId().equals("AD")) {
                                 session.setAttribute("MODE", "USER_MODE");
                             }
+                            session.setAttribute("CURRENT_USER", user);
+                            session.setAttribute("LIST_EVENT", list_event);
                             url = SUCCESS;
                         } else {
                             request.setAttribute("LOGIN_ERROR", "Cannot retrieve user's information!");

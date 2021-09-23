@@ -11,9 +11,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Events in FPT University</title>
+        <%
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+        %>
     </head>
     <body>
         <%@include file="header.jsp"%>
+        <%
+            if (session.getAttribute("CURRENT_USER") == null) {
+                response.sendRedirect("login.jsp");
+            }
+        %>
         <p>${sessionScope.EVENT_MESSAGE}</p>
         <c:if test="${not empty sessionScope.LIST_EVENT}">
             <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">

@@ -10,11 +10,20 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Main Page</title>
+        <%
+            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Cache-Control", "no-store");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+        %>
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <form action="MainController">
-            
-        </form>
+        <%
+            if (session.getAttribute("CURRENT_USER") == null) {
+                response.sendRedirect("login.jsp");
+            }
+        %>
+        <%@include file="viewEvent.jsp" %>
     </body>
 </html>

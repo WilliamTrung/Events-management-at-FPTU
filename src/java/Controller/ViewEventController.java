@@ -38,14 +38,15 @@ private final String SUCCESS="viewEvent.jsp";
         HttpSession session = request.getSession();
         try {
             EventDAO dao = new EventDAO();
-            List<EventDTO> list = dao.getListAllEvent("");
+            String search = request.getParameter("search");
+            List<EventDTO> list = dao.getListEvent(search);
             session.setAttribute("EVENT_MESSAGE", "There are "+list.size()+" events");
             if (list!=null && !list.isEmpty()) {
                 session.setAttribute("LIST_EVENT", list);
                 url = SUCCESS;
             }
             else{
-                session.setAttribute("EVENT_MESSAGE", "There isn't event");
+                session.setAttribute("EVENT_MESSAGE", "No event");
             }
         } catch (Exception e) {
             log("Error at ViewEventController: "+e.toString());
