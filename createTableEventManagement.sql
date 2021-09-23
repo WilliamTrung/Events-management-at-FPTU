@@ -44,6 +44,14 @@ CREATE TABLE tblEvents(
 	endDatetime DATETIME NOT NULL,
 	statusId NVARCHAR(5) REFERENCES tblStatusEvent
 );
+
+--demo untested
+CREATE TABLE tblSeats(
+	eventId INT REFERENCES tblEvents,
+	userId NVARCHAR(50) REFERENCES tblUsers,
+	seatNumber INT NOT NULL,
+	PRIMARY KEY(eventId, userId)
+)
 CREATE TABLE tblContents(
 	contentId INT IDENTITY(0,1) PRIMARY KEY,
 	content NVARCHAR(300),
@@ -94,8 +102,11 @@ INSERT INTO tblRoles(roleId, roleName) VALUES ('MT','Mentor/Lecturer')
 INSERT INTO tblRoles(roleId, roleName) VALUES ('AD','Admin')
 INSERT INTO tblStatusUser(statusId, statusName) VALUES ('A','Active')
 INSERT INTO tblStatusUser(statusId, statusName) VALUES ('D','Deactive')
-
+--insert users
 INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'102340646113497938153', N'anhtnse151264@fpt.edu.vn', N'anhtnse151264', N'A', N'US')
-INSERT [dbo].[tblEvents] ([eventId], [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES (2, N'102340646113497938153', N'test', N'test', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
-INSERT [dbo].[tblEvents] ([eventId], [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES (9, N'102340646113497938153', N'test1', N'test1', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
+--insert status event
+INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'AP', N'Approve')
+--insert events
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test', N'test', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test1', N'test1', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
 
