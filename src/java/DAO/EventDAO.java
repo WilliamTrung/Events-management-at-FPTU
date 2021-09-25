@@ -6,6 +6,8 @@
 package DAO;
 
 import DTO.EventDTO;
+import DTO.LocationDTO;
+import DTO.UserDTO;
 import Utils.DBConnection;
 import static java.rmi.server.LogStream.log;
 import java.sql.Connection;
@@ -30,7 +32,7 @@ public class EventDAO {
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, seat, statusId "
+            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture "
                     + "FROM tblEvents WHERE title like ?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
@@ -41,13 +43,16 @@ public class EventDAO {
                 String title = rs.getString("title");
                 String description = rs.getString("description");
                 
-                String location = rs.getString("location");
+                String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDatetime = rs.getDate("startDatetime");
                 Date endDatetime = rs.getDate("endDatetime");
-                int seat = rs.getInt("seat");
+                String picture = rs.getString("picture");
                 String statusId = rs.getString("statusId");
-                list.add(new EventDTO(eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, seat,statusId));
+                
+                UserDTO user = new UserDAO().getUserById(userId);
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDatetime, endDatetime, statusId, picture));
             }
         } catch (Exception e) {
             log("Error at EventDAO - getListEvent: " + e.toString());
@@ -66,10 +71,10 @@ public class EventDAO {
                     + "VALUES (?,?,?,?,?,?,?,?)";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
-            String userId = newEvent.getUserId();
+            String userId = newEvent.getUser().getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
-            String location = newEvent.getLocation();
+            String locationId = newEvent.getLocation().getLocationId();
             Date createDatetime = newEvent.getCreateDatetime();
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
@@ -77,7 +82,7 @@ public class EventDAO {
             stm.setString(2, userId);
             stm.setString(3, title);
             stm.setString(4, description);
-            stm.setString(5, location);
+            stm.setString(5, locationId);
             stm.setDate(6, createDatetime);
             stm.setDate(7, startDatetime);
             stm.setDate(8, endDatetime);
@@ -101,17 +106,17 @@ public class EventDAO {
                     + "WHERE eventId=? AND userId=?";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
-            String userId = newEvent.getUserId();
+            String userId = newEvent.getUser().getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
-            String location = newEvent.getLocation();
+            String locationId = newEvent.getLocation().getLocationId();
             Date createDatetime = newEvent.getCreateDatetime();
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
             String statusId = newEvent.getStatusId();
             stm.setString(1, title);
             stm.setString(2, description);
-            stm.setString(3, location);
+            stm.setString(3, locationId);
             stm.setDate(4, createDatetime);
             stm.setDate(5, startDatetime);
             stm.setDate(6, endDatetime);
@@ -138,10 +143,10 @@ public class EventDAO {
                         + " WHERE eventID=? ";
                 stm = conn.prepareStatement(sql);
                 stm.setInt(1, eventID);
-                result = stm.executeUpdate() > 0 ? true : false;
+                result = stm.executeUpdate() > 0;
             }
         } catch (Exception e) {
-
+            
         } finally {
             if (stm != null) {
                 stm.close();
