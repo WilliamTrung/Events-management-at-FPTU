@@ -66,17 +66,17 @@ public class UserDAO {
         try {
             conn = DBConnection.getConnection();
             if (conn!=null) {
-                String sql = "SELECT username, roleId, statusId "
-                        + "FROM tblUsers "
-                        + "WHERE userId = ?";
+                String sql = "SELECT username, r.roleName, s.statusName "
+                        + "FROM tblUsers u, tblStatusUser s, tblRoles r "
+                        + "WHERE userId = ? AND u.statusId = s.statusId AND u.roleId = u.roleId";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, user.getUserId());
                 
                 rs = stm.executeQuery();
                 if(rs.next()){
                     user.setUsername(rs.getString("username"));
-                    user.setRole(getRoleName(rs.getString("roleId"), conn));
-                    user.setStatus(getStatusName(rs.getString("statusId"), conn));
+                    user.setRole(rs.getString("roleName"));
+                    user.setStatus(rs.getString("statusName"));
                 } else {
                     if(createUser(user, conn)==false){
                         user=null;
@@ -123,8 +123,8 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT userId, email, username, statusId, roleId "
-                    + "FROM tblUsers WHERE username like ?";
+            String sql = "SELECT userId, email, username, s.statusName, r.roleName "
+                    + "FROM tblUsers u, tblStatusUser s, tblRoles r WHERE username like ? AND u.statusId = s.statusId AND u.roleId = r.roleId";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
             rs = stm.executeQuery();
@@ -132,8 +132,8 @@ public class UserDAO {
                 String userId = rs.getString("userId");
                 String email = rs.getString("email");
                 String username = rs.getString("username");
-                String status = getStatusName(rs.getString("statusId"), conn);
-                String role = getRoleName(rs.getString("roleId"), conn);
+                String status = rs.getString("statusName");
+                String role = rs.getString("roleName");
                 
                 list.add(new UserDTO(userId, email, username, status, role, true, null, null));
             }
@@ -150,16 +150,17 @@ public class UserDAO {
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT email, username, statusId, roleId "
-                    + "FROM tblUsers WHERE userId like ?";
+            String sql = "SELECT email, username, s.statusName, r.roleName "
+                    + "FROM tblUsers u, tblStatusUser s, tblRoles r  "
+                    + "WHERE userId like ? AND u.statusId = s.statusId AND u.roleId = r.roleId";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + userId + "%");
             rs = stm.executeQuery();
             while (rs.next()) {
                 String email = rs.getString("email");
                 String username = rs.getString("username");
-                String status = getStatusName(rs.getString("statusId"), conn);
-                String role = getRoleName(rs.getString("roleId"), conn);
+                String status = rs.getString("statusName");
+                String role = rs.getString("roleName");
                 
                 user = new UserDTO(userId, email, username, status, role, true, null, null);
             }

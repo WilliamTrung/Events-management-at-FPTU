@@ -53,7 +53,7 @@ public class LoginGoogleServlet extends HttpServlet {
                             List<EventDTO> list_event = eDao.getListEvent("");
                             //check if login user is an admin
                             String test = user.getRole();
-                            if (user.getRole().equals("AD")) {
+                            if (user.getRole().equals("Admin")) {
                                 session.setAttribute("MODE", "USER_MODE");
                             }
                             session.setAttribute("CURRENT_USER", user);

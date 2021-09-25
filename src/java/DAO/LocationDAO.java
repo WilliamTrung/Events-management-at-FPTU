@@ -5,84 +5,71 @@
  */
 package DAO;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import DTO.LocationDTO;
+import Utils.DBConnection;
+import static java.rmi.server.LogStream.log;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "LocationDAO", urlPatterns = {"/LocationDAO"})
-public class LocationDAO extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LocationDAO</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LocationDAO at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+public class LocationDAO {
+    public List<LocationDTO> getListLocations(String search){
+        List<LocationDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            if(conn!=null){
+                String sql = "SELECT locationId, locationName, seat "
+                        + "FROM tblLocations "
+                        + "WHERE locationName = ?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, "%"+search+"%");
+                rs = stm.executeQuery();
+                while(rs.next()){
+                    String locationId = rs.getString("locationId");
+                    String locationName = rs.getString("locationName");
+                    int seat = rs.getInt("seat");
+                    LocationDTO location = new LocationDTO(locationId, seat, locationName);
+                    list.add(location);
+                }
+            }
+        } catch (Exception e) {
+            log("Error at LocationDAO - getListLocations: "+ e.toString());
         }
+        return list;
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
+    public LocationDTO getLocationById(String search){
+        LocationDTO location = null;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            if(conn!=null){
+                String sql = "SELECT locationName, seat "
+                        + "FROM tblLocations "
+                        + "WHERE locationId = ?";
+                stm = conn.prepareStatement(sql);
+                stm.setString(1, search);
+                rs = stm.executeQuery();
+                if(rs.next()){
+                    String locationId = search;
+                    String locationName = rs.getString("locationName");
+                    int seat = rs.getInt("seat");
+                    location = new LocationDTO(locationId, seat, locationName);
+                }
+            }
+        } catch (Exception e) {
+            log("Error at LocationDAO - getLocationById: "+ e.toString());
+        }
+        return location;
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

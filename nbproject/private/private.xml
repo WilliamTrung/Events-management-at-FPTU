@@ -4,9 +4,12 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/LoginGoogleServlet.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/EventDAO.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/UserDTO.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/MainController.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/UserDAO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/LocationDAO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/LocationDTO.java</file>
         </group>
     </open-files>
 </project-private>

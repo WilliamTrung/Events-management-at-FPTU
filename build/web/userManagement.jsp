@@ -10,6 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <p>Thử tiếng việt </p>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Management</title>
         <%
@@ -55,18 +56,7 @@
                         <td>
                             <select name="newRole">                         
                                 <option disabled selected>
-                                    <c:if test="${dto.roleId eq 'AD'}" >
-                                    <p>ADMIN</p>
-                                </c:if>
-                                <c:if test="${dto.roleId eq 'US'}" >
-                                    <p>USER</p>
-                                </c:if>
-                                <c:if test="${dto.roleId eq 'EM'}" >
-                                    <p>EVENT MANAGER</p>
-                                </c:if>
-                                <c:if test="${dto.roleId eq 'MT'}" >
-                                    <p>MENTOR/LECTURER</p>
-                                </c:if>
+                                   ${dto.role}
                                 </option>
                                 <option value="US">USER</option>
                                 <option value="AD">ADMIN</option>
@@ -75,7 +65,7 @@
                             </select>
                         </td>
                         <td>
-                            <input type="hidden" name="oldRole" value="${dto.roleId}"/>
+                            <input type="hidden" name="oldRole" value="${dto.role}"/>
                             <input type="hidden" name="search" value="${param.search}"/>
                             <input type="submit" name="action" value="Confirm Update"/>
                         </td>
@@ -85,10 +75,10 @@
                         <form action="MainController">
                             <input type="hidden" name="userId" value="${dto.userId}"/>
                             <input type="hidden" name="search" value="${param.search}"/>                              
-                            <input type="hidden" name="status" value="${dto.statusId}"/>   
+                            <input type="hidden" name="status" value="${dto.status}"/>   
                             <input type="hidden" name="action" value="ChangeStatus"/>
-                            <input id="activation" type="checkbox" ${dto.statusId == "A" ? "checked=''" : "unchecked=''"} onChange="this.form.submit()">
-                            <label for="activation">${dto.statusId}</label>
+                            <input id="activation" type="checkbox" ${dto.status == "Active" ? "checked=''" : "unchecked=''"} onChange="this.form.submit()">
+                            <label for="activation">${dto.status}</label>
                         </form>
                     </td>
                 </tr>  
