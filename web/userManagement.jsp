@@ -4,6 +4,8 @@
     Author     : WilliamTrung
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="DAO.UserDAO"%>
 <%@page import="DTO.UserDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -27,6 +29,10 @@
             if (user == null) {
                 response.sendRedirect("login.jsp");
             }
+        %>
+        <%
+            List<String> roleList = new UserDAO().getRoleList();
+            request.setAttribute("LIST_ROLE", roleList);
         %>
         <form action="MainController">
             <input type="text" placeholder="Search by Name" name="search">
@@ -58,10 +64,11 @@
                                 <option disabled selected>
                                    ${dto.role}
                                 </option>
-                                <option value="US">USER</option>
-                                <option value="AD">ADMIN</option>
-                                <option value="MT">MENTOR/LECTURER</option>
-                                <option value="EM">EVENT MANAGER</option>
+                                <c:forEach var="role" items="${requestScope.LIST_ROLE}">
+                                    <option value="${role}">
+                                        ${role}
+                                    </option>
+                                </c:forEach>
                             </select>
                         </td>
                         <td>

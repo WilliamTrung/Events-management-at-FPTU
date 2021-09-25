@@ -26,7 +26,9 @@ public class MainController extends HttpServlet {
     private final String ERROR = "error.jsp";
     private final String USER = "";
     private final String LOGOUT = "LogoutController";
+    private final String USER_VIEW_SELF = "ViewSelfController";
     private final String ADMIN_SEARCH_USER = "ViewUserController";
+    private final String ROLES_UPDATE_USER = "UpdateUserController";
     private final String USER_SEARCH_EVENT = "ViewEventController";
 
     /**
@@ -47,17 +49,21 @@ public class MainController extends HttpServlet {
         UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
         try {
             if (action.equals("LoadUsers")) {
-                if (user.getRole().equals("ADMIN")) {
+                if (user.getRole().equals("Admin")) {
                     session.setAttribute("MODE", "ADMIN_MODE");
                 }
                 url = ADMIN_SEARCH_USER;
             } else if (action.equals("LoadEvents")) {
-                if (user.getRole().equals("ADMIN")) {
+                if (user.getRole().equals("Admin")) {
                     session.setAttribute("MODE", "USER_MODE");
                 }
                 url = USER_SEARCH_EVENT;
             } else if (action.equals("Logout")) {
                 url = LOGOUT;
+            } else if (action.equals("ViewSelfInformation")) {
+                url = USER_VIEW_SELF;
+            } else if (action.equals("Confirm Update")) {
+                url = ROLES_UPDATE_USER;
             }
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");

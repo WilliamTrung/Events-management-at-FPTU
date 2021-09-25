@@ -5,46 +5,33 @@
  */
 package Controller;
 
-import DAO.UserDAO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
-public class UpdateUserController extends HttpServlet {
-    private final String SUCCESS = "userManagement.jsp";
-    private final String FAIL = "userManagement.jsp";
+@WebServlet(name = "ViewSelfInformation", urlPatterns = {"/ViewSelfInformation"})
+public class ViewSelfInformation extends HttpServlet {
+    private final String SUCCESS = "viewSelf.jsp";
+    private final String FAIL = "viewSelf.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession session = request.getSession();
         String url = FAIL;
         try {
-            String newRole = request.getParameter("newRole");
-            String oldRole = request.getParameter("oldRole");
-            String search = request.getParameter("search");
-            String userId = request.getParameter("userId");
-            
-            UserDAO uDao = new UserDAO();
-            if(!newRole.equals(oldRole)){
-                UserDTO user = new UserDTO(userId, null, null, null, newRole, true, null, null);                        
-                boolean check = uDao.updateUser(user);
-            }
-            List<UserDTO>list = uDao.getListUsers(search);
-            request.setAttribute("LIST_USER", list);
+            UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
             
         } catch (Exception e) {
-            log("Error at UpdateUserController: "+e.toString());
         }
-        request.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
