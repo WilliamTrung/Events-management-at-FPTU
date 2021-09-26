@@ -11,20 +11,18 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Index Page</title>
     </head>
-    <body>
-        
-        
+    <body>       
+        Picture: ${sessionScope.CURRENT_USER.picture}
+        </br>
         UserId: ${sessionScope.CURRENT_USER.userId}
         </br>
         Email: ${sessionScope.CURRENT_USER.email}
-        </br>
-        Picture: ${sessionScope.CURRENT_USER.picture}
-        </br>
+        </br>        
         Username: ${sessionScope.CURRENT_USER.username}
         </br>
-        StatusId: ${sessionScope.CURRENT_USER.statusId}
+        Status: ${sessionScope.CURRENT_USER.status}
         </br>
-        RoleId: ${sessionScope.CURRENT_USER.roleId}
+        RoleId: ${sessionScope.CURRENT_USER.role}
         </br>
     </body>
 </html>

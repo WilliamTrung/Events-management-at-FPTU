@@ -24,9 +24,6 @@
         <c:url var="logoutLink" value="MainController">
             <c:param name="action" value="Logout"/>
         </c:url>
-        <c:url var="selfInfo" value="MainController">
-            <c:param name="action" value="ViewSelfInformation"/>
-        </c:url>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <div>
                 <c:if test="${empty sessionScope.MODE}">
@@ -39,7 +36,7 @@
                 <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
                     <a href="${view_event}">Switch to User mode</a>
                 </c:if>
-                    <a href="${selfInfo}">${sessionScope.CURRENT_USER.username}</a>
+                    <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
                 <a href="${logoutLink}">Logout</a>  
 
             </div> 

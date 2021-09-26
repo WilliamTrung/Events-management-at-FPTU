@@ -21,8 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UpdateUserController", urlPatterns = {"/UpdateUserController"})
 public class UpdateUserController extends HttpServlet {
+
     private final String SUCCESS = "userManagement.jsp";
     private final String FAIL = "userManagement.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,17 +34,22 @@ public class UpdateUserController extends HttpServlet {
             String oldRole = request.getParameter("oldRole");
             String search = request.getParameter("search");
             String userId = request.getParameter("userId");
-            
+
             UserDAO uDao = new UserDAO();
-            if(!newRole.equals(oldRole)){
-                UserDTO user = new UserDTO(userId, null, null, null, newRole, true, null, null);                        
+            if (!newRole.equals(oldRole)) {
+                UserDTO user = new UserDTO(userId, null, null, null, newRole, true, null, null);
                 boolean check = uDao.updateUser(user);
+                if (check) {
+                    url = SUCCESS;
+                } else {
+                    url = FAIL;
+                }
             }
-            List<UserDTO>list = uDao.getListUsers(search);
+            List<UserDTO> list = uDao.getListUsers(search);
             request.setAttribute("LIST_USER", list);
-            
+
         } catch (Exception e) {
-            log("Error at UpdateUserController: "+e.toString());
+            log("Error at UpdateUserController: " + e.toString());
         }
         request.getRequestDispatcher(url).forward(request, response);
     }

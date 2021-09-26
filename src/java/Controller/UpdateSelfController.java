@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import DAO.UserDAO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,63 +15,35 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
-
-    private final String ERROR = "error.jsp";
-    private final String USER = "";
-    private final String LOGOUT = "LogoutController";
-    private final String ROLES_UPDATE_SELF = "UpdateSelfController";
-    private final String ADMIN_SEARCH_USER = "ViewUserController";
-    private final String ADMIN_CHANGE_STATUS = "ChangeStatusController";
-    private final String ADMIN_UPDATE_USER = "UpdateUserController";
-    private final String USER_SEARCH_EVENT = "ViewEventController";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@WebServlet(name = "UpdateSelfController", urlPatterns = {"/UpdateSelfController"})
+public class UpdateSelfController extends HttpServlet {
+private final String SUCCESS = "viewSelf.jsp";
+    private final String FAIL = "viewSelf.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
-        String url = ERROR;
         HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+        String url = FAIL;
         try {
-            if (action.equals("LoadUsers")) {
-                if (user.getRole().equals("Admin")) {
-                    session.setAttribute("MODE", "ADMIN_MODE");
-                }
-                url = ADMIN_SEARCH_USER;
-            } else if (action.equals("LoadEvents")) {
-                if (user.getRole().equals("Admin")) {
-                    session.setAttribute("MODE", "USER_MODE");
-                }
-                url = USER_SEARCH_EVENT;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
-            } else if (action.equals("UpdateUserName")) {
-                url = ROLES_UPDATE_SELF;
-            } else if (action.equals("Confirm Update")) {
-                url = ADMIN_UPDATE_USER;
-            } else if (action.equals("ChangeStatus")) {
-                url = ADMIN_CHANGE_STATUS;
+            UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
+            UserDAO uDao = new UserDAO();
+            
+            String username = request.getParameter("username");
+            user.setUsername(username);
+            boolean check = uDao.updateUsername(user);
+            if (check) {
+                url = SUCCESS;
+            } else {
+                url = FAIL;
+                request.setAttribute("ERROR_MESSAGE", "Cannot update username!");
             }
         } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
-            log("Error at MainController: " + e.toString());
+            log("Error at UpdateSelfController: "+ e.toString());
         }
         request.getRequestDispatcher(url).forward(request, response);
     }

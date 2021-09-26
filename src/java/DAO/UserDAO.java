@@ -262,4 +262,58 @@ private String getStatusId(String statusName, Connection conn) {
         }
         return check;
     }
+    public boolean updateUsername(UserDTO user) {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = DBConnection.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE tblUsers "
+                        + "SET username = ? "
+                        + "WHERE userId = ? ";
+                stm = conn.prepareStatement(sql);
+                stm.setString( 1, user.getUsername());
+                stm.setString(2, user.getUserId());
+                
+                check = stm.executeUpdate() >0;
+            }
+
+        } catch (Exception e) {
+            log("Error at UserDAO - updateUsername: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, null);
+        }
+        return check;
+    }
+    public boolean updateStatus(UserDTO user) {
+        boolean check = false;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        try {
+            conn = DBConnection.getConnection();
+            if (conn != null) {
+                String sql = "UPDATE tblUsers "
+                        + "SET statusId = (SELECT statusId FROM tblStatusUser WHERE statusName = ? ) "
+                        + "WHERE userId = ? ";
+                stm = conn.prepareStatement(sql);
+                
+                if(user.getStatus().equals("Active")){
+                    user.setStatus("Deactive");
+                } else {
+                    user.setStatus("Active");
+                }
+                stm.setString( 1, user.getStatus());
+                stm.setString(2, user.getUserId());
+                
+                check = stm.executeUpdate() >0;
+            }
+
+        } catch (Exception e) {
+            log("Error at UserDAO - updateStatus: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, null);
+        }
+        return check;
+    }
 }
