@@ -45,86 +45,6 @@ public class UserDAO {
         }
         return list;
     }
-    private String getStatusName(String statusId, Connection conn) {
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String status = null;
-        try {
-            if (conn != null) {
-                String sql = "SELECT statusName "
-                        + "FROM tblStatusUser "
-                        + "WHERE statusId = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, statusId);
-
-                rs = stm.executeQuery();
-                status = rs.getString("statusName");
-            }
-        } catch (Exception e) {
-            log("Error at UserDAO - getStatusName: " + e.toString());
-        }
-        return status;
-    }
-private String getStatusId(String statusName, Connection conn) {
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String status = null;
-        try {
-            if (conn != null) {
-                String sql = "SELECT statusId "
-                        + "FROM tblStatusUser "
-                        + "WHERE statusName = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, statusName);
-
-                rs = stm.executeQuery();
-                status = rs.getString("statusName");
-            }
-        } catch (Exception e) {
-            log("Error at UserDAO - getStatusName: " + e.toString());
-        }
-        return status;
-    }
-    private String getRoleName(String roleId, Connection conn) {
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String role = null;
-        try {
-            if (conn != null) {
-                String sql = "SELECT roleName "
-                        + "FROM tblRoles "
-                        + "WHERE roleId = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, roleId);
-
-                rs = stm.executeQuery();
-                role = rs.getString("roleName");
-            }
-        } catch (Exception e) {
-            log("Error at UserDAO - getRoleName: " + e.toString());
-        }
-        return role;
-    }
-    private String getRoleId(String roleName, Connection conn) {
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        String role = null;
-        try {
-            if (conn != null) {
-                String sql = "SELECT roleId "
-                        + "FROM tblRoles "
-                        + "WHERE roleName = ?";
-                stm = conn.prepareStatement(sql);
-                stm.setString(1, roleName);
-
-                rs = stm.executeQuery();
-                role = rs.getString("roleId");
-            }
-        } catch (Exception e) {
-            log("Error at UserDAO - getRoleName: " + e.toString());
-        }
-        return role;
-    }
     public UserDTO loginUser(UserDTO user) {
         Connection conn = null;
         PreparedStatement stm = null;
@@ -147,8 +67,7 @@ private String getStatusId(String statusName, Connection conn) {
                     if (createUser(user, conn) == false) {
                         user = null;
                     } else {
-                        UserDTO loginUser = new UserDTO(user.getUserId(), user.getEmail(), user.getUsername(), getStatusName("A", conn), getRoleName("US", conn), true, user.getHd(), user.getPicture());
-                        user = loginUser;
+                        user = loginUser(user);
                     }
                 }
             }
@@ -178,9 +97,7 @@ private String getStatusId(String statusName, Connection conn) {
             }
         } catch (Exception e) {
             log("Error at UserDAO - createUser: " + e.toString());
-        } finally {
-            DBConnection.closeQueryConnection(conn, stm, null);
-        }
+        } 
         return check;
     }
 
