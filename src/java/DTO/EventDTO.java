@@ -22,10 +22,10 @@ public class EventDTO {
     private Date createDatetime;
     private Date startDatetime;
     private Date endDatetime;
-    private String statusId;
+    private String status;
     private String picture;
 
-    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, Date endDatetime, String statusId, String picture) {
+    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, Date endDatetime, String status, String picture) {
         this.eventId = eventId;
         this.user = user;
         this.title = title;
@@ -34,9 +34,11 @@ public class EventDTO {
         this.createDatetime = createDatetime;
         this.startDatetime = startDatetime;
         this.endDatetime = endDatetime;
-        this.statusId = statusId;
+        this.status = status;
         this.picture = picture;
     }
+
+    
 
     public String getPicture() {
         return picture;
@@ -111,12 +113,12 @@ public class EventDTO {
         this.endDatetime = endDatetime;
     }
 
-    public String getStatusId() {
-        return statusId;
+    public String getStatus() {
+        return status;
     }
 
-    public void setStatusId(String statusId) {
-        this.statusId = statusId;
+    public void setStatus(String statusId) {
+        this.status = statusId;
     }
  
     

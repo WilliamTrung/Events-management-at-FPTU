@@ -66,10 +66,9 @@ public class EventDAO {
         boolean flag = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "INSERT INTO tblEvents (eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture) "
-                    + "VALUES (?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO tblEvents (userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture) "
+                    + "VALUES (?,?,?,?,?,?,?)";
             stm = conn.prepareStatement(sql);
-            int eventId = newEvent.getEventId();
             String userId = newEvent.getUser().getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
@@ -78,7 +77,6 @@ public class EventDAO {
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
             String picture = newEvent.getPicture();
-            stm.setInt(1, eventId);
             stm.setString(2, userId);
             stm.setString(3, title);
             stm.setString(4, description);
@@ -103,7 +101,7 @@ public class EventDAO {
         boolean check = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, createDatetime=?, startDatetime=?, endDatetime=?, statusId=?, picture=?"
+            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, createDatetime=?, startDatetime=?, endDatetime=?, statusId = (SELECT statusId FROM tblStatusEvent WHERE statusName = ?), picture=?"
                     + "WHERE eventId=? AND userId=?";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
@@ -114,7 +112,7 @@ public class EventDAO {
             Date createDatetime = newEvent.getCreateDatetime();
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
-            String statusId = newEvent.getStatusId();
+            String statusId = newEvent.getStatus();
             String picture = newEvent.getPicture();
             stm.setString(1, title);
             stm.setString(2, description);
@@ -149,14 +147,9 @@ public class EventDAO {
                 result = stm.executeUpdate() > 0;
             }
         } catch (Exception e) {
-            
+            log("Error at EventDAO - deleteEvent: " + e.toString());
         } finally {
-            if (stm != null) {
-                stm.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
+            DBConnection.closeQueryConnection(conn, stm, null);
         }
         return result;
     }

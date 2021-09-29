@@ -14,6 +14,11 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
+        <%
+            if (session.getAttribute("CURRENT_USER") == null) {
+                response.sendRedirect("login.jsp");
+            }
+        %>
         Picture: <img src="${sessionScope.CURRENT_USER.picture}">
         </br>
         UserId: ${sessionScope.CURRENT_USER.userId}
