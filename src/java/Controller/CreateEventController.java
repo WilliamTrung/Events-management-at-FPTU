@@ -5,68 +5,60 @@
  */
 package Controller;
 
+import DAO.EventDAO;
+import DAO.LocationDAO;
+import DAO.UserDAO;
+import DTO.EventDTO;
+import DTO.LocationDTO;
 import DTO.UserDTO;
+import java.awt.Event;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "MainController", urlPatterns = {"/MainController"})
-public class MainController extends HttpServlet {
+@WebServlet(name = "CreateEventController", urlPatterns = {"/CreateEventController"})
+public class CreateEventController extends HttpServlet {
 
     private final String ERROR = "error.jsp";
-    private final String USER = "";
-    private final String LOGOUT = "LogoutController";
-    private final String ROLES_UPDATE_SELF = "UpdateSelfController";
-    private final String ADMIN_SEARCH_USER = "ViewUserController";
-    private final String ADMIN_CHANGE_STATUS = "ChangeStatusController";
-    private final String ADMIN_UPDATE_USER = "UpdateUserController";
-    private final String USER_SEARCH_EVENT = "ViewEventController";
-    private final String EM_CREATE_EVENT = "CreateEventController";
-
+    private final String SUCCESS = "createEvent.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
         String url = ERROR;
         HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
         try {
-            if (action.equals("LoadUsers")) {
-                if (user.getRole().equals("Admin")) {
-                    session.setAttribute("MODE", "ADMIN_MODE");
-                }
-                url = ADMIN_SEARCH_USER;
-            } else if (action.equals("LoadEvents")) {
-                if (user.getRole().equals("Admin")) {
-                    session.setAttribute("MODE", "USER_MODE");
-                }
-                url = USER_SEARCH_EVENT;
-            } else if (action.equals("Logout")) {
-                url = LOGOUT;
-            } else if (action.equals("UpdateUserName")) {
-                url = ROLES_UPDATE_SELF;
-            } else if (action.equals("Confirm Update")) {
-                url = ADMIN_UPDATE_USER;
-            } else if (action.equals("ChangeStatus")) {
-                url = ADMIN_CHANGE_STATUS;
-            } else if (action.equals("CreateEvent")) {
-                url = EM_CREATE_EVENT;
+            String title = request.getParameter("title");
+            String description = request.getParameter("description");
+            String locationId = request.getParameter("locationId");
+            String startDatetime = request.getParameter("startDatetime");
+            Date startDate = Date.valueOf(startDatetime);
+            String endDatetime = request.getParameter("endDatetime");
+            Date endDate = Date.valueOf(endDatetime);
+            String picture = request.getParameter("picture");
+            
+            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+            LocationDAO ldao = new LocationDAO();
+            LocationDTO location = ldao.getLocationById(locationId);
+            Date createDate = Date.valueOf(LocalDateTime.now().toLocalDate());
+            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, endDate, "", picture);
+            EventDAO edao = new EventDAO();
+            if (edao.createEvent(newEvent)) {
+                url=SUCCESS;
             }
         } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
-            log("Error at MainController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
-        request.getRequestDispatcher(url).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
