@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ViewUserController extends HttpServlet {
     private final String SUCCESS = "userManagement.jsp";
     private final String FAIL = "userManagement.jsp";
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");

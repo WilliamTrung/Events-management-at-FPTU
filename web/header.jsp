@@ -35,6 +35,7 @@
                 </c:if>  
                 <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
                     <a href="${view_event}">Switch to User mode</a>
+                    <a href="${view_user}">User Management</a>
                 </c:if>
                 <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
                 <a href="${logoutLink}">Logout</a>  

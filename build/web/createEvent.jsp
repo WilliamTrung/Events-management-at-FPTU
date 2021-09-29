@@ -18,7 +18,7 @@
             LocationId: <input type="text" name="locationId" required="" /></br>
             StartDatetime: <input type="date" name="startDatetime" required="" /></br>
             EndDatetime: <input type="date" name="endDatetime" required="" /></br>
-            Picture: <input type="text" name="picture" required="" /></br>
+            Picture: <%@include file="File Uploading Form.html" %>
             <input type="submit" name="action" value="CreateEvent"/>
             <input type="reset" value="Reset"/>
         </form>
