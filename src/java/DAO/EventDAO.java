@@ -41,8 +41,7 @@ public class EventDAO {
                 int eventId = rs.getInt("eventId");
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
-                String description = rs.getString("description");
-                
+                String description = rs.getString("description"); 
                 String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDatetime = rs.getDate("startDatetime");
@@ -67,7 +66,7 @@ public class EventDAO {
         boolean flag = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "INSERT INTO tblEvents (eventId, userId, title, description, location, createDatetime, startDatetime, endDatetime, statusId) "
+            String sql = "INSERT INTO tblEvents (eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture) "
                     + "VALUES (?,?,?,?,?,?,?,?)";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
@@ -78,6 +77,7 @@ public class EventDAO {
             Date createDatetime = newEvent.getCreateDatetime();
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
+            String picture = newEvent.getPicture();
             stm.setInt(1, eventId);
             stm.setString(2, userId);
             stm.setString(3, title);
@@ -87,6 +87,7 @@ public class EventDAO {
             stm.setDate(7, startDatetime);
             stm.setDate(8, endDatetime);
             stm.setString(9, "Pending");
+            stm.setString(10, picture);
             flag = stm.executeUpdate(sql) > 0;
         } catch (Exception e) {
             log("Error at EventDAO - createEvent: " + e.toString());
@@ -102,7 +103,7 @@ public class EventDAO {
         boolean check = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "UPDATE tblEvents SET title=?, description=?, location=?, createDatetime=?, startDatetime=?, endDatetime=?,statusId=?"
+            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, createDatetime=?, startDatetime=?, endDatetime=?, statusId=?, picture=?"
                     + "WHERE eventId=? AND userId=?";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
@@ -114,6 +115,7 @@ public class EventDAO {
             Date startDatetime = newEvent.getStartDatetime();
             Date endDatetime = newEvent.getEndDatetime();
             String statusId = newEvent.getStatusId();
+            String picture = newEvent.getPicture();
             stm.setString(1, title);
             stm.setString(2, description);
             stm.setString(3, locationId);
@@ -121,8 +123,9 @@ public class EventDAO {
             stm.setDate(5, startDatetime);
             stm.setDate(6, endDatetime);
             stm.setString(7, statusId);
-            stm.setInt(8, eventId);
-            stm.setString(9, userId);
+            stm.setString(8, picture);
+            stm.setInt(9, eventId);
+            stm.setString(10, userId);
             check = stm.executeUpdate(sql) > 0;
         } catch (Exception e) {
             log("Error at EventDAO - updateEvent: " + e.toString());

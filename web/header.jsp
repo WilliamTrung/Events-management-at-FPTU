@@ -26,7 +26,7 @@
         </c:url>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <div>
-                <c:if test="${empty sessionScope.MODE}">
+                <c:if test="${sessionScope.MODE ne 'ADMIN_MODE'}">
                     <a href="mainPage.jsp"></i>Main Page</a>
                     <a href="${view_event}">Events</a>   
                 </c:if>
@@ -36,7 +36,7 @@
                 <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
                     <a href="${view_event}">Switch to User mode</a>
                 </c:if>
-                    <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
+                <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
                 <a href="${logoutLink}">Logout</a>  
 
             </div> 
