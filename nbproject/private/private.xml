@@ -5,14 +5,23 @@
         <group>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/userManagement.jsp</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewSelf.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/EventDAO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/LoginGoogleServlet.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/META-INF/context.xml</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/header.jsp</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/UpdateSelfController.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/MainController.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/File%20Uploading%20Form.html</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/UpdateUserController.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/LocationDAO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/mainPage.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/EventDAO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/LoginGoogleServlet.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/EventDTO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/error.jsp</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewUserController.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/UploadFile.jsp</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/UserDAO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewEvent.jsp</file>
         </group>
     </open-files>
 </project-private>

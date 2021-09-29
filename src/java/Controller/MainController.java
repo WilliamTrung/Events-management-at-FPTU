@@ -31,6 +31,7 @@ public class MainController extends HttpServlet {
     private final String ADMIN_CHANGE_STATUS = "ChangeStatusController";
     private final String ADMIN_UPDATE_USER = "UpdateUserController";
     private final String USER_SEARCH_EVENT = "ViewEventController";
+    private final String FILE_UPLOAD = "UploadController";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

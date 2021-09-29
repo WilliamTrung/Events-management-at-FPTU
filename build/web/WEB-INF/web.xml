@@ -23,4 +23,11 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    <context-param> 
+        <description>Location to store uploaded file</description> 
+        <param-name>file-upload</param-name> 
+        <param-value>
+            d:\SWP_Project\webapps\data\
+        </param-value> 
+    </context-param>
 </web-app>
