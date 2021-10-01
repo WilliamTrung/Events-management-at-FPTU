@@ -9,6 +9,8 @@ package DTO;
  *
  * @author WilliamTrung
  */
+
+// COMMENT 01/10/2021
 public class UserDTO {
     private String id;
     private String email;

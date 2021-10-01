@@ -56,6 +56,7 @@ public class CreateEventController extends HttpServlet {
                 url=SUCCESS;
             }
         } catch (Exception e) {
+            log("Error at CreateEventController: "+e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
