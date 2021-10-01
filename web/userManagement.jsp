@@ -43,7 +43,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>ID</th>
+                        <th>Email</th>
                         <th>Username</th>
                         <th>Role</th>
                         <th>Update</th>
@@ -55,7 +55,7 @@
                         <tr>
                             <td>${counter.count}</td>
                     <form action="MainController">
-                        <td><input type="text" name="userId" value="${dto.userId}" readonly=""/></td>
+                        <td><input type="text" name="email" value="${dto.email}" readonly=""/></td>
                         <td>
                             <input type="text" name="userName" value="${dto.username}" readonly=""/>
                         </td>
@@ -72,6 +72,7 @@
                             </select>
                         </td>
                         <td>
+                            <input type="hidden" name="userId" value="${dto.userId}"/>
                             <input type="hidden" name="oldRole" value="${dto.role}"/>
                             <input type="hidden" name="search" value="${param.search}"/>
                             <input type="submit" name="action" value="Confirm Update"/>

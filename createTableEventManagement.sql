@@ -113,6 +113,7 @@ INSERT INTO tblStatusUser(statusId, statusName) VALUES ('D','Deactive')
 INSERT INTO tblLocations(seat, locationName) VALUES(50,'LocationName')
 --insert users
 INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'102340646113497938153', N'anhtnse151264@fpt.edu.vn', N'anhtnse151264', N'A', N'US')
+INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'100244481500661777938', N'trungntse151134@fpt.edu.vn', N'trungntse151134', N'A', N'US')
 --insert status event
 INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'AP', N'Approve')
 --insert events

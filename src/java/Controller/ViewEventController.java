@@ -20,17 +20,10 @@ import javax.servlet.http.HttpSession;
  * @author Admin
  */
 public class ViewEventController extends HttpServlet {
-private final String ERROR = "viewEvent.jsp";
-private final String SUCCESS="viewEvent.jsp";
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
+    private final String ERROR = "viewEvent.jsp";
+    private final String SUCCESS = "viewEvent.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,18 +33,17 @@ private final String SUCCESS="viewEvent.jsp";
             EventDAO dao = new EventDAO();
             String search = request.getParameter("search");
             List<EventDTO> list = dao.getListEvent(search);
-            session.setAttribute("EVENT_MESSAGE", "There are "+list.size()+" events");
-            if (list!=null && !list.isEmpty()) {
+            session.setAttribute("EVENT_MESSAGE", "There are " + list.size() + " events");
+            if (list != null && !list.isEmpty()) {
                 session.setAttribute("LIST_EVENT", list);
                 url = SUCCESS;
-            }
-            else{
+            } else {
                 session.setAttribute("EVENT_MESSAGE", "No event");
             }
         } catch (Exception e) {
-            log("Error at ViewEventController: "+e.toString());
+            log("Error at ViewEventController: " + e.toString());
             session.setAttribute("ERROR_MESSAGE", "ERROR at ViewEventController!");
-        }finally{
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

@@ -27,7 +27,7 @@
         <description>Location to store uploaded file</description> 
         <param-name>file-upload</param-name> 
         <param-value>
-            d:\SWP_Project\webapps\data\
+            /WEB-INF/saveFiles/
         </param-value> 
     </context-param>
 </web-app>

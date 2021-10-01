@@ -21,8 +21,6 @@
         %>
         Picture: <img src="${sessionScope.CURRENT_USER.picture}">
         </br>
-        UserId: ${sessionScope.CURRENT_USER.userId}
-        </br>
         Email: ${sessionScope.CURRENT_USER.email}
         </br>        
         <label>

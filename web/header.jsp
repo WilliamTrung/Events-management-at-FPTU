@@ -24,6 +24,9 @@
         <c:url var="logoutLink" value="MainController">
             <c:param name="action" value="Logout"/>
         </c:url>
+        <c:url var="create_event" value="MainController">
+            <c:param name="action" value="CreateEvent"/>
+        </c:url>
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <div>
                 <c:if test="${sessionScope.MODE ne 'ADMIN_MODE'}">
@@ -36,6 +39,9 @@
                 <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
                     <a href="${view_event}">Switch to User mode</a>
                     <a href="${view_user}">User Management</a>
+                </c:if>
+                <c:if test="${sessionScope.CURRENT_USER.role eq 'Event Manager'}">
+                    <a href="${create_event}">Create Event</a>
                 </c:if>
                 <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
                 <a href="${logoutLink}">Logout</a>  
