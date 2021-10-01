@@ -5,8 +5,6 @@
  */
 package Controller;
 
-
-
 import java.io.*;
 import java.util.*;
 import javax.servlet.*;
@@ -16,6 +14,7 @@ import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+
 /**
  *
  * @author WilliamTrung
@@ -37,14 +36,16 @@ public class UploadController extends HttpServlet {
         String filePath = context.getInitParameter("file-upload");
         // Verify the content type
         String contentType = request.getContentType();
+        File storageDirectory = new File(request.getContextPath() +  "/WEB-INF/saveFiles");
+        String path =storageDirectory.getAbsolutePath();
 
-        if ((contentType.indexOf("multipart/form-data") >= 0)) {
+        if ((contentType.contains("multipart/form-data"))) {
             DiskFileItemFactory factory = new DiskFileItemFactory();
             // maximum size that will be stored in memory
             factory.setSizeThreshold(maxMemSize);
 
             // Location to save data that is larger than maxMemSize.
-            factory.setRepository(new File("d:\\SWP_Project\\temp"));
+            factory.setRepository(new File("/WEB-INF/saveFiles/"));
 
             // Create a new file upload handler
             ServletFileUpload upload = new ServletFileUpload((FileItemFactory) factory);
@@ -58,7 +59,6 @@ public class UploadController extends HttpServlet {
 
                 // Process the uploaded file items
                 Iterator i = fileItems.iterator();
-
                 while (i.hasNext()) {
                     FileItem fi = (FileItem) i.next();
                     if (!fi.isFormField()) {
@@ -70,18 +70,19 @@ public class UploadController extends HttpServlet {
 
                         // Write the file
                         if (fileName.lastIndexOf("\\") >= 0) {
-                            file = new File(filePath
+                            file = new File(path +"\\"
                                     + fileName.substring(fileName.lastIndexOf("\\")));
                         } else {
-                            file = new File(filePath
+                            file = new File(path +"\\"
                                     + fileName.substring(fileName.lastIndexOf("\\") + 1));
                         }
-                        fi.write(file);                       
+                        fi.write(file);
                     }
                 }
 
             } catch (Exception e) {
-                log("Error at UploadController: "+e.toString());
+                log("Error at UploadController: " + e.toString());
+                request.setAttribute("ERROR_MESSAGE", "Failed");
             }
         } else {
             //out no file upload
