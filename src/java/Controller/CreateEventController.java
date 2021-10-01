@@ -7,11 +7,9 @@ package Controller;
 
 import DAO.EventDAO;
 import DAO.LocationDAO;
-import DAO.UserDAO;
 import DTO.EventDTO;
 import DTO.LocationDTO;
 import DTO.UserDTO;
-import java.awt.Event;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDateTime;

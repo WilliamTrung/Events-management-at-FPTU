@@ -1,4 +1,4 @@
---DROP TABLE
+﻿--DROP TABLE
 DROP TABLE tblHistoryLogs;
 DROP TABLE tblFriendInvitation;
 
@@ -116,6 +116,11 @@ INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VA
 INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'100244481500661777938', N'trungntse151134@fpt.edu.vn', N'trungntse151134', N'A', N'US')
 --insert status event
 INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'AP', N'Approve')
+--insert locations
+INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 1',50)
+INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 2',50)
+INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 3',50)
 --insert events
 INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test', N'test', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
 INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test1', N'test1', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
+--insert locations
