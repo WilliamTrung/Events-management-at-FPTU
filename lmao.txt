@@ -1,3 +1,7 @@
 lmao Trung "v
+<<<<<<< Updated upstream
 
 lmao Nam Anh -------- edited by Trung
+=======
+:VVVVVV
+>>>>>>> Stashed changes
