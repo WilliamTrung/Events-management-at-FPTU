@@ -4,9 +4,17 @@
         <servlet-name>LoginGoogleServlet</servlet-name>
         <servlet-class>Controller.LoginGoogleServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewEventController</servlet-name>
+        <servlet-class>Controller.ViewEventController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEventController</servlet-name>
+        <url-pattern>/ViewEventController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
@@ -23,11 +31,11 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-    <context-param> 
-        <description>Location to store uploaded file</description> 
-        <param-name>file-upload</param-name> 
+    <context-param>
+        <description>Location to store uploaded file</description>
+        <param-name>file-upload</param-name>
         <param-value>
             /WEB-INF/saveFiles/
-        </param-value> 
+        </param-value>
     </context-param>
 </web-app>

@@ -30,12 +30,15 @@ public class ViewEventController extends HttpServlet {
         String url = ERROR;
         HttpSession session = request.getSession();
         try {
-            EventDAO dao = new EventDAO();
             String search = request.getParameter("search");
-            List<EventDTO> list = dao.getListEvent(search);
-            session.setAttribute("EVENT_MESSAGE", "There are " + list.size() + " events");
+            int index = Integer.parseInt(request.getParameter("index"));
+            int pageSize = 3;
+            EventDAO dao = new EventDAO();
+            List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
             if (list != null && !list.isEmpty()) {
                 session.setAttribute("LIST_EVENT", list);
+                session.setAttribute("EVENT_MESSAGE", "Page"+index);
+                session.setAttribute("Search", search);
                 url = SUCCESS;
             } else {
                 session.setAttribute("EVENT_MESSAGE", "No event");

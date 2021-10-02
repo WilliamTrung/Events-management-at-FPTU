@@ -29,14 +29,19 @@
             <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">
                 <h2>${counter.count}</h2>
                 <p>${event.getEventId()}</p>
-                <p>${event.getUserId()}</p>
+                <p>${event.getUser().getUserId()}</p>
                 <p>${event.getTitle()}</p>
                 <p>${event.getDescription()}</p>
-                <p>${event.getLocation()}</p>
+                <p>${event.getLocation().getLocationId()}</p>
                 <p>${event.getCreateDatetime()}</p>
                 <p>${event.getStartDatetime()}</p>
                 <p>${event.getEndDatetime()}</p>
             </c:forEach>
         </c:if>
+                <div class="switchpage">
+                    <c:forEach begin="1" end="${sessionScope.endPage}" var="i">
+                        <a href="ViewEventController?index=${i}&search=${Search}">${i}</a>
+                    </c:forEach>
+                </div>
     </body>
 </html>

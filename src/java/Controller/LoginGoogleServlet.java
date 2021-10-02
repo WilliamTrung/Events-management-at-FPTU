@@ -6,7 +6,6 @@ import DTO.EventDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +33,7 @@ public class LoginGoogleServlet extends HttpServlet {
         String code;
         String url = FAIL;
         try {
+            int pageSize=3;
             code = request.getParameter("code");
             if (code == null || code.isEmpty()) {
                 url = FAIL;
@@ -50,7 +50,7 @@ public class LoginGoogleServlet extends HttpServlet {
                             HttpSession session = request.getSession();
                             EventDAO eDao = new EventDAO();
                             
-                            List<EventDTO> list_event = eDao.getListEvent("");
+                            List<EventDTO> list_event = eDao.getListEventByPage("", 1, pageSize);
                             //check if login user is an admin
                             String test = user.getRole();
                             if (user.getRole().equals("Admin")) {
@@ -58,6 +58,9 @@ public class LoginGoogleServlet extends HttpServlet {
                             }
                             session.setAttribute("CURRENT_USER", user);
                             session.setAttribute("LIST_EVENT", list_event);
+                            int countList = eDao.countListEvent();
+                            int endPage = (int) Math.ceil( ((double) countList/pageSize));
+                            session.setAttribute("endPage", endPage);
                             url = SUCCESS;
                         } else {
                             request.setAttribute("LOGIN_ERROR", "Cannot retrieve user's information!");

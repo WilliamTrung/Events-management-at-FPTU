@@ -17,12 +17,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Admin
  */
-
 public class EventDAO {
 
     public List<EventDTO> getListEvent(String search) throws SQLException {
@@ -41,14 +42,14 @@ public class EventDAO {
                 int eventId = rs.getInt("eventId");
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
-                String description = rs.getString("description"); 
+                String description = rs.getString("description");
                 String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDatetime = rs.getDate("startDatetime");
                 Date endDatetime = rs.getDate("endDatetime");
                 String picture = rs.getString("picture");
                 String statusId = rs.getString("statusId");
-                
+
                 UserDTO user = new UserDAO().getUserById(userId);
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDatetime, endDatetime, statusId, picture));
@@ -60,6 +61,53 @@ public class EventDAO {
         }
         return list;
     }
+
+    public List<EventDTO> getListEventByPage(String search, int index, int pageSize) throws SQLException {
+        List<EventDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDatetime) ) AS RowNum,\n"
+                    + "					eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture \n"
+                    + "				FROM tblEvents \n"
+                    + "				WHERE title like ?)\n"
+                    + "SELECT eventId, userId, title, description, locationId, createDatetime, startDatetime, endDatetime, statusId, picture\n"
+                    + "FROM tblEventPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*?";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, "%" + search + "%");
+            //index*pageSize - (pageSize-1) AND index*pageSize
+            stm.setInt(2, index);
+            stm.setInt(3, pageSize);
+            stm.setInt(4, pageSize);
+            stm.setInt(5, index);
+            stm.setInt(6, pageSize);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int eventId = rs.getInt("eventId");
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String locationId = rs.getString("locationId");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDatetime = rs.getDate("startDatetime");
+                Date endDatetime = rs.getDate("endDatetime");
+                String picture = rs.getString("picture");
+                String statusId = rs.getString("statusId");
+
+                UserDTO user = new UserDAO().getUserById(userId);
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDatetime, endDatetime, statusId, picture));
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getListEvent: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return list;
+    }
+
     public boolean createEvent(EventDTO newEvent) {
         Connection conn = null;
         PreparedStatement stm = null;
@@ -132,7 +180,7 @@ public class EventDAO {
         }
         return check;
     }
-    
+
     public boolean deleteEvent(int eventID) throws SQLException {
         boolean result = false;
         Connection conn = null;
@@ -153,4 +201,25 @@ public class EventDAO {
         }
         return result;
     }
+    public int countListEvent(){
+        int rs=0;
+        EventDAO dao = new EventDAO();
+        try {
+            List<EventDTO> list = dao.getListEvent("");
+            if (!list.isEmpty()) {
+                rs=list.size();
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return rs;
+    }
+    
+//    public static void main(String[] args) throws SQLException {
+//        EventDAO dao = new EventDAO();
+//        List<EventDTO> list = dao.getListEventByPage("", 1, 3);
+//        for (EventDTO o : list) {
+//            System.out.println(o.toString());
+//        }
+//    }
 }

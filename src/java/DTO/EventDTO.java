@@ -21,6 +21,11 @@ public class EventDTO {
     private LocationDTO location;
     private Date createDatetime;
     private Date startDatetime;
+
+    @Override
+    public String toString() {
+        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", startDatetime=" + startDatetime + ", endDatetime=" + endDatetime + ", status=" + status + ", picture=" + picture + '}';
+    }
     private Date endDatetime;
     private String status;
     private String picture;
