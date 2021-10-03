@@ -4,6 +4,10 @@
     Author     : WilliamTrung
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page import="DTO.LocationDTO"%>
+<%@page import="DAO.LocationDAO"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,10 +16,24 @@
         <title>Create Event</title>
     </head>
     <body>
+        <%
+            List<LocationDTO> locationList = new LocationDAO().getListLocations("");
+            int size = locationList.size();
+            boolean check = true;
+            request.setAttribute("LIST_LOCATION", locationList);
+        %>
         <form action="MainController" method="POST">
             Title: <input type="text" name="title" required="" /></br>
             Description: <input type="text" name="description" required="" /></br>
-            LocationId: <input type="text" name="locationId" required="" /></br>
+            
+            Location:
+            <select name="locationId">
+                <c:forEach var="location" items="${requestScope.LIST_LOCATION}">
+                    <option value="${location.locationId}">
+                        ${location.locationName}
+                    </option>
+                </c:forEach>
+            </select>
             StartDatetime: <input type="date" name="startDatetime" required="" /></br>
             EndDatetime: <input type="date" name="endDatetime" required="" /></br>
             Picture: <%@include file="File Uploading Form.html" %>

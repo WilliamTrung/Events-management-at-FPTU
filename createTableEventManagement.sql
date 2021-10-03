@@ -8,6 +8,7 @@ DROP TABLE tblStatusUser;
 DROP TABLE tblRoles;
 DROP TABLE tblEvents;
 DROP TABLE tblStatusEvent;
+DROP TABLE tblSlots;
 DROP TABLE tblStatusFI;
 DROP TABLE tblStatusI;
 
@@ -37,13 +38,13 @@ CREATE TABLE tblEvents(
 	eventId INT IDENTITY(0,1) PRIMARY KEY,
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
 	title NVARCHAR(50) NOT NULL,
-	description NVARCHAR(130) NOT NULL,
+	description NVARCHAR(200) NOT NULL,
 	locationId INT REFERENCES tblLocations NOT NULL,
 	createDatetime DATETIME NOT NULL,
-	startDatetime DATETIME NOT NULL,
-	endDatetime DATETIME NOT NULL,
+	startDate DATE NOT NULL,
+	slotId NVARCHAR(1) REFERENCES tblSlots,
 	statusId NVARCHAR(5) REFERENCES tblStatusEvent,
-	picture NVARCHAR(100) NOT NULL
+	UNIQUE (startDate, slotId)
 );
 
 CREATE TABLE tblParticipants(
@@ -57,6 +58,11 @@ CREATE TABLE tblLocations(
 	locationId NVARCHAR(5) PRIMARY KEY,
 	seat INT NOT NULL,--maximum seats can be took
 	locationName NVARCHAR(100) NOT NULL,
+)
+CREATE TABLE tblSlots(
+	slotId NVARCHAR(1) PRIMARY KEY,
+	startTime TIME NOT NULL,
+	endTime TIME NOT NULL
 )
 --demo untested
 CREATE TABLE tblContents(
@@ -121,6 +127,17 @@ INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tần
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 2',50)
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 3',50)
 --insert events
-INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test', N'test', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
-INSERT [dbo].[tblEvents] ( [userId], [title], [description], [location], [seat], [createDatetime], [startDatetime], [endDatetime], [statusId]) VALUES ( N'102340646113497938153', N'test1', N'test1', N'FPT', 1, CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), CAST(N'2021-09-21T00:00:00.000' AS DateTime), N'AP')
---insert locations
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event1', N'event1', N'A', CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10T00:00:00.000' AS DateTime), N'AP', N'a')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event2', N'event2', N'B', CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10T00:00:00.000' AS DateTime), N'AP', N'a')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event3', N'event3', N'A', CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), N'AP', N'b')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event4', N'event4', N'A', CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), N'AP', N'b')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event5', N'event5', N'A', CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), N'AP', N'b')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event6', N'event6', N'A', CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), N'AP', N'b')
+INSERT [dbo].[tblEvents] ([userId], [title], [description], [locationId], [createDatetime], [startDatetime], [endDatetime], [statusId], [picture]) VALUES (N'100244481500661777938', N'event7', N'event7', N'A', CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), CAST(N'2021-03-10T00:00:00.000' AS DateTime), N'AP', N'b')
+--insert slot-time
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('1', '07:00', '08:30')
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('2', '08:45', '10:15')
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('3', '10:30', '12:00')
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('4', '12:30', '14:00')
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('5', '14:15', '15:45')
+INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('6', '16:00', '05:30')

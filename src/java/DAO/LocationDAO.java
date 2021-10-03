@@ -29,7 +29,7 @@ public class LocationDAO {
             if(conn!=null){
                 String sql = "SELECT locationId, locationName, seat "
                         + "FROM tblLocations "
-                        + "WHERE locationName = ?";
+                        + "WHERE locationName like ?";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, "%"+search+"%");
                 rs = stm.executeQuery();

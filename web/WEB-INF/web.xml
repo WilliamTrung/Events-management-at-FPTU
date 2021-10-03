@@ -23,11 +23,4 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-    <context-param> 
-        <description>Location to store uploaded file</description> 
-        <param-name>file-upload</param-name> 
-        <param-value>
-            /WEB-INF/saveFiles/
-        </param-value> 
-    </context-param>
 </web-app>

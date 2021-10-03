@@ -5,7 +5,11 @@
  */
 package Controller;
 
+import DAO.EventDAO;
+import Extension.AppDirectory;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -32,60 +36,58 @@ public class UploadController extends HttpServlet {
         File file;
         int maxFileSize = 5000 * 1024;
         int maxMemSize = 5000 * 1024;
-        ServletContext context = request.getServletContext();
-        String filePath = context.getInitParameter("file-upload");
+        int id = new EventDAO().getLastId();
         // Verify the content type
         String contentType = request.getContentType();
-        File storageDirectory = new File(request.getContextPath() +  "/WEB-INF/saveFiles");
-        String path =storageDirectory.getAbsolutePath();
+        boolean checkDir = AppDirectory.DataDirChecking();
+        if (checkDir == true) {
+            //create dir based on eventId
+            String path = AppDirectory.getDataDir();
+            if ((contentType.contains("multipart/form-data"))) {
+                DiskFileItemFactory factory = new DiskFileItemFactory();
+                // maximum size that will be stored in memory
+                factory.setSizeThreshold(maxMemSize);
 
-        if ((contentType.contains("multipart/form-data"))) {
-            DiskFileItemFactory factory = new DiskFileItemFactory();
-            // maximum size that will be stored in memory
-            factory.setSizeThreshold(maxMemSize);
+                // Location to save data that is larger than maxMemSize.
+                factory.setRepository(new File(AppDirectory.getTempDir()));
 
-            // Location to save data that is larger than maxMemSize.
-            factory.setRepository(new File("/WEB-INF/saveFiles/"));
+                // Create a new file upload handler
+                ServletFileUpload upload = new ServletFileUpload((FileItemFactory) factory);
 
-            // Create a new file upload handler
-            ServletFileUpload upload = new ServletFileUpload((FileItemFactory) factory);
+                // maximum file size to be uploaded.
+                upload.setSizeMax(maxFileSize);
 
-            // maximum file size to be uploaded.
-            upload.setSizeMax(maxFileSize);
+                try {
+                    // Parse the request to get file items.
+                    List fileItems = upload.parseRequest(request);
 
-            try {
-                // Parse the request to get file items.
-                List fileItems = upload.parseRequest(request);
+                    // Process the uploaded file items
+                    Iterator i = fileItems.iterator();
+                    while (i.hasNext()) {
+                        FileItem fi = (FileItem) i.next();
+                        if (!fi.isFormField()) {
+                            // Get the uploaded file parameters
+                            String fieldName = fi.getFieldName();
+                            String fileName = fi.getName();
+                            boolean isInMemory = fi.isInMemory();
+                            long sizeInBytes = fi.getSize();
 
-                // Process the uploaded file items
-                Iterator i = fileItems.iterator();
-                while (i.hasNext()) {
-                    FileItem fi = (FileItem) i.next();
-                    if (!fi.isFormField()) {
-                        // Get the uploaded file parameters
-                        String fieldName = fi.getFieldName();
-                        String fileName = fi.getName();
-                        boolean isInMemory = fi.isInMemory();
-                        long sizeInBytes = fi.getSize();
-
-                        // Write the file
-                        if (fileName.lastIndexOf("\\") >= 0) {
-                            file = new File(path +"\\"
-                                    + fileName.substring(fileName.lastIndexOf("\\")));
-                        } else {
-                            file = new File(path +"\\"
-                                    + fileName.substring(fileName.lastIndexOf("\\") + 1));
+                            //init the file name
+                            fileName = id + fileName.substring(fileName.indexOf("."));
+                            // Write the file
+                            file = new File(path + "\\" + fileName);
+                            fi.write(file);
                         }
-                        fi.write(file);
                     }
-                }
 
-            } catch (Exception e) {
-                log("Error at UploadController: " + e.toString());
-                request.setAttribute("ERROR_MESSAGE", "Failed");
+                } catch (Exception e) {
+                    log("Error at UploadController: " + e.toString());
+                    request.setAttribute("ERROR_MESSAGE", "Failed");
+                }
             }
         } else {
             //out no file upload
+            request.setAttribute("ERROR_MESSAGE", "Cannot upload to server! - Contact the administrator/IT support for help");
         }
         request.getRequestDispatcher(url).forward(request, response);
     }
