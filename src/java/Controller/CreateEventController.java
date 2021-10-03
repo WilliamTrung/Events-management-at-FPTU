@@ -7,8 +7,10 @@ package Controller;
 
 import DAO.EventDAO;
 import DAO.LocationDAO;
+import DAO.SlotDAO;
 import DTO.EventDTO;
 import DTO.LocationDTO;
+import DTO.SlotDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.sql.Date;
@@ -38,17 +40,14 @@ public class CreateEventController extends HttpServlet {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String locationId = request.getParameter("locationId");
-            String startDatetime = request.getParameter("startDatetime");
-            Date startDate = Date.valueOf(startDatetime);
-            String endDatetime = request.getParameter("endDatetime");
-            Date endDate = Date.valueOf(endDatetime);
-            String picture = request.getParameter("picture");
+            String slotId = request.getParameter("slotId");
             
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
             LocationDAO ldao = new LocationDAO();
             LocationDTO location = ldao.getLocationById(locationId);
             Date createDate = Date.valueOf(LocalDateTime.now().toLocalDate());
-            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, endDate, "", picture);
+            SlotDTO slot = new SlotDAO().getSlotById(slotId);
+            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, slot, "Pending");
             EventDAO edao = new EventDAO();
             if (edao.createEvent(newEvent)) {
                 url=SUCCESS;
