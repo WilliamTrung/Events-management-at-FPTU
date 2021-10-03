@@ -4,6 +4,8 @@
     Author     : WilliamTrung
 --%>
 
+<%@page import="DAO.SlotDAO"%>
+<%@page import="DTO.SlotDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="DTO.LocationDTO"%>
 <%@page import="DAO.LocationDAO"%>
@@ -18,9 +20,10 @@
     <body>
         <%
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
-            int size = locationList.size();
-            boolean check = true;
             request.setAttribute("LIST_LOCATION", locationList);
+            
+            List<SlotDTO> slotList = new SlotDAO().getListSlots();
+            request.setAttribute("LIST_SLOT", slotList);
         %>
         <form action="MainController" method="POST">
             Title: <input type="text" name="title" required="" /></br>

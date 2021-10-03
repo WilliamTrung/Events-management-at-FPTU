@@ -225,7 +225,6 @@ public int getLastId(){
         }
         return rs;
     }
-    
 //    public static void main(String[] args) throws SQLException {
 //        EventDAO dao = new EventDAO();
 //        List<EventDTO> list = dao.getListEventByPage("", 1, 3);
