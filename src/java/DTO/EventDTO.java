@@ -20,85 +20,111 @@ public class EventDTO {
     private String description;
     private LocationDTO location;
     private Date createDatetime;
-    private SlotDTO slot;
-    private String status;
+    private Date startDatetime;
 
-    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, SlotDTO slot, String status) {
+    @Override
+    public String toString() {
+        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", startDatetime=" + startDatetime + ", endDatetime=" + endDatetime + ", status=" + status + ", picture=" + picture + '}';
+    }
+    private Date endDatetime;
+    private String status;
+    private String picture;
+
+    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, Date endDatetime, String status, String picture) {
         this.eventId = eventId;
         this.user = user;
         this.title = title;
         this.description = description;
         this.location = location;
         this.createDatetime = createDatetime;
-        this.slot = slot;
+        this.startDatetime = startDatetime;
+        this.endDatetime = endDatetime;
         this.status = status;
+        this.picture = picture;
     }
 
+    
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+    
+    
     public int getEventId() {
         return eventId;
-    }
-
-    public UserDTO getUser() {
-        return user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public LocationDTO getLocation() {
-        return location;
-    }
-
-    public Date getCreateDatetime() {
-        return createDatetime;
-    }
-
-    public SlotDTO getSlot() {
-        return slot;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
 
+    public UserDTO getUser() {
+        return user;
+    }
+
     public void setUser(UserDTO user) {
         this.user = user;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocationDTO getLocation() {
+        return location;
     }
 
     public void setLocation(LocationDTO location) {
         this.location = location;
     }
 
+    public Date getCreateDatetime() {
+        return createDatetime;
+    }
+
     public void setCreateDatetime(Date createDatetime) {
         this.createDatetime = createDatetime;
     }
 
-    public void setSlot(SlotDTO slot) {
-        this.slot = slot;
+    public Date getStartDatetime() {
+        return startDatetime;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStartDatetime(Date startDatetime) {
+        this.startDatetime = startDatetime;
     }
 
-    
+    public Date getEndDatetime() {
+        return endDatetime;
+    }
 
+    public void setEndDatetime(Date endDatetime) {
+        this.endDatetime = endDatetime;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String statusId) {
+        this.status = statusId;
+    }
+ 
     
 }
