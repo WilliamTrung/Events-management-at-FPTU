@@ -17,16 +17,25 @@ import java.util.List;
  * @author WilliamTrung
  */
 public class Calendar {
-    public static List<String> getWeek(long week) {
-        List<String> listDays = new ArrayList<>();
-        List<LocalDate>list = new Calendar().getDaysOfWeek(week);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM");
-        list.stream().map((localDate) -> localDate.format(formatter)).forEachOrdered((day) -> {
-            listDays.add(day);
+    private List<String> splitDay(List<String> list){
+        String replace = "</br>";
+        List<String> days = new ArrayList<>();
+        list.stream().map((day) -> day.replaceFirst(" ", replace)).forEachOrdered((day) -> {
+            days.add(day);
         });
+        return days;
+    }
+    public  List<String> getWeek(long week) {
+        List<String> listDays = new ArrayList<>();
+        List<LocalDate>list = getDaysOfWeek(week);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE dd MMMM");
+        for (LocalDate localDate : list) {
+            String day = localDate.format(formatter);
+            listDays.add(day);
+        }
+        listDays = splitDay(listDays);
         return listDays;
     }
-
     private List<LocalDate> getDaysOfWeek(long week) {
         List<LocalDate> list;
         list = new ArrayList<>();

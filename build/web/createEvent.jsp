@@ -37,8 +37,8 @@
                     </option>
                 </c:forEach>
             </select>
-            StartDatetime: <input type="date" name="startDatetime" required="" /></br>
-            EndDatetime: <input type="date" name="endDatetime" required="" /></br>
+            Slot: 
+            
             Picture: <%@include file="File Uploading Form.html" %>
             <input type="submit" name="action" value="CreateEvent"/>
             <input type="reset" value="Reset"/>
