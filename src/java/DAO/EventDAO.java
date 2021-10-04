@@ -53,7 +53,7 @@ public int getLastId(){
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, slotId, s.statusName "
+            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, slotId, s.statusName "
                     + "FROM tblEvents e, tblStatusEvent s "
                     + "WHERE title like ? AND s.statusId = e.statusId";
             stm = conn.prepareStatement(sql);
@@ -67,6 +67,7 @@ public int getLastId(){
                 String description = rs.getString("description"); 
                 String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
+                Date startDate = rs.getDate("startDate");
                 String startSlotId = rs.getString("startSlot");
                 String endSlotId = rs.getString("endSlot");
                 String status = rs.getString("statusName");
@@ -75,7 +76,7 @@ public int getLastId(){
                 SlotDTO startSlot = sDao.getSlotById(startSlotId);
                 SlotDTO endSlot = sDao.getSlotById(endSlotId);
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
-                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startSlot, endSlot, status));
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
             }
         } catch (Exception e) {
             log("Error at EventDAO - getListEvent: " + e.toString());
@@ -93,10 +94,10 @@ public int getLastId(){
         try {
             conn = DBConnection.getConnection();
             String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDatetime) ) AS RowNum,\n"
-                    + "					eventId, userId, title, description, locationId, createDatetime, startSlot, endSlot, s.statusName AS status \n"
+                    + "					eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName AS status \n"
                     + "				FROM tblEvents e, tblStatusEvent s \n"
                     + "				WHERE title like ? AND e.statusId = s.statusId)\n"
-                    + "SELECT eventId, userId, title, description, locationId, createDatetime, startSlot, endSlot, status \n"
+                    + "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, status \n"
                     + "FROM tblEventPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
@@ -114,6 +115,7 @@ public int getLastId(){
                 String description = rs.getString("description");
                 String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
+                Date startDate = rs.getDate("startDate");
                 String startSlotId = rs.getString("startSlot");
                 String endSlotId = rs.getString("endSlot");
                 String status = rs.getString("status");
@@ -122,7 +124,7 @@ public int getLastId(){
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
                 SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
-                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startSlot, endSlot, status));
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
             }
         } catch (Exception e) {
             log("Error at EventDAO - getListEventByPage: " + e.toString());
@@ -138,21 +140,23 @@ public int getLastId(){
         boolean flag = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "INSERT INTO tblEvents (userId, title, description, locationId, createDatetime, startSlot, endSlot, statusId) "
-                    + "VALUES (?,?,?,?,?,?, (SELECT statusId FROM tblStatusEvent WHERE statusName = ?))";
+            String sql = "INSERT INTO tblEvents (userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, statusId) "
+                    + "VALUES (?,?,?,?,?,?,?,?, (SELECT statusId FROM tblStatusEvent WHERE statusName = ?))";
             stm = conn.prepareStatement(sql);
             String userId = newEvent.getUser().getUserId();
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
             String locationId = newEvent.getLocation().getLocationId();
             Date createDatetime = newEvent.getCreateDatetime();
+            Date startDate = newEvent.getStartDate();
             String startSlotId = newEvent.getStartSlot().getSlotId();
             String endSlotId = newEvent.getEndSlot().getSlotId();
-            stm.setString(2, userId);
-            stm.setString(3, title);
-            stm.setString(4, description);
-            stm.setString(5, locationId);
-            stm.setDate(6, createDatetime);
+            stm.setString(1, userId);
+            stm.setString(2, title);
+            stm.setString(3, description);
+            stm.setString(4, locationId);
+            stm.setDate(5, createDatetime);
+            stm.setDate(6, startDate);
             stm.setString(7, startSlotId);
             stm.setString(8, endSlotId);
             stm.setString(9, "Pending");
@@ -171,7 +175,7 @@ public int getLastId(){
         boolean check = false;
         try {
             conn = Utils.DBConnection.getConnection1();
-            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, startSlot=?, endSlot=?, statusId = (SELECT statusId FROM tblStatusEvent WHERE statusName = ?) "
+            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, startDate=?, startSlot=?, endSlot=?, statusId = (SELECT statusId FROM tblStatusEvent WHERE statusName = ?) "
                     + "WHERE eventId=? AND userId=?";
             stm = conn.prepareStatement(sql);
             int eventId = newEvent.getEventId();
@@ -179,6 +183,7 @@ public int getLastId(){
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
             String locationId = newEvent.getLocation().getLocationId();
+            Date startDate = newEvent.getStartDate();
             String startSlotId = newEvent.getStartSlot().getSlotId();
             String endSlotId = newEvent.getEndSlot().getSlotId();
             String status = newEvent.getStatus();
@@ -186,6 +191,7 @@ public int getLastId(){
             stm.setString(1, title);
             stm.setString(2, description);
             stm.setString(3, locationId);
+            stm.setDate(4, startDate);
             stm.setString(5, startSlotId);
             stm.setString(6, endSlotId);
             stm.setString(7, status);
