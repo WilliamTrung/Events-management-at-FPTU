@@ -8,8 +8,6 @@ package Controller;
 import DAO.EventDAO;
 import Extension.AppDirectory;
 import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import javax.servlet.*;
 import javax.servlet.http.*;

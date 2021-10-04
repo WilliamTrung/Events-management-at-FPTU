@@ -19,17 +19,19 @@ public class EventDTO {
     private String description;
     private LocationDTO location;
     private Date createDatetime;
-    private SlotDTO slot;
+    private SlotDTO startSlot;
+    private SlotDTO endSlot;
     private String status;
 
-    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, SlotDTO slot, String status) {
+    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, SlotDTO startSlot, SlotDTO endSlot, String status) {
         this.eventId = eventId;
         this.user = user;
         this.title = title;
         this.description = description;
         this.location = location;
         this.createDatetime = createDatetime;
-        this.slot = slot;
+        this.startSlot = startSlot;
+        this.endSlot = endSlot;
         this.status = status;
     }
 
@@ -57,8 +59,12 @@ public class EventDTO {
         return createDatetime;
     }
 
-    public SlotDTO getSlot() {
-        return slot;
+    public SlotDTO getStartSlot() {
+        return startSlot;
+    }
+
+    public SlotDTO getEndSlot() {
+        return endSlot;
     }
 
     public String getStatus() {
@@ -89,8 +95,12 @@ public class EventDTO {
         this.createDatetime = createDatetime;
     }
 
-    public void setSlot(SlotDTO slot) {
-        this.slot = slot;
+    public void setStartSlot(SlotDTO startSlot) {
+        this.startSlot = startSlot;
+    }
+
+    public void setEndSlot(SlotDTO endSlot) {
+        this.endSlot = endSlot;
     }
 
     public void setStatus(String status) {
@@ -99,7 +109,11 @@ public class EventDTO {
 
     @Override
     public String toString() {
-        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", slot=" + slot.getSlotId() + ", status=" + status+'}';
+        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", startSlot=" + startSlot + ", endSlot=" + endSlot + ", status=" + status + '}';
     }
+
+    
+
+    
 
 }

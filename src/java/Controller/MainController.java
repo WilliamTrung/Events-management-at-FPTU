@@ -32,6 +32,7 @@ public class MainController extends HttpServlet {
     private final String ADMIN_UPDATE_USER = "UpdateUserController";
     private final String USER_SEARCH_EVENT = "ViewEventController";
     private final String EM_CREATE_EVENT = "CreateEventController";
+    private final String EM_CREATE_EVENT_IDLE = "CreateEventIdleController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -61,7 +62,9 @@ public class MainController extends HttpServlet {
                 url = ADMIN_CHANGE_STATUS;
             } else if (action.equals("CreateEvent")) {
                 url = EM_CREATE_EVENT;
-            }
+            } else if (action.equals("Choose Slot")) {
+                url = EM_CREATE_EVENT_IDLE;
+            } 
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());

@@ -41,10 +41,10 @@ CREATE TABLE tblEvents(
 	description NVARCHAR(200) NOT NULL,
 	locationId INT REFERENCES tblLocations NOT NULL,
 	createDatetime DATETIME NOT NULL,
-	startDate DATE NOT NULL,
-	slotId NVARCHAR(1) REFERENCES tblSlots,
-	statusId NVARCHAR(5) REFERENCES tblStatusEvent,
-	UNIQUE (startDate, slotId)
+	startDate DATE NOT NULL ,
+	startSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
+	endSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
+	statusId NVARCHAR(5) REFERENCES tblStatusEvent
 );
 
 CREATE TABLE tblParticipants(

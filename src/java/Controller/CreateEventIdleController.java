@@ -5,12 +5,9 @@
  */
 package Controller;
 
-import DAO.EventDAO;
 import DAO.LocationDAO;
-import DAO.SlotDAO;
 import DTO.EventDTO;
 import DTO.LocationDTO;
-import DTO.SlotDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.sql.Date;
@@ -26,40 +23,36 @@ import javax.servlet.http.HttpSession;
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "CreateEventController", urlPatterns = {"/CreateEventController"})
-public class CreateEventController extends HttpServlet {
+@WebServlet(name = "CreateEventIdleController", urlPatterns = {"/CreateEventIdleController"})
+public class CreateEventIdleController extends HttpServlet {
 
-    private final String ERROR = "error.jsp";
-    private final String SUCCESS = "createEvent.jsp";
+    private final String SUCCESS = "eventSlotChoosing.jsp";
+    private final String FAIL = "createEvent.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        HttpSession session = request.getSession();
+        String url = FAIL;
         try {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
-            String locationId = request.getParameter("locationId");
-            String startSlotId = request.getParameter("startSlotId");
-            String endSlotId = request.getParameter("endSlotId");
-            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-            LocationDAO ldao = new LocationDAO();
-            LocationDTO location = ldao.getLocationById(locationId);
+            LocationDTO location = new LocationDAO().getLocationById(request.getParameter("locationId"));
+            Object file = request.getParameter("file");
             Date createDate = Date.valueOf(LocalDateTime.now().toLocalDate());
-            
-            SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
-            SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
-            
-            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startSlot, endSlot, "Pending");
-            EventDAO edao = new EventDAO();
-            if (edao.createEvent(newEvent)) {
-                url=SUCCESS;
-            }
+            HttpSession session = request.getSession();
+            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+            //set temp param
+            EventDTO event = new EventDTO(0, user, title, description, location, createDate, null, null, null);
+
+            request.setAttribute("EVENT_IDLE_INFORMATION", event);
+            request.setAttribute("EVENT_IDLE_FILE", file);
+            url = SUCCESS;
         } catch (Exception e) {
-            log("Error at CreateEventController: "+e.toString());
+            log("Error at CreatingEventIdle: "+e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -43,12 +43,13 @@ public class Calendar {
             week = 1 / 7;
         }
         LocalDate day = LocalDate.now().plusDays(week * 7);
-        while (day.getDayOfWeek() != DayOfWeek.SUNDAY) {
+        while(day.getDayOfWeek() != DayOfWeek.MONDAY){
             day.minusDays(1);
         }
-        //now day is at the first day of week (Sunday)
-        for (int i = 0; i < 6; i++) {
-            day = day.plusDays(1);
+        //now day is at the first day of week (MONDAY)
+        list.add(day);
+        for (int i = 0; i < 5; i++) {
+            day =day.plusDays(1);
             list.add(day);
         }
         return list;
