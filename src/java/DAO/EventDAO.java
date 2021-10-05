@@ -33,7 +33,7 @@ public class EventDAO {
         int eventId = 0;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT MAX(eventId) FROM tblEvents";
+            String sql = "SELECT MAX(eventId) as eventId FROM tblEvents";
             stm = conn.prepareStatement(sql);
             rs = stm.executeQuery();
             if (rs.next()) {
@@ -141,7 +141,7 @@ public class EventDAO {
         PreparedStatement stm = null;
         boolean flag = false;
         try {
-            conn = Utils.DBConnection.getConnection1();
+            conn = Utils.DBConnection.getConnection();
             String sql = "INSERT INTO tblEvents (userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, statusId) "
                     + "VALUES (?,?,?,?,?,?,?,?, (SELECT statusId FROM tblStatusEvent WHERE statusName = ?))";
             stm = conn.prepareStatement(sql);
@@ -162,7 +162,7 @@ public class EventDAO {
             stm.setString(7, startSlotId);
             stm.setString(8, endSlotId);
             stm.setString(9, "Pending");
-            flag = stm.executeUpdate(sql) > 0;
+            flag = stm.executeUpdate() > 0;
         } catch (Exception e) {
             log("Error at EventDAO - createEvent: " + e.toString());
         } finally {

@@ -35,7 +35,7 @@ import javax.servlet.http.HttpSession;
 public class CreateEventController extends HttpServlet {
 
     private final String ERROR = "createEvent.jsp";
-    private final String SUCCESS = "createEvent.jsp";
+    private final String SUCCESS = "fileUpload.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -75,11 +75,12 @@ public class CreateEventController extends HttpServlet {
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 Date createDate = Date.valueOf(LocalDate.now());
                 Calendar c = new Calendar();
-                Date startDate = c.convertToDate(uri[0].split("-")[0]);
+                Date startDate = c.convertToDate(uri[0].split("-")[1]);
                 EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, startSlot, endSlot, "Pending");
                 EventDAO edao = new EventDAO();
                 if (edao.createEvent(newEvent)) {
                     url = SUCCESS;
+                    request.setAttribute("id", edao.getLastId());
                 }
             }
         } catch (Exception e) {

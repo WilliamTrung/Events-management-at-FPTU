@@ -34,7 +34,7 @@
         </br>
         Status: ${sessionScope.CURRENT_USER.status}
         </br>
-        RoleId: ${sessionScope.CURRENT_USER.role}
+        Role: ${sessionScope.CURRENT_USER.role}
         </br>
     </body>
 </html>

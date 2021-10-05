@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServlet;
 @WebServlet(name = "UploadController", urlPatterns = {"/UploadController"})
 public class UploadController extends HttpServlet {
 
-    private final String SUCCESS = "UploadFile.jsp";
-    private final String FAIL = "File Uploading Form.html";
+    private final String SUCCESS = "mainPage.jsp";
+    private final String FAIL = "fileUpload.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -34,11 +34,18 @@ public class UploadController extends HttpServlet {
         File file;
         int maxFileSize = 5000 * 1024;
         int maxMemSize = 5000 * 1024;
-        int id = new EventDAO().getLastId();
         // Verify the content type
         String contentType = request.getContentType();
         boolean checkDir = AppDirectory.DataDirChecking();
         if (checkDir == true) {
+            /*
+            ClassLoader cl = getClass().getClassLoader();
+            file = new File(cl.getResource("./src/DAO/EventDAO.java").getFile());
+            String temp = file.getAbsolutePath();
+            if(file.exists()){
+                int a = 0;
+            }
+            */
             //create dir based on eventId
             String path = AppDirectory.getDataDir();
             if ((contentType.contains("multipart/form-data"))) {
@@ -58,29 +65,36 @@ public class UploadController extends HttpServlet {
                 try {
                     // Parse the request to get file items.
                     List fileItems = upload.parseRequest(request);
-
+                    int id = -1;
                     // Process the uploaded file items
                     Iterator i = fileItems.iterator();
                     while (i.hasNext()) {
                         FileItem fi = (FileItem) i.next();
-                        if (!fi.isFormField()) {
+
+                        if (fi.isFormField()) {
+                            if (fi.getFieldName().equals("id")) {
+                                id = Integer.parseInt(fi.getString());
+                            }
+                        } else {
                             // Get the uploaded file parameters
+                            /*
                             String fieldName = fi.getFieldName();
                             String fileName = fi.getName();
                             boolean isInMemory = fi.isInMemory();
                             long sizeInBytes = fi.getSize();
-
+                             */
                             //init the file name
-                            fileName = id + fileName.substring(fileName.indexOf("."));
+                            String fileName = id + ".png";//fileName.substring(fileName.indexOf("."));
                             // Write the file
                             file = new File(path + "\\" + fileName);
                             fi.write(file);
                         }
                     }
-
+                    url = SUCCESS;
                 } catch (Exception e) {
                     log("Error at UploadController: " + e.toString());
                     request.setAttribute("ERROR_MESSAGE", "Failed");
+                    url = FAIL;
                 }
             }
         } else {

@@ -20,11 +20,14 @@
     </head>
     <body>
         <%@include file="header.jsp" %>
-        <script src="new.js" defer></script>
         <%
+            Integer week = (Integer)request.getAttribute("week");
+            if (week==null) {
+                    week = 0;
+            }
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
             List<SlotDTO> slotList = new SlotDAO().getListSlots();
-            List<String> daysOfWeek = new Calendar().getWeek(0);
+            List<String> daysOfWeek = new Calendar().getWeek(week);
             request.setAttribute("LIST_DAY", daysOfWeek);
             request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_LOCATION", locationList);
@@ -42,7 +45,6 @@
                         </option>
                     </c:forEach>
                 </select>
-                Picture: <input type="file" name="file" size="50" accept="image/*"/>
                 <input type="reset" value="Reset"/>
             </section>
             <section>
@@ -51,6 +53,7 @@
                     <li>Choose end slot</li>
                     <li>Start slot and end slot must be on the same day</li>
                 </ul>
+                <p>${requestScope.ERROR_MESSAGE}</p>
                 <table border="2">
                     <thead>
                         <tr>
@@ -75,6 +78,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
+                
             </section>
             <input type="submit" name="action" value="Create Event"/>
         </form>
