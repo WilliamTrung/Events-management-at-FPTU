@@ -42,7 +42,7 @@ public class CreateEventIdleController extends HttpServlet {
             HttpSession session = request.getSession();
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
             //set temp param
-            EventDTO event = new EventDTO(0, user, title, description, location, createDate, null, null, null);
+            EventDTO event = new EventDTO(0, user, title, description, location, createDate, createDate, null, null, "AP");
 
             request.setAttribute("EVENT_IDLE_INFORMATION", event);
             request.setAttribute("EVENT_IDLE_FILE", file);

@@ -28,14 +28,15 @@
         <c:if test="${not empty sessionScope.LIST_EVENT}">
             <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">
                 <h2>${counter.count}</h2>
-                <p>${event.getEventId()}</p>
-                <p>${event.getUser().getUserId()}</p>
-                <p>${event.getTitle()}</p>
-                <p>${event.getDescription()}</p>
-                <p>${event.getLocation().getLocationId()}</p>
-                <p>${event.getCreateDatetime()}</p>
-                <p>${event.getStartDatetime()}</p>
-                <p>${event.getEndDatetime()}</p>
+                <p>${event.status}</p>
+                <p>${event.user.username}</p>
+                <p>${event.title}</p>
+                <p>${event.description}</p>
+                <p>${event.location.locationName}</p>
+                <p>${event.createDatetime}</p>
+                <p>${event.startDatetime}</p>
+                <p>${event.startSlot.startTime}</p>
+                <p>${event.endSlot.endTime}</p>
             </c:forEach>
         </c:if>
                 <div class="switchpage">

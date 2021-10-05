@@ -24,6 +24,9 @@ public class EventDTO {
     private SlotDTO endSlot;
     private String status;
 
+    public EventDTO() {
+    }
+
     public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, SlotDTO startSlot, SlotDTO endSlot, String status) {
         this.eventId = eventId;
         this.user = user;
@@ -121,11 +124,4 @@ public class EventDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    
-
-    
-
-    
-
 }

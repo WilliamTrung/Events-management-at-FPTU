@@ -50,7 +50,7 @@ public class CreateEventController extends HttpServlet {
             SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
             SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
             
-            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startSlot, endSlot, "Pending");
+            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, createDate, startSlot, endSlot, "Pending");
             EventDAO edao = new EventDAO();
             if (edao.createEvent(newEvent)) {
                 url=SUCCESS;
