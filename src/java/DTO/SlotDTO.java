@@ -5,15 +5,17 @@
  */
 package DTO;
 
+import java.io.Serializable;
 import java.sql.Time;
+import java.util.Formatter;
 /**
  *
  * @author WilliamTrung
  */
-public class SlotDTO {
-    private String slotId;
-    private Time startTime;
-    private Time endTime;
+public class SlotDTO implements Serializable{
+    private final String slotId;
+    private final Time startTime;
+    private final Time endTime;
 
     public String getSlotId() {
         return slotId;
@@ -32,7 +34,16 @@ public class SlotDTO {
         this.startTime = startTime;
         this.endTime = endTime;
     }
-
+    public String getStart(){
+        Formatter fmt = new Formatter();
+        fmt.format("%tl:%tM", startTime, startTime);
+        return fmt.toString();
+    }
+    public String getEnd(){
+        Formatter fmt = new Formatter();
+        fmt.format("%tl:%tM", endTime, endTime);
+        return fmt.toString();
+    }
 
      
     

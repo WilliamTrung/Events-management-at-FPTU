@@ -60,7 +60,7 @@ public class MainController extends HttpServlet {
                 url = ADMIN_UPDATE_USER;
             } else if (action.equals("ChangeStatus")) {
                 url = ADMIN_CHANGE_STATUS;
-            } else if (action.equals("CreateEvent")) {
+            } else if (action.equals("Create Event")) {
                 url = EM_CREATE_EVENT;
             } else if (action.equals("Choose Slot")) {
                 url = EM_CREATE_EVENT_IDLE;

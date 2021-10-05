@@ -71,4 +71,14 @@ public class SlotDAO {
         }
         return slot;
     }
+    public SlotDTO getSlot(List<SlotDTO> list, String slotId){
+        SlotDTO slot = null;
+        for (SlotDTO slotDTO : list) {
+            if (slotDTO.getSlotId().equals(slotId)) {
+                slot = slotDTO;
+                break;
+            }
+        }
+        return slot;
+    }
 }

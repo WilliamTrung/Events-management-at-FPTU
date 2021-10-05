@@ -8,6 +8,7 @@ import DTO.SlotDTO;
 import DTO.LocationDTO;
 import DAO.LocationDAO;
 import java.util.List;
+import Extension.Calendar;
 
 public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
@@ -79,6 +80,7 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("\n");
       out.write("\n");
+      out.write("\n");
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
       out.write("    <head>\n");
@@ -127,25 +129,52 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
 
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
             List<SlotDTO> slotList = new SlotDAO().getListSlots();
-
+            List<String> daysOfWeek = new Calendar().getWeek(0);
+            request.setAttribute("LIST_DAY", daysOfWeek);
             request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_LOCATION", locationList);
         
       out.write("\n");
       out.write("\n");
-      out.write("        <form action=\"MainController\" method=\"POST\">\n");
-      out.write("            Title: <input type=\"text\" name=\"title\" required=\"\"/></br>\n");
-      out.write("            Description: <input type=\"text\" name=\"description\" required=\"\" /></br> \n");
-      out.write("            Location: \n");
-      out.write("            <select name=\"locationId\">\n");
-      out.write("                ");
+      out.write("        <form action=\"MainController\" method=\"GET\">\n");
+      out.write("            <section>\n");
+      out.write("                Title: <input type=\"text\" name=\"title\" required=\"\"/></br>\n");
+      out.write("                Description: <input type=\"text\" name=\"description\" required=\"\" /></br> \n");
+      out.write("                Location: \n");
+      out.write("                <select name=\"locationId\" required=\"\">\n");
+      out.write("                    ");
       if (_jspx_meth_c_forEach_0(_jspx_page_context))
         return;
       out.write("\n");
-      out.write("            </select>\n");
-      out.write("            Picture: <input type=\"file\" name=\"file\" size=\"50\" accept=\"image/*\"/>\n");
-      out.write("            <br><button name=\"action\" value=\"Choose Slot\">Choose Time</button><br>\n");
-      out.write("            <input type=\"reset\" value=\"Reset\"/>\n");
+      out.write("                </select>\n");
+      out.write("                Picture: <input type=\"file\" name=\"file\" size=\"50\" accept=\"image/*\"/>\n");
+      out.write("                <input type=\"reset\" value=\"Reset\"/>\n");
+      out.write("            </section>\n");
+      out.write("            <section>\n");
+      out.write("                <ul>\n");
+      out.write("                    <li>Choose start slot</li>\n");
+      out.write("                    <li>Choose end slot</li>\n");
+      out.write("                    <li>Start slot and end slot must be on the same day</li>\n");
+      out.write("                </ul>\n");
+      out.write("                <table border=\"2\">\n");
+      out.write("                    <thead>\n");
+      out.write("                        <tr>\n");
+      out.write("                            <th>N/A</th>\n");
+      out.write("                                ");
+      if (_jspx_meth_c_forEach_1(_jspx_page_context))
+        return;
+      out.write("\n");
+      out.write("                        </tr>\n");
+      out.write("                    </thead>\n");
+      out.write("                    <tbody>\n");
+      out.write("                        ");
+      if (_jspx_meth_c_forEach_2(_jspx_page_context))
+        return;
+      out.write("\n");
+      out.write("                    </tbody>\n");
+      out.write("                </table>\n");
+      out.write("            </section>\n");
+      out.write("            <input type=\"submit\" name=\"action\" value=\"Create Event\"/>\n");
       out.write("        </form>\n");
       out.write("    </body>\n");
       out.write("</html>\n");
@@ -572,14 +601,14 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
       if (_jspx_eval_c_forEach_0 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
         do {
           out.write("\n");
-          out.write("                    <option value=\"");
+          out.write("                        <option value=\"");
           out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${location.locationId}", java.lang.String.class, (PageContext)_jspx_page_context, null));
           out.write("\">\n");
-          out.write("                        ");
+          out.write("                            ");
           out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${location.locationName}", java.lang.String.class, (PageContext)_jspx_page_context, null));
           out.write("\n");
-          out.write("                    </option>\n");
-          out.write("                ");
+          out.write("                        </option>\n");
+          out.write("                    ");
           int evalDoAfterBody = _jspx_th_c_forEach_0.doAfterBody();
           if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
             break;
@@ -595,6 +624,139 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
     } finally {
       _jspx_th_c_forEach_0.doFinally();
       _jspx_tagPool_c_forEach_var_items.reuse(_jspx_th_c_forEach_0);
+    }
+    return false;
+  }
+
+  private boolean _jspx_meth_c_forEach_1(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:forEach
+    org.apache.taglibs.standard.tag.rt.core.ForEachTag _jspx_th_c_forEach_1 = (org.apache.taglibs.standard.tag.rt.core.ForEachTag) _jspx_tagPool_c_forEach_var_items.get(org.apache.taglibs.standard.tag.rt.core.ForEachTag.class);
+    _jspx_th_c_forEach_1.setPageContext(_jspx_page_context);
+    _jspx_th_c_forEach_1.setParent(null);
+    _jspx_th_c_forEach_1.setVar("day");
+    _jspx_th_c_forEach_1.setItems((java.lang.Object) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.LIST_DAY}", java.lang.Object.class, (PageContext)_jspx_page_context, null));
+    int[] _jspx_push_body_count_c_forEach_1 = new int[] { 0 };
+    try {
+      int _jspx_eval_c_forEach_1 = _jspx_th_c_forEach_1.doStartTag();
+      if (_jspx_eval_c_forEach_1 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
+        do {
+          out.write("                       \n");
+          out.write("                                <th>\n");
+          out.write("                                    ");
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${day}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write("\n");
+          out.write("                                </th>\n");
+          out.write("                            ");
+          int evalDoAfterBody = _jspx_th_c_forEach_1.doAfterBody();
+          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
+            break;
+        } while (true);
+      }
+      if (_jspx_th_c_forEach_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+        return true;
+      }
+    } catch (Throwable _jspx_exception) {
+      while (_jspx_push_body_count_c_forEach_1[0]-- > 0)
+        out = _jspx_page_context.popBody();
+      _jspx_th_c_forEach_1.doCatch(_jspx_exception);
+    } finally {
+      _jspx_th_c_forEach_1.doFinally();
+      _jspx_tagPool_c_forEach_var_items.reuse(_jspx_th_c_forEach_1);
+    }
+    return false;
+  }
+
+  private boolean _jspx_meth_c_forEach_2(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:forEach
+    org.apache.taglibs.standard.tag.rt.core.ForEachTag _jspx_th_c_forEach_2 = (org.apache.taglibs.standard.tag.rt.core.ForEachTag) _jspx_tagPool_c_forEach_var_items.get(org.apache.taglibs.standard.tag.rt.core.ForEachTag.class);
+    _jspx_th_c_forEach_2.setPageContext(_jspx_page_context);
+    _jspx_th_c_forEach_2.setParent(null);
+    _jspx_th_c_forEach_2.setVar("slot");
+    _jspx_th_c_forEach_2.setItems((java.lang.Object) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.LIST_SLOT}", java.lang.Object.class, (PageContext)_jspx_page_context, null));
+    int[] _jspx_push_body_count_c_forEach_2 = new int[] { 0 };
+    try {
+      int _jspx_eval_c_forEach_2 = _jspx_th_c_forEach_2.doStartTag();
+      if (_jspx_eval_c_forEach_2 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
+        do {
+          out.write("                       \n");
+          out.write("                            <tr>\n");
+          out.write("                                <td>Slot ");
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${slot.slotId}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write("<br>");
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${slot.getStart()}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write('-');
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${slot.getEnd()}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write("</td>\n");
+          out.write("                                    ");
+          if (_jspx_meth_c_forEach_3((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_forEach_2, _jspx_page_context, _jspx_push_body_count_c_forEach_2))
+            return true;
+          out.write("\n");
+          out.write("                            </tr>                \n");
+          out.write("                        ");
+          int evalDoAfterBody = _jspx_th_c_forEach_2.doAfterBody();
+          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
+            break;
+        } while (true);
+      }
+      if (_jspx_th_c_forEach_2.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+        return true;
+      }
+    } catch (Throwable _jspx_exception) {
+      while (_jspx_push_body_count_c_forEach_2[0]-- > 0)
+        out = _jspx_page_context.popBody();
+      _jspx_th_c_forEach_2.doCatch(_jspx_exception);
+    } finally {
+      _jspx_th_c_forEach_2.doFinally();
+      _jspx_tagPool_c_forEach_var_items.reuse(_jspx_th_c_forEach_2);
+    }
+    return false;
+  }
+
+  private boolean _jspx_meth_c_forEach_3(javax.servlet.jsp.tagext.JspTag _jspx_th_c_forEach_2, PageContext _jspx_page_context, int[] _jspx_push_body_count_c_forEach_2)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:forEach
+    org.apache.taglibs.standard.tag.rt.core.ForEachTag _jspx_th_c_forEach_3 = (org.apache.taglibs.standard.tag.rt.core.ForEachTag) _jspx_tagPool_c_forEach_var_items.get(org.apache.taglibs.standard.tag.rt.core.ForEachTag.class);
+    _jspx_th_c_forEach_3.setPageContext(_jspx_page_context);
+    _jspx_th_c_forEach_3.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_forEach_2);
+    _jspx_th_c_forEach_3.setVar("day");
+    _jspx_th_c_forEach_3.setItems((java.lang.Object) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.LIST_DAY}", java.lang.Object.class, (PageContext)_jspx_page_context, null));
+    int[] _jspx_push_body_count_c_forEach_3 = new int[] { 0 };
+    try {
+      int _jspx_eval_c_forEach_3 = _jspx_th_c_forEach_3.doStartTag();
+      if (_jspx_eval_c_forEach_3 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
+        do {
+          out.write(" \n");
+          out.write("                                    <td>  \n");
+          out.write("                                        <input type=\"checkbox\" name=\"selectedTime\" value=\"");
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${slot.slotId}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write('-');
+          out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${day}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+          out.write("\"/>\n");
+          out.write("                                    </td>\n");
+          out.write("                                ");
+          int evalDoAfterBody = _jspx_th_c_forEach_3.doAfterBody();
+          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
+            break;
+        } while (true);
+      }
+      if (_jspx_th_c_forEach_3.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+        return true;
+      }
+    } catch (Throwable _jspx_exception) {
+      while (_jspx_push_body_count_c_forEach_3[0]-- > 0)
+        out = _jspx_page_context.popBody();
+      _jspx_th_c_forEach_3.doCatch(_jspx_exception);
+    } finally {
+      _jspx_th_c_forEach_3.doFinally();
+      _jspx_tagPool_c_forEach_var_items.reuse(_jspx_th_c_forEach_3);
     }
     return false;
   }

@@ -12,9 +12,14 @@ import DTO.EventDTO;
 import DTO.LocationDTO;
 import DTO.SlotDTO;
 import DTO.UserDTO;
+import Extension.AI;
+import Extension.Calendar;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,8 +34,9 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "CreateEventController", urlPatterns = {"/CreateEventController"})
 public class CreateEventController extends HttpServlet {
 
-    private final String ERROR = "error.jsp";
+    private final String ERROR = "createEvent.jsp";
     private final String SUCCESS = "createEvent.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -40,23 +46,44 @@ public class CreateEventController extends HttpServlet {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String locationId = request.getParameter("locationId");
-            String startSlotId = request.getParameter("startSlotId");
-            String endSlotId = request.getParameter("endSlotId");
-            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-            LocationDAO ldao = new LocationDAO();
-            LocationDTO location = ldao.getLocationById(locationId);
-            Date createDate = Date.valueOf(LocalDateTime.now().toLocalDate());
-            
-            SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
-            SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
-            
-            EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startSlot, endSlot, "Pending");
-            EventDAO edao = new EventDAO();
-            if (edao.createEvent(newEvent)) {
-                url=SUCCESS;
+            String[] uri = request.getParameterValues("selectedTime");
+
+            //temp
+            SlotDAO sDao = new SlotDAO();
+            List<SlotDTO> list = sDao.getListSlots();
+            //end temp
+            //init
+            SlotDTO startSlot = null;
+            SlotDTO endSlot = null;
+            boolean check = false;
+            if (uri != null) {
+                List<SlotDTO> slots = AI.checkChosenSlot(uri, list);
+                if (!slots.isEmpty()) {
+                    startSlot = slots.get(0);
+                    endSlot = slots.get(1);
+                }
+                if (startSlot == null || endSlot == null) {
+                    request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
+                } else {
+                    check = true;
+                }
+            } else {
+                request.setAttribute("ERROR_MESSAGE", "No slot is chose!");
+            }
+            if (check) {
+                UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                Date createDate = Date.valueOf(LocalDate.now());
+                Calendar c = new Calendar();
+                Date startDate = c.convertToDate(uri[0].split("-")[0]);
+                EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, startSlot, endSlot, "Pending");
+                EventDAO edao = new EventDAO();
+                if (edao.createEvent(newEvent)) {
+                    url = SUCCESS;
+                }
             }
         } catch (Exception e) {
-            log("Error at CreateEventController: "+e.toString());
+            log("Error at CreateEventController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

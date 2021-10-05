@@ -23,9 +23,9 @@
         <%
             List<SlotDTO> slotList = new SlotDAO().getListSlots();
             List<String> daysOfWeek = new Calendar().getWeek(0);
-            
-            request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_DAY", daysOfWeek);
+            request.setAttribute("LIST_SLOT", slotList);
+            
         %>
         <table border="2">
             <thead>

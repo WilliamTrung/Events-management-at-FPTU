@@ -1,8 +1,10 @@
 package Controller;
 
 import DAO.EventDAO;
+import DAO.SlotDAO;
 import DAO.UserDAO;
 import DTO.EventDTO;
+import DTO.SlotDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 
@@ -51,6 +53,7 @@ public class LoginGoogleServlet extends HttpServlet {
                             EventDAO eDao = new EventDAO();
                             
                             List<EventDTO> list_event = eDao.getListEventByPage("", 1, pageSize);
+                            List<SlotDTO> list_slot = new SlotDAO().getListSlots();
                             //check if login user is an admin
                             String test = user.getRole();
                             if (user.getRole().equals("Admin")) {
@@ -58,6 +61,7 @@ public class LoginGoogleServlet extends HttpServlet {
                             }
                             session.setAttribute("CURRENT_USER", user);
                             session.setAttribute("LIST_EVENT", list_event);
+                            session.setAttribute("LIST_SLOT", list_event);
                             int countList = eDao.countListEvent();
                             int endPage = (int) Math.ceil( ((double) countList/pageSize));
                             session.setAttribute("endPage", endPage);

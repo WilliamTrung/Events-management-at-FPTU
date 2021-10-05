@@ -10,6 +10,7 @@
 <%@page import="DTO.LocationDTO"%>
 <%@page import="DAO.LocationDAO"%>
 <%@page import="java.util.List"%>
+<%@page import="Extension.Calendar"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -23,17 +24,18 @@
         <%
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
             List<SlotDTO> slotList = new SlotDAO().getListSlots();
-
+            List<String> daysOfWeek = new Calendar().getWeek(0);
+            request.setAttribute("LIST_DAY", daysOfWeek);
             request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_LOCATION", locationList);
         %>
 
-        <form action="MainController" method="POST">
+        <form action="MainController" method="GET">
             <section>
                 Title: <input type="text" name="title" required=""/></br>
                 Description: <input type="text" name="description" required="" /></br> 
                 Location: 
-                <select name="locationId">
+                <select name="locationId" required="">
                     <c:forEach var="location" items="${requestScope.LIST_LOCATION}">
                         <option value="${location.locationId}">
                             ${location.locationName}
@@ -41,10 +43,14 @@
                     </c:forEach>
                 </select>
                 Picture: <input type="file" name="file" size="50" accept="image/*"/>
-                <br><button name="action" value="Choose Slot">Choose Time</button><br>
                 <input type="reset" value="Reset"/>
             </section>
             <section>
+                <ul>
+                    <li>Choose start slot</li>
+                    <li>Choose end slot</li>
+                    <li>Start slot and end slot must be on the same day</li>
+                </ul>
                 <table border="2">
                     <thead>
                         <tr>
@@ -59,16 +65,10 @@
                     <tbody>
                         <c:forEach var="slot" items="${requestScope.LIST_SLOT}" >                       
                             <tr>
-                                <td>Slot ${slot.slotId}</td>
-                                <c:forEach var="day" items="${requestScope.LIST_DAY}"> 
-                                    <td>
-                                        <form action="MainController" method="POST">       
-                                            <input type="checkbox"
-                                                   <input type="hidden" name="slot" value="${slot}"/>
-                                            <input type="hidden" name="date" value="${day}"/>
-                                            <input type="hidden" name="action" value="${createEvent}"/>
-                                            <input type="submit" name="action" value="Create Event"/>
-                                        </form>
+                                <td>Slot ${slot.slotId}<br>${slot.getStart()}-${slot.getEnd()}</td>
+                                    <c:forEach var="day" items="${requestScope.LIST_DAY}"> 
+                                    <td>  
+                                        <input type="checkbox" name="selectedTime" value="${slot.slotId}-${day}"/>
                                     </td>
                                 </c:forEach>
                             </tr>                
@@ -76,6 +76,7 @@
                     </tbody>
                 </table>
             </section>
+            <input type="submit" name="action" value="Create Event"/>
         </form>
     </body>
 </html>
