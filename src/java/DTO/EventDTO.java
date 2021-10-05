@@ -19,19 +19,22 @@ public class EventDTO {
     private String description;
     private LocationDTO location;
     private Date createDatetime;
-    private Date startDate;
+    private Date startDatetime;
     private SlotDTO startSlot;
     private SlotDTO endSlot;
     private String status;
 
-    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDate, SlotDTO startSlot, SlotDTO endSlot, String status) {
+    public EventDTO() {
+    }
+
+    public EventDTO(int eventId, UserDTO user, String title, String description, LocationDTO location, Date createDatetime, Date startDatetime, SlotDTO startSlot, SlotDTO endSlot, String status) {
         this.eventId = eventId;
         this.user = user;
         this.title = title;
         this.description = description;
         this.location = location;
         this.createDatetime = createDatetime;
-        this.startDate = startDate;
+        this.startDatetime = startDatetime;
         this.startSlot = startSlot;
         this.endSlot = endSlot;
         this.status = status;
@@ -61,8 +64,8 @@ public class EventDTO {
         return createDatetime;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartDatetime() {
+        return startDatetime;
     }
 
     public SlotDTO getStartSlot() {
@@ -75,6 +78,11 @@ public class EventDTO {
 
     public String getStatus() {
         return status;
+    }
+
+    @Override
+    public String toString() {
+        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", startDatetime=" + startDatetime + ", startSlot=" + startSlot + ", endSlot=" + endSlot + ", status=" + status + '}';
     }
 
     public void setEventId(int eventId) {
@@ -101,8 +109,8 @@ public class EventDTO {
         this.createDatetime = createDatetime;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setStartDatetime(Date startDatetime) {
+        this.startDatetime = startDatetime;
     }
 
     public void setStartSlot(SlotDTO startSlot) {
@@ -116,11 +124,4 @@ public class EventDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    @Override
-    public String toString() {
-        return "EventDTO{" + "eventId=" + eventId + ", user=" + user + ", title=" + title + ", description=" + description + ", location=" + location + ", createDatetime=" + createDatetime + ", startDate=" + startDate + ", startSlot=" + startSlot + ", endSlot=" + endSlot + ", status=" + status + '}';
-    }
-
-    
 }

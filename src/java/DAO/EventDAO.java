@@ -18,13 +18,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  *
  * @author Admin
  */
 public class EventDAO {
-public int getLastId(){
+
+    public int getLastId() {
         //get the newest created id from tblEvents
         //SELECT MAX(eventId) FROM tblEvents
         Connection conn = null;
@@ -37,7 +37,7 @@ public int getLastId(){
             stm = conn.prepareStatement(sql);
             rs = stm.executeQuery();
             if (rs.next()) {
-                eventId = rs.getInt("eventId");               
+                eventId = rs.getInt("eventId");
             }
         } catch (Exception e) {
             log("Error at EventDAO - getLastId: " + e.toString());
@@ -46,6 +46,7 @@ public int getLastId(){
         }
         return eventId;
     }
+
     public List<EventDTO> getListEvent(String search) throws SQLException {
         List<EventDTO> list = new ArrayList<>();
         Connection conn = null;
@@ -53,9 +54,9 @@ public int getLastId(){
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, slotId, s.statusName "
-                    + "FROM tblEvents e, tblStatusEvent s "
-                    + "WHERE title like ? AND s.statusId = e.statusId";
+            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName "
+                    + "   FROM tblEvents e, tblStatusEvent s "
+                    + "   WHERE title like ? AND s.statusId = e.statusId";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
             rs = stm.executeQuery();
@@ -64,14 +65,14 @@ public int getLastId(){
                 int eventId = rs.getInt("eventId");
                 String userId = rs.getString("userId");
                 String title = rs.getString("title");
-                String description = rs.getString("description"); 
+                String description = rs.getString("description");
                 String locationId = rs.getString("locationId");
                 Date createDatetime = rs.getDate("createDatetime");
                 Date startDate = rs.getDate("startDate");
                 String startSlotId = rs.getString("startSlot");
                 String endSlotId = rs.getString("endSlot");
                 String status = rs.getString("statusName");
-                
+
                 UserDTO user = new UserDAO().getUserById(userId);
                 SlotDTO startSlot = sDao.getSlotById(startSlotId);
                 SlotDTO endSlot = sDao.getSlotById(endSlotId);
@@ -93,7 +94,7 @@ public int getLastId(){
         ResultSet rs = null;
         try {
             conn = DBConnection.getConnection();
-            String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDatetime) ) AS RowNum,\n"
+            String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDate) ) AS RowNum,\n"
                     + "					eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName AS status \n"
                     + "				FROM tblEvents e, tblStatusEvent s \n"
                     + "				WHERE title like ? AND e.statusId = s.statusId)\n"
@@ -124,6 +125,7 @@ public int getLastId(){
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
                 SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
+                
                 list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
             }
         } catch (Exception e) {
@@ -148,7 +150,7 @@ public int getLastId(){
             String description = newEvent.getDescription();
             String locationId = newEvent.getLocation().getLocationId();
             Date createDatetime = newEvent.getCreateDatetime();
-            Date startDate = newEvent.getStartDate();
+            Date startDate = newEvent.getStartDatetime();
             String startSlotId = newEvent.getStartSlot().getSlotId();
             String endSlotId = newEvent.getEndSlot().getSlotId();
             stm.setString(1, userId);
@@ -183,11 +185,11 @@ public int getLastId(){
             String title = newEvent.getTitle();
             String description = newEvent.getDescription();
             String locationId = newEvent.getLocation().getLocationId();
-            Date startDate = newEvent.getStartDate();
+            Date startDate = newEvent.getStartDatetime();
             String startSlotId = newEvent.getStartSlot().getSlotId();
             String endSlotId = newEvent.getEndSlot().getSlotId();
             String status = newEvent.getStatus();
-            
+
             stm.setString(1, title);
             stm.setString(2, description);
             stm.setString(3, locationId);
@@ -226,24 +228,30 @@ public int getLastId(){
         }
         return result;
     }
-    public int countListEvent(){
-        int rs=0;
+
+    public int countListEvent() {
+        int rs = 0;
         EventDAO dao = new EventDAO();
         try {
             List<EventDTO> list = dao.getListEvent("");
             if (!list.isEmpty()) {
-                rs=list.size();
+                rs = list.size();
             }
         } catch (SQLException ex) {
             System.out.println(ex);
         }
         return rs;
     }
-//    public static void main(String[] args) throws SQLException {
+    
+//    public static void main(String[] args) {
 //        EventDAO dao = new EventDAO();
-//        List<EventDTO> list = dao.getListEventByPage("", 1, 3);
-//        for (EventDTO o : list) {
-//            System.out.println(o.toString());
+//        try {
+//            List<EventDTO> list = dao.getListEvent("");
+//            for (EventDTO o : list) {
+//                System.out.println(o.toString());
+//            }
+//        } catch (SQLException ex) {
+//            Logger.getLogger(EventDAO.class.getName()).log(Level.SEVERE, null, ex);
 //        }
 //    }
 }
