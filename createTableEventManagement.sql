@@ -39,7 +39,7 @@ CREATE TABLE tblEvents(
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
 	title NVARCHAR(50) NOT NULL,
 	description NVARCHAR(200) NOT NULL,
-	locationId INT REFERENCES tblLocations NOT NULL,
+	locationId nvarchar(5) REFERENCES tblLocations NOT NULL,
 	createDatetime DATETIME NOT NULL,
 	startDate DATE NOT NULL ,
 	startSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
@@ -123,12 +123,27 @@ INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VA
 --insert status event
 INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'AP', N'Approve')
 --insert locations
+INSERT [dbo].[tblLocations] ([locationId], [seat], [locationName]) VALUES (N'A', 50, N'Sảnh A Đại Học FPTHCM')
+INSERT [dbo].[tblLocations] ([locationId], [seat], [locationName]) VALUES (N'B', 50, N'Sảnh B Đại Học FPTHCM')
+
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 1',50)
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 2',50)
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 3',50)
 --insert events
-INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, slotId, statusId)
-VALUES ('100244481500661777938','firstEvent','wasd',0,  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),1, (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
+INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, startSlot, endSlot, statusId)
+VALUES ('100244481500661777938','firstEvent','wasd','A',  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),'1','2', (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
+
+INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, startSlot, endSlot, statusId)
+VALUES ('100244481500661777938','secondEvent','wasd','A',  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),'1','2', (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
+
+INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, startSlot, endSlot, statusId)
+VALUES ('100244481500661777938','3rdEvent','wasd','A',  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),'1','2', (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
+
+INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, startSlot, endSlot, statusId)
+VALUES ('100244481500661777938','4thEvent','wasd','A',  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),'1','2', (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
+
+INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, startSlot, endSlot, statusId)
+VALUES ('100244481500661777938','5thEvent','wasd','A',  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),'1','2', (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
 --insert slot-time
 INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('1', '07:00', '08:30')
 INSERT INTO tblSlots(slotId, startTime, endTime) VALUES ('2', '08:45', '10:15')
