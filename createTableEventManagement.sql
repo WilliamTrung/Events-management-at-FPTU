@@ -55,7 +55,7 @@ CREATE TABLE tblParticipants(
 	PRIMARY KEY(eventId, userId)
 )
 CREATE TABLE tblLocations(
-	locationId NVARCHAR(5) PRIMARY KEY,
+	locationId INT IDENTITY(0,1) PRIMARY KEY,
 	seat INT NOT NULL,--maximum seats can be took
 	locationName NVARCHAR(100) NOT NULL,
 )
@@ -127,6 +127,14 @@ INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tần
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 2',50)
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 3',50)
 --insert events
+
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'firstEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', 'P')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'secondEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', N'P')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'3rdEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', N'P')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'4thEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', N'P')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'5thEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', N'P')
+INSERT [dbo].[tblEvents] ( [userId], [title], [description], [locationId], [createDatetime], [startDate], [startSlot], [endSlot], [statusId]) VALUES ( N'100244481500661777938', N'firstEvent', N'wasd', 1, CAST(N'2021-02-10T00:00:00.000' AS DateTime), CAST(N'2021-02-10' AS Date), N'1', N'2', N'P')
+
 INSERT INTO tblEvents (userId, title, description, locationId, startDate , createDatetime, slotId, statusId)
 VALUES ('100244481500661777938','firstEvent','wasd',0,  CAST(N'2021-02-10' AS Date) , CAST(N'2021-02-10T00:00:00.000' AS DateTime),1, (SELECT statusId FROM tblStatusEvent WHERE statusName = 'Pending'))
 --insert slot-time
