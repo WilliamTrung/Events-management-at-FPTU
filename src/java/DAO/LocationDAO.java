@@ -20,6 +20,7 @@ import java.util.List;
  * @author WilliamTrung
  */
 public class LocationDAO {
+    
     public List<LocationDTO> getListLocations(String search){
         List<LocationDTO> list = new ArrayList<>();
         Connection conn = null;
@@ -30,7 +31,8 @@ public class LocationDAO {
             if(conn!=null){
                 String sql = "SELECT locationId, locationName, seat "
                         + "FROM tblLocations "
-                        + "WHERE locationName like ?";
+                        + "WHERE locationName like ? "
+                        + "ORDER BY locationName ASC";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, "%"+search+"%");
                 rs = stm.executeQuery();

@@ -87,7 +87,7 @@ public class EventDAO {
         }
         return list;
     }
-
+    
     public List<EventDTO> getListEventByPage(String search, int index, int pageSize) throws SQLException {
         List<EventDTO> list = new ArrayList<>();
         Connection conn = null;

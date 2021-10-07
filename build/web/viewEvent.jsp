@@ -22,15 +22,16 @@
             response.setDateHeader("Expires", 0);
         %>
     </head>
-    <body>      
-        <p>${sessionScope.EVENT_MESSAGE}</p>
-        <c:if test="${not empty sessionScope.LIST_EVENT}">
-            <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">
+    <body>     
+        <p>${requestScope.EVENT_MESSAGE}</p>
+        
+        <c:if test="${not empty requestScope.LIST_EVENT}">
+            <c:forEach var="event" varStatus="counter" items="${requestScope.LIST_EVENT}">
                 <h2>${counter.count}</h2>
                 <!-- -->
                 <img src="./images/${event.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
                 <h3>
-                    <a href="ViewEventDetailsController?eventId=${event.eventId}">${event.title}</a>
+                    <a href="ViewEventDetailsController?eventId=${event.eventId}&index=${index}">${event.title}</a>
                 </h3>
                 <p>${event.startDatetime}</p>
                 <p>${event.startSlot.getStart()}</p>

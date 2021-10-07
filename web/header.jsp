@@ -14,8 +14,8 @@
     </head>
     <body>
         <c:url var="view_event" value="MainController">
-            <c:param name="search" value=""></c:param>    
-            <c:param name="action" value="LoadEvents"></c:param>           
+            <c:param name="index" value=""></c:param>    
+            <c:param name="search" value="LoadEvents"></c:param>           
         </c:url>
         <c:url var="view_user" value="MainController">
             <c:param name="search" value=""></c:param>    

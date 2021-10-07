@@ -1,37 +1,25 @@
 <%-- 
-    Document   : viewEvent
-    Created on : Sep 21, 2021, 8:14:58 PM
-    Author     : Admin
+    Document   : viewOwnEvent
+    Created on : Oct 7, 2021, 5:48:58 PM
+    Author     : WilliamTrung
 --%>
 
-<%@page import="DTO.EventDTO"%>
-<%@page import="java.util.List"%>
-<%@page import="Extension.AI"%>
-<%@page import="Extension.AppDirectory"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Events in FPT University</title>
-        <%
-            response.setHeader("Cache-Control", "no-cache");
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-        %>
+        <title>View Your Events Page</title>
     </head>
-    <body>     
+    <body>
         <p>${requestScope.EVENT_MESSAGE}</p>
-        
-        <c:if test="${not empty requestScope.LIST_EVENT}">
-            <c:forEach var="event" varStatus="counter" items="${requestScope.LIST_EVENT}">
+        <c:if test="${not empty sessionScope.LIST_EVENT}">
+            <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">
                 <h2>${counter.count}</h2>
                 <!-- -->
                 <img src="./images/${event.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
                 <h3>
-                    <a href="ViewEventDetailsController?eventId=${event.eventId}&index=${index}">${event.title}</a>
+                    <a href="ViewEventDetailsController?eventId=${event.eventId}">${event.title}</a>
                 </h3>
                 <p>${event.startDatetime}</p>
                 <p>${event.startSlot.getStart()}</p>

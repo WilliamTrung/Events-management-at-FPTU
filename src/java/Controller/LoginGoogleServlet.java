@@ -60,8 +60,9 @@ public class LoginGoogleServlet extends HttpServlet {
                                 session.setAttribute("MODE", "USER_MODE");
                             }
                             session.setAttribute("CURRENT_USER", user);
-                            session.setAttribute("LIST_EVENT", list_event);
-                            session.setAttribute("LIST_SLOT", list_slot);
+                            request.setAttribute("LIST_EVENT", list_event);
+                            request.setAttribute("LIST_SLOT", list_slot);
+                            request.setAttribute("index", 1);
                             int countList = eDao.countListEvent();
                             int endPage = (int) Math.ceil( ((double) countList/pageSize));
                             session.setAttribute("endPage", endPage);

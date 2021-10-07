@@ -8,7 +8,10 @@ package Controller;
 import DAO.EventDAO;
 import DTO.EventDTO;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,43 +19,35 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author SE151264
+ * @author WilliamTrung
  */
-public class ViewEventDetailsController extends HttpServlet {
-
-    private final String ERROR = "error.jsp";
-    private final String SUCCESS = "viewEventDetails.jsp";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+@WebServlet(name = "ViewOwnedEventController", urlPatterns = {"/ViewOwnedEventController"})
+public class ViewOwnedEventController extends HttpServlet {
+    private final String FAIL = "viewOwnEvent.jsp";
+    private final String SUCCESS = "viewOwnEvent.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = FAIL;
+        HttpSession session = request.getSession();
         try {
-            int eventId = Integer.parseInt(request.getParameter("eventId"));
             String search = request.getParameter("search");
             int index = Integer.parseInt(request.getParameter("index"));
-            EventDAO edao = new EventDAO();
-            EventDTO event = edao.getEventById(eventId);
-            if (event!=null) {
-                request.setAttribute("SELECTED_EVENT", event);
-                request.setAttribute("search", search);
-                request.setAttribute("index", index);
-                url=SUCCESS;
-            }else{
-                request.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");
+            int pageSize = 3;
+            EventDAO dao = new EventDAO();
+            List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
+            if (list != null && !list.isEmpty()) {
+                request.setAttribute("LIST_EVENT", list);
+                request.setAttribute("EVENT_MESSAGE", "Page"+index);
+                request.setAttribute("Search", search);
+                url = SUCCESS;
+            } else {
+                session.setAttribute("EVENT_MESSAGE", "No event");
             }
         } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve selected event!");
-        }finally{
+            log("Error at ViewEventController: " + e.toString());
+            session.setAttribute("ERROR_MESSAGE", "ERROR at ViewEventController!");
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

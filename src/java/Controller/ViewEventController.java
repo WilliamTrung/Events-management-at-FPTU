@@ -28,7 +28,6 @@ public class ViewEventController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        HttpSession session = request.getSession();
         try {
             String search = request.getParameter("search");
             int index = Integer.parseInt(request.getParameter("index"));
@@ -36,16 +35,17 @@ public class ViewEventController extends HttpServlet {
             EventDAO dao = new EventDAO();
             List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
             if (list != null && !list.isEmpty()) {
-                session.setAttribute("LIST_EVENT", list);
-                session.setAttribute("EVENT_MESSAGE", "Page"+index);
-                session.setAttribute("Search", search);
+                request.setAttribute("LIST_EVENT", list);
+                request.setAttribute("EVENT_MESSAGE", "Page"+index);
+                request.setAttribute("Search", search);
+                request.setAttribute("index", index);
                 url = SUCCESS;
             } else {
-                session.setAttribute("EVENT_MESSAGE", "No event");
+                request.setAttribute("EVENT_MESSAGE", "No event");
             }
         } catch (Exception e) {
             log("Error at ViewEventController: " + e.toString());
-            session.setAttribute("ERROR_MESSAGE", "ERROR at ViewEventController!");
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve events' information!");
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
