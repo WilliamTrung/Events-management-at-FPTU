@@ -126,32 +126,30 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("        ");
 
-            Integer week = (Integer)request.getAttribute("week");
-            if (week==null) {
-                    week = 0;
-            }
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
-            List<SlotDTO> slotList = new SlotDAO().getListSlots();
-            List<String> daysOfWeek = new Calendar().getWeek(week);
-            request.setAttribute("LIST_DAY", daysOfWeek);
-            request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_LOCATION", locationList);
         
       out.write("\n");
-      out.write("\n");
       out.write("        <form action=\"MainController\" method=\"GET\">\n");
       out.write("            <section>\n");
-      out.write("                Title: <input type=\"text\" name=\"title\" required=\"\"/></br>\n");
-      out.write("                Description: <input type=\"text\" name=\"description\" required=\"\" /></br> \n");
-      out.write("                Location: \n");
-      out.write("                <select name=\"locationId\" required=\"\">\n");
+      out.write("                Title: <input type=\"text\" name=\"title\"/> <p>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.title}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p></br>\n");
+      out.write("                Description: <input type=\"text\" name=\"description\"/> <p>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.description}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p></br> \n");
+      out.write("                Location: <p>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.locationId}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p>\n");
+      out.write("                <select name=\"locationId\">\n");
       out.write("                    ");
       if (_jspx_meth_c_forEach_0(_jspx_page_context))
         return;
       out.write("\n");
       out.write("                </select>\n");
+      out.write("\n");
       out.write("                <input type=\"reset\" value=\"Reset\"/>\n");
-      out.write("            </section>\n");
+      out.write("            </section>         \n");
       out.write("            <section>\n");
       out.write("                <ul>\n");
       out.write("                    <li>Choose start slot</li>\n");
@@ -161,7 +159,27 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("                <p>");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.ERROR_MESSAGE}", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write("</p>\n");
+      out.write("\n");
+      out.write("                ");
+
+                    Integer week = (Integer) request.getAttribute("week");
+                    if (week == null) {
+                        week = 0;
+                    }
+                    List<SlotDTO> slotList = new SlotDAO().getListSlots();
+                    List<String> daysOfWeek = new Calendar().getWeek(week);
+                    request.setAttribute("LIST_DAY", daysOfWeek);
+                    request.setAttribute("LIST_SLOT", slotList);
+                    request.setAttribute("week", week);
+                
+      out.write("\n");
       out.write("                <table border=\"2\">\n");
+      out.write("                    <input type=\"hidden\" name=\"action\" value=\"Change Week\"/>\n");
+      out.write("                    <input type=\"hidden\" name=\"week\" value=\"");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${requestScope.week}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("\"/>\n");
+      out.write("                    <button name=\"weekChange\" value=\"-\">Previous Week</button>\n");
+      out.write("                    <button name=\"weekChange\" value=\"+\">Next Week</button>\n");
       out.write("                    <thead>\n");
       out.write("                        <tr>\n");
       out.write("                            <th>N/A</th>\n");
@@ -178,7 +196,7 @@ public final class createEvent_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       out.write("                    </tbody>\n");
       out.write("                </table>\n");
-      out.write("                \n");
+      out.write("\n");
       out.write("            </section>\n");
       out.write("            <input type=\"submit\" name=\"action\" value=\"Create Event\"/>\n");
       out.write("        </form>\n");

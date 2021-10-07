@@ -21,32 +21,24 @@
     <body>
         <%@include file="header.jsp" %>
         <%
-            Integer week = (Integer)request.getAttribute("week");
-            if (week==null) {
-                    week = 0;
-            }
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
-            List<SlotDTO> slotList = new SlotDAO().getListSlots();
-            List<String> daysOfWeek = new Calendar().getWeek(week);
-            request.setAttribute("LIST_DAY", daysOfWeek);
-            request.setAttribute("LIST_SLOT", slotList);
             request.setAttribute("LIST_LOCATION", locationList);
         %>
-
         <form action="MainController" method="GET">
             <section>
-                Title: <input type="text" name="title" required=""/></br>
-                Description: <input type="text" name="description" required="" /></br> 
-                Location: 
-                <select name="locationId" required="">
+                Title: <input type="text" name="title"/> <p>${requestScope.title}</p></br>
+                Description: <input type="text" name="description"/> <p>${requestScope.description}</p></br> 
+                Location: <p>${requestScope.locationId}</p>
+                <select name="locationId">
                     <c:forEach var="location" items="${requestScope.LIST_LOCATION}">
                         <option value="${location.locationId}">
                             ${location.locationName}
                         </option>
                     </c:forEach>
                 </select>
+
                 <input type="reset" value="Reset"/>
-            </section>
+            </section>         
             <section>
                 <ul>
                     <li>Choose start slot</li>
@@ -54,7 +46,23 @@
                     <li>Start slot and end slot must be on the same day</li>
                 </ul>
                 <p>${requestScope.ERROR_MESSAGE}</p>
+
+                <%
+                    Integer week = (Integer) request.getAttribute("week");
+                    if (week == null) {
+                        week = 0;
+                    }
+                    List<SlotDTO> slotList = new SlotDAO().getListSlots();
+                    List<String> daysOfWeek = new Calendar().getWeek(week);
+                    request.setAttribute("LIST_DAY", daysOfWeek);
+                    request.setAttribute("LIST_SLOT", slotList);
+                    request.setAttribute("week", week);
+                %>
                 <table border="2">
+                    <input type="hidden" name="action" value="Change Week"/>
+                    <input type="hidden" name="week" value="${requestScope.week}"/>
+                    <button name="weekChange" value="-">Previous Week</button>
+                    <button name="weekChange" value="+">Next Week</button>
                     <thead>
                         <tr>
                             <th>N/A</th>
@@ -78,7 +86,7 @@
                         </c:forEach>
                     </tbody>
                 </table>
-                
+
             </section>
             <input type="submit" name="action" value="Create Event"/>
         </form>

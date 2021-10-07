@@ -32,15 +32,17 @@ public class MainController extends HttpServlet {
     private final String ADMIN_UPDATE_USER = "UpdateUserController";
     private final String USER_SEARCH_EVENT = "ViewEventController";
     private final String EM_CREATE_EVENT = "CreateEventController";
-    private final String EM_CREATE_EVENT_IDLE = "CreateEventIdleController";
+    private final String EM_CREATE_EVENT_CHANGE_WEEK = "CalendarController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String action = request.getParameter("action");
+        String[] actions = request.getParameterValues("action");
+        String action = actions[actions.length-1];
         String url = ERROR;
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+        
         try {
             if (action.equals("LoadUsers")) {
                 if (user.getRole().equals("Admin")) {
@@ -62,8 +64,8 @@ public class MainController extends HttpServlet {
                 url = ADMIN_CHANGE_STATUS;
             } else if (action.equals("Create Event")) {
                 url = EM_CREATE_EVENT;
-            } else if (action.equals("Choose Slot")) {
-                url = EM_CREATE_EVENT_IDLE;
+            } else if (action.equals("Change Week")) {
+                url = EM_CREATE_EVENT_CHANGE_WEEK;
             } 
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");

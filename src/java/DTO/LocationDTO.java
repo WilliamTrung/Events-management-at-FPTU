@@ -9,7 +9,7 @@ package DTO;
  *
  * @author WilliamTrung
  */
-public class LocationDTO {
+public class LocationDTO implements Comparable<LocationDTO> {
     private String locationId;
     private int seat;
     private String locationName;
@@ -42,6 +42,12 @@ public class LocationDTO {
         this.locationId = locationId;
         this.seat = seat;
         this.locationName = locationName;
+    }
+
+    @Override
+    public int compareTo(LocationDTO o) {
+        int result = this.locationName.compareTo(o.locationName);
+        return result;
     }
     
     

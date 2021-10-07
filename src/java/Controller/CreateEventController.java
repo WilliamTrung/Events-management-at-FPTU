@@ -47,44 +47,58 @@ public class CreateEventController extends HttpServlet {
             String description = request.getParameter("description");
             String locationId = request.getParameter("locationId");
             String[] uri = request.getParameterValues("selectedTime");
-
-            //temp
-            SlotDAO sDao = new SlotDAO();
-            List<SlotDTO> list = sDao.getListSlots();
-            //end temp
-            //init
-            SlotDTO startSlot = null;
-            SlotDTO endSlot = null;
-            boolean check = false;
-            if (uri != null) {
-                List<SlotDTO> slots = AI.checkChosenSlot(uri, list);
-                if (slots == null) {
-                    request.setAttribute("ERROR_MESSAGE", "Event must occur at present or in future!");
-                } else {
-                    if (!slots.isEmpty()) {
-                        startSlot = slots.get(0);
-                        endSlot = slots.get(1);
-                    }
-                    if (startSlot == null || endSlot == null) {
-                        request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
-                    } else {
-                        check = true;
-                    }
-                }
-            } else {
-                request.setAttribute("ERROR_MESSAGE", "No slot is chose!");
+            boolean check = true;
+            if (title == null || title.equals("")) {
+                request.setAttribute("title", "Title must not be blank!");
+                check = false;
+            }
+            if (description == null || description.equals("")) {
+                request.setAttribute("description", "Description must not be blank!");
+                check = false;
+            }
+            if (locationId == null || locationId.equals("")) {
+                request.setAttribute("locationId", "Location must be chosen!");
+                check = false;
             }
             if (check) {
-                UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-                LocationDTO location = new LocationDAO().getLocationById(locationId);
-                Date createDate = Date.valueOf(LocalDate.now());
-                Calendar c = new Calendar();
-                Date startDate = c.convertToDate(uri[0].split("-")[1]);
-                EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, startSlot, endSlot, "Pending");
-                EventDAO edao = new EventDAO();
-                if (edao.createEvent(newEvent)) {
-                    url = SUCCESS;
-                    request.setAttribute("id", edao.getLastId());
+                //temp
+                SlotDAO sDao = new SlotDAO();
+                List<SlotDTO> list = sDao.getListSlots();
+                //end temp
+                //init
+                SlotDTO startSlot = null;
+                SlotDTO endSlot = null;
+                check = false;
+                if (uri != null) {
+                    List<SlotDTO> slots = AI.checkChosenSlot(uri, list);
+                    if (slots == null) {
+                        request.setAttribute("ERROR_MESSAGE", "Event must occur at present or in future!");
+                    } else {
+                        if (!slots.isEmpty()) {
+                            startSlot = slots.get(0);
+                            endSlot = slots.get(1);
+                        }
+                        if (startSlot == null || endSlot == null) {
+                            request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
+                        } else {
+                            check = true;
+                        }
+                    }
+                } else {
+                    request.setAttribute("ERROR_MESSAGE", "No slot is chose!");
+                }
+                if (check) {
+                    UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+                    LocationDTO location = new LocationDAO().getLocationById(locationId);
+                    Date createDate = Date.valueOf(LocalDate.now());
+                    Calendar c = new Calendar();
+                    Date startDate = c.convertToDate(uri[0].split("-")[1]);
+                    EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, startSlot, endSlot, "Pending");
+                    EventDAO edao = new EventDAO();
+                    if (edao.createEvent(newEvent)) {
+                        url = SUCCESS;
+                        request.setAttribute("id", edao.getLastId());
+                    }
                 }
             }
         } catch (Exception e) {

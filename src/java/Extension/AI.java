@@ -18,6 +18,23 @@ import java.util.List;
  * @author WilliamTrung
  */
 public class AI {
+    String id;
+    String message;
+
+    public AI(String id, String message) {
+        this.id = id;
+        this.message = message;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+    
+    
     public static List<SlotDTO> checkChosenSlot(String[] uri, List<SlotDTO> slots) {
         List<SlotDTO> list = new ArrayList<>();
         Calendar c = new Calendar();

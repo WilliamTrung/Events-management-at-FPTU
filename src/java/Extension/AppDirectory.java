@@ -37,7 +37,9 @@ public class AppDirectory {
                 check = mkDir(path, "images");
                 if (!check) {
                     path = "";
-                } 
+                } else {
+                    path+="\\"+"images";
+                }
             }
         }
         return path;
