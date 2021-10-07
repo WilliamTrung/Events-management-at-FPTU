@@ -8,6 +8,10 @@
         <servlet-name>ViewEventController</servlet-name>
         <servlet-class>Controller.ViewEventController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewEventDetailsController</servlet-name>
+        <servlet-class>Controller.ViewEventDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>ViewEventController</servlet-name>
         <url-pattern>/ViewEventController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewEventDetailsController</servlet-name>
+        <url-pattern>/ViewEventDetailsController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

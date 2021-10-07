@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  *
  * @author Admin
@@ -125,7 +126,7 @@ public class EventDAO {
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
                 SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
-                
+
                 list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
             }
         } catch (Exception e) {
@@ -242,16 +243,57 @@ public class EventDAO {
         }
         return rs;
     }
-    
-//    public static void main(String[] args) {
-//        EventDAO dao = new EventDAO();
-//        try {
-//            List<EventDTO> list = dao.getListEvent("");
-//            for (EventDTO o : list) {
-//                System.out.println(o.toString());
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(EventDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+
+    public EventDTO getEventById(int eventId) {
+        EventDTO event = null;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName "
+                    + "   FROM tblEvents e, tblStatusEvent s "
+                    + "   WHERE eventId = ? AND s.statusId = e.statusId";
+            stm = conn.prepareStatement(sql);
+            stm.setInt(1, eventId);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                SlotDAO sDao = new SlotDAO();
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String locationId = rs.getString("locationId");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDate = rs.getDate("startDate");
+                String startSlotId = rs.getString("startSlot");
+                String endSlotId = rs.getString("endSlot");
+                String status = rs.getString("statusName");
+
+                UserDTO user = new UserDAO().getUserById(userId);
+                SlotDTO startSlot = sDao.getSlotById(startSlotId);
+                SlotDTO endSlot = sDao.getSlotById(endSlotId);
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                event = new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status);
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getListEvent: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return event;
+    }
+
+        public static void main(String[] args) {
+        EventDAO dao = new EventDAO();
+        EventDTO event = dao.getEventById(2);
+            System.out.println(event.toString());
+        try {
+            List<EventDTO> list = dao.getListEvent("");
+            for (EventDTO o : list) {
+                System.out.println(o.toString());
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
 }
