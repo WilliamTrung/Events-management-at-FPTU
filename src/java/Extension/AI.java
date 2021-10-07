@@ -12,13 +12,16 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.netbeans.api.project.Project;
+import org.netbeans.api.project.ProjectUtils;
+import org.openide.filesystems.FileObject;
+import org.openide.filesystems.FileUtil;
 
 /**
  *
  * @author WilliamTrung
  */
 public class AI {
-
     public static List<SlotDTO> checkChosenSlot(String[] uri, List<SlotDTO> slots) {
         List<SlotDTO> list = new ArrayList<>();
         Calendar c = new Calendar();
@@ -43,16 +46,5 @@ public class AI {
             }
         }
         return list;
-    }
-    public static String getPicDirectory(String id){
-        String path = AppDirectory.getDataDir();      
-        File file = new File(path);
-        path = path + id + ".";
-        File[] list = file.listFiles();
-        for (File f : list) {
-            String temp = f.toString();
-            int a = 0;
-        }
-        return path;
     }
 }

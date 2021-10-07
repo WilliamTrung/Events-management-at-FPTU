@@ -6,9 +6,12 @@
 package Controller;
 
 import DAO.EventDAO;
+import Extension.AI;
 import Extension.AppDirectory;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
+import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import org.apache.commons.fileupload.*;
@@ -16,6 +19,9 @@ import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
+import org.netbeans.api.project.Project;
+import org.openide.filesystems.FileObject;
+import org.openide.util.Lookup;
 
 /**
  *
@@ -36,25 +42,16 @@ public class UploadController extends HttpServlet {
         int maxMemSize = 5000 * 1024;
         // Verify the content type
         String contentType = request.getContentType();
-        boolean checkDir = AppDirectory.DataDirChecking();
-        if (checkDir == true) {
-            /*
-            ClassLoader cl = getClass().getClassLoader();
-            file = new File(cl.getResource("./src/DAO/EventDAO.java").getFile());
-            String temp = file.getAbsolutePath();
-            if(file.exists()){
-                int a = 0;
-            }
-            */
+        String path = AppDirectory.getAppDir();
+        if (!path.equals("")) {
             //create dir based on eventId
-            String path = AppDirectory.getDataDir();
             if ((contentType.contains("multipart/form-data"))) {
                 DiskFileItemFactory factory = new DiskFileItemFactory();
                 // maximum size that will be stored in memory
                 factory.setSizeThreshold(maxMemSize);
 
                 // Location to save data that is larger than maxMemSize.
-                factory.setRepository(new File(AppDirectory.getTempDir()));
+                factory.setRepository(new File(path));
 
                 // Create a new file upload handler
                 ServletFileUpload upload = new ServletFileUpload((FileItemFactory) factory);
@@ -72,9 +69,10 @@ public class UploadController extends HttpServlet {
                         FileItem fi = (FileItem) i.next();
 
                         if (fi.isFormField()) {
-                            if (fi.getFieldName().equals("id")) {
+                            String name = fi.getFieldName();
+                            if (name.equals("id")) {
                                 id = Integer.parseInt(fi.getString());
-                            }
+                            } 
                         } else {
                             // Get the uploaded file parameters
                             /*

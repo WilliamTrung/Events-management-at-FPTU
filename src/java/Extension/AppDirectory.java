@@ -12,42 +12,35 @@ import java.io.File;
  * @author WilliamTrung
  */
 public class AppDirectory {
+//Nhut: APP_DIR = "Documents\\Github\\Events-management-at-FPTU\\web\\images";
+//Nam Anh: APP_DIR = "Dropbox\\PC\\Documents\\Github\\Events-management-at-FPTU\\web\\images";
 
-    private static final String APP_DIR = "EventManagementData";
-    private static final String DATA_DIR = "data";
-    private static final String TEMP_DIR = "temp";
+    private static final String T = "EventManagementFPT";
+    private static final String DATA_DIR = "web\\images";
+    private static final String APP_DIR = "Documents\\Github\\Events-management-at-FPTU";
 
-    public static String getAppDir(){
-        String userHome = System.getProperty("user.home") + "\\" + "Documents";
-        //now dir = Documents\
-        userHome += "\\" + APP_DIR;
-        return userHome;
-    }
-    public static String getTempDir(){
-        String tempDir = getAppDir();
-        tempDir += "\\" +TEMP_DIR;
-        //dir = Document\EventManagementData\temp
-        return tempDir;
-    }
-    public static String getDataDir(){
-        String dataDir = getAppDir();
-        dataDir += "\\" +DATA_DIR;
-        //dir = Document\EventManagementData\data
-        return dataDir;
-    }
-    public static boolean DataDirChecking() {
-        String userHome = System.getProperty("user.home");
-        //dir: Documents\
-        userHome = userHome + "\\" + "Documents";
-        //make dir: Documents\EventManagementData
-        boolean check = mkDir(userHome, APP_DIR);
-        //dir: Documents\EventManagementData
-        userHome += ("\\" + APP_DIR);
-        //make dir: Documents\EventManagementData\data
-        check = mkDir(userHome, DATA_DIR);
-        //make dir: Documents\EventManagementData\temp
-        check = mkDir(userHome, TEMP_DIR);
-        return check;
+    public static String getAppDir() {
+        String path = System.getProperty("user.home");
+        path += "\\" + APP_DIR;
+        String t = path + "\\" + T;
+        boolean check;
+        File file = new File(path);
+        if (file.exists()) {
+            file = new File(t);
+            if (file.exists()) {
+                check = mkDir( t +"\\"+"web", "images");
+                if (check) {
+                    path += "\\"+DATA_DIR;
+                }
+            } else {
+                path = path+"\\"+"web";
+                check = mkDir(path, "images");
+                if (!check) {
+                    path = "";
+                } 
+            }
+        }
+        return path;
     }
 
     public static boolean mkDir(String path, String foldername) {
@@ -63,7 +56,8 @@ public class AppDirectory {
         }
         return check;
     }
-    public static File getFile(String path, String foldername,String filename){
+
+    public static File getFile(String path, String foldername, String filename) {
         File file = new File(path + "\\" + foldername + "\\" + filename);
         return file;
     }

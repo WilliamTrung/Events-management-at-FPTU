@@ -4,6 +4,7 @@
     Author     : WilliamTrung
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -16,8 +17,11 @@
 
         Choose your picture to upload: </br>
         <form action="UploadController" method="POST" enctype = "multipart/form-data">
-            <input type="hidden" name="id" value="${requestScope.id}"/>
+            <c:if test="${not empty requestScope.id}">
+                <input type="hidden" name="id" value="${requestScope.id}"/>
+            </c:if>         
             <input type="file" name="file" size="50" accept="image/*"/>
+            <input type="hidden" name="path" value="../images/"/>
             </br>
             <button type="submit" name="action" value="Upload File">Upload File</button>
         </form>

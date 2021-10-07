@@ -4,6 +4,8 @@
     Author     : Admin
 --%>
 
+<%@page import="DTO.EventDTO"%>
+<%@page import="java.util.List"%>
 <%@page import="Extension.AI"%>
 <%@page import="Extension.AppDirectory"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -20,29 +22,13 @@
             response.setDateHeader("Expires", 0);
         %>
     </head>
-    <body>
-        <%
-            if (session.getAttribute("CURRENT_USER") == null) {
-                response.sendRedirect("login.jsp");
-            }
-            //url to data folder containing events picture
-            String url = AppDirectory.getDataDir();
-            url = url + "/";
-            url =url.replace("\\", "/");
-            pageContext.setAttribute("DATA_PATH", url, PageContext.PAGE_SCOPE);
-        %>
+    <body>      
         <p>${sessionScope.EVENT_MESSAGE}</p>
         <c:if test="${not empty sessionScope.LIST_EVENT}">
             <c:forEach var="event" varStatus="counter" items="${sessionScope.LIST_EVENT}">
                 <h2>${counter.count}</h2>
-
-                <p>file:${pageScope.DATA_PATH}${event.eventId}.png</p>
-                <img src="file:${pageScope.DATA_PATH}${event.eventId}.png" />
-                <!--width="100" height="120" 
-                <object data="file:///${pageScope.DATA_PATH}default.png" type="image/png">
-                    <img src="file:///${pageScope.DATA_PATH}${event.eventId}.png" />
-                </object>
-                -->
+                <!-- -->
+                <img src="./images/${event.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
                 <p>${event.status}</p>
                 <p>${event.user.username}</p>
                 <p>${event.title}</p>

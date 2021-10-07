@@ -238,7 +238,7 @@ public class EventDAO {
                 rs = list.size();
             }
         } catch (SQLException ex) {
-            System.out.println(ex);
+            log("Error at EventDAO - countListEvent: " + ex.toString());
         }
         return rs;
     }
