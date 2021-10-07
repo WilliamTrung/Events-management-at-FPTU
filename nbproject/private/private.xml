@@ -3,27 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/fileUpload.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/UploadController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewOwnEvent.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/header.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Extension/AI.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/CalendarController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/MainController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Extension/AppDirectory.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/testWeek.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/CreateEventController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/LocationDAO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/LocationDTO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/mainPage.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewEventDetails.jsp</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/LoginGoogleServlet.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/EventDAO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/EventDTO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewOwnEvent.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/header.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewEventDetailsController.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewEventController.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/createEvent.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/UserDAO.java</file>
             <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewEvent.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/SlotDTO.java</file>
         </group>
     </open-files>
 </project-private>
