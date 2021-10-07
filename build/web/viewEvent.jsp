@@ -36,8 +36,8 @@
                 <p>${event.location.locationName}</p>
                 <p>${event.createDatetime}</p>
                 <p>${event.startDatetime}</p>
-                <p>${event.startSlot.startTime}</p>
-                <p>${event.endSlot.endTime}</p>
+                <p>${event.startSlot.getStart()}</p>
+                <p>${event.endSlot.getEnd()}</p>
             </c:forEach>
         </c:if>
         <div class="switchpage">

@@ -30,7 +30,7 @@ public class AppDirectory {
             if (file.exists()) {
                 check = mkDir( t +"\\"+"web", "images");
                 if (check) {
-                    path += "\\"+DATA_DIR;
+                    path += "\\"+T+"\\"+DATA_DIR;
                 }
             } else {
                 path = path+"\\"+"web";

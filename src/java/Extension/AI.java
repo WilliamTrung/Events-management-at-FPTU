@@ -7,15 +7,11 @@ package Extension;
 
 import DAO.SlotDAO;
 import DTO.SlotDTO;
-import java.io.File;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.netbeans.api.project.Project;
-import org.netbeans.api.project.ProjectUtils;
-import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileUtil;
+
 
 /**
  *
@@ -44,6 +40,8 @@ public class AI {
                 list.add(startSlot);
                 list.add(endSlot);
             }
+        } else {
+            list = null;
         }
         return list;
     }

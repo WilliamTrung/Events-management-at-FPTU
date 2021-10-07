@@ -5,13 +5,9 @@
  */
 package Controller;
 
-import DAO.EventDAO;
-import Extension.AI;
 import Extension.AppDirectory;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
-import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import org.apache.commons.fileupload.*;
@@ -19,9 +15,6 @@ import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import org.netbeans.api.project.Project;
-import org.openide.filesystems.FileObject;
-import org.openide.util.Lookup;
 
 /**
  *

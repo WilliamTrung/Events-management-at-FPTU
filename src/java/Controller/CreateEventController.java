@@ -58,20 +58,24 @@ public class CreateEventController extends HttpServlet {
             boolean check = false;
             if (uri != null) {
                 List<SlotDTO> slots = AI.checkChosenSlot(uri, list);
-                if (!slots.isEmpty()) {
-                    startSlot = slots.get(0);
-                    endSlot = slots.get(1);
-                }
-                if (startSlot == null || endSlot == null) {
-                    request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
+                if (slots == null) {
+                    request.setAttribute("ERROR_MESSAGE", "Event must occur at present or in future!");
                 } else {
-                    check = true;
+                    if (!slots.isEmpty()) {
+                        startSlot = slots.get(0);
+                        endSlot = slots.get(1);
+                    }
+                    if (startSlot == null || endSlot == null) {
+                        request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
+                    } else {
+                        check = true;
+                    }
                 }
             } else {
                 request.setAttribute("ERROR_MESSAGE", "No slot is chose!");
             }
             if (check) {
-                UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
+                UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 Date createDate = Date.valueOf(LocalDate.now());
                 Calendar c = new Calendar();
