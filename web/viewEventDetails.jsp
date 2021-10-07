@@ -14,17 +14,17 @@
         <title>Event Details</title>
     </head>
     <body>
-        <c:if test="${sessionScope.SELECTED_EVENT!=null}">
-            <img src="./images/${event.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
-            <h2>${sessionScope.SELECTED_EVENT.title}</h2>
-            <p>Status: ${sessionScope.SELECTED_EVENT.status}</p>
-            <p>Author: ${sessionScope.SELECTED_EVENT.user.username}</p>
-            <p>Created date: ${sessionScope.SELECTED_EVENT.createDatetime}</p>
-            <p>Start date: ${sessionScope.SELECTED_EVENT.startDatetime}</p>
-            <p>Start time: ${sessionScope.SELECTED_EVENT.startSlot.startTime}</p>
-            <p>End time: ${sessionScope.SELECTED_EVENT.endSlot.endTime}</p>
-            <p>Description: ${sessionScope.SELECTED_EVENT.description}</p>
-            <p>Location: ${sessionScope.SELECTED_EVENT.location.locationName}</p>           
+        <c:if test="${SELECTED_EVENT!=null}">
+            <img src="./images/${SELECTED_EVENT.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
+            <h2>${SELECTED_EVENT.title}</h2>
+            <p>Status: ${SELECTED_EVENT.status}</p>
+            <p>Author: ${SELECTED_EVENT.user.username}</p>
+            <p>Created date: ${SELECTED_EVENT.createDatetime}</p>
+            <p>Start date: ${SELECTED_EVENT.startDatetime}</p>
+            <p>Start time: ${SELECTED_EVENT.startSlot.startTime}</p>
+            <p>End time: ${SELECTED_EVENT.endSlot.endTime}</p>
+            <p>Description: ${SELECTED_EVENT.description}</p>
+            <p>Location: ${SELECTED_EVENT.location.locationName}</p>           
         </c:if>
             <button>
                 <a href="ViewEventController">Back</a>

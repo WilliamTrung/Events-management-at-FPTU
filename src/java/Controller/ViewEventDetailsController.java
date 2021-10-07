@@ -42,7 +42,7 @@ public class ViewEventDetailsController extends HttpServlet {
             EventDAO edao = new EventDAO();
             EventDTO event = edao.getEventById(eventId);
             if (event!=null) {
-                session.setAttribute("SELECTED_EVENT", event);
+                request.setAttribute("SELECTED_EVENT", event);
                 url=SUCCESS;
             }else{
                 session.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");
