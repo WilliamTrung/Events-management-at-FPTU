@@ -29,12 +29,9 @@
                 <h2>${counter.count}</h2>
                 <!-- -->
                 <img src="./images/${event.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
-                <p>${event.status}</p>
-                <p>${event.user.username}</p>
-                <p>${event.title}</p>
-                <p>${event.description}</p>
-                <p>${event.location.locationName}</p>
-                <p>${event.createDatetime}</p>
+                <h3>
+                    <a href="ViewEventDetailsController?eventId=${event.eventId}">${event.title}</a>
+                </h3>
                 <p>${event.startDatetime}</p>
                 <p>${event.startSlot.getStart()}</p>
                 <p>${event.endSlot.getEnd()}</p>
