@@ -12,7 +12,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-    <p>Thử tiếng việt </p>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>User Management</title>
         <%

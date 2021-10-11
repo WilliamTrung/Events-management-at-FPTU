@@ -7,7 +7,9 @@ package Controller;
 
 import DAO.EventDAO;
 import DTO.EventDTO;
+import Extension.AI;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -28,15 +30,19 @@ public class ViewEventDetailsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            HttpSession session = request.getSession();
             int eventId = Integer.parseInt(request.getParameter("eventId"));
             String search = request.getParameter("search");
             int index = Integer.parseInt(request.getParameter("index"));
             EventDAO edao = new EventDAO();
             EventDTO event = edao.getEventById(eventId);
             if (event!=null) {
+                List<String> descStrings = AI.detectEmbededLinks(event.getDescription());
+                request.setAttribute("DESCRIPTION", descStrings);
                 request.setAttribute("SELECTED_EVENT", event);
                 request.setAttribute("search", search);
                 request.setAttribute("index", index);
+                session.setAttribute("index", index);
                 url=SUCCESS;
             }else{
                 request.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");

@@ -15,7 +15,7 @@
     <body>
         Choose your picture to upload: </br>
         <c:if test="${not empty requestScope.id}">
-            <img src="./images/${id}.png" width="100" height="120" />
+            <img src="./images/${id}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
         </c:if>  
 
         <form action="UploadController" method="POST" enctype = "multipart/form-data">
@@ -28,7 +28,6 @@
             <button type="submit" name="action" value="Upload File">Upload File</button>
         </form>
         <p>${requestScope.ERROR_MESSAGE}</p>
-        ${sessionScope.CURRENT_USER.role}
         <c:if test="${sessionScope.CURRENT_USER.role eq 'Event Manager'}">
             <button><a href="ViewOwnedEventController">Cancel</a></button>
         </c:if>

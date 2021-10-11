@@ -11,6 +11,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -18,21 +20,11 @@ import java.util.List;
  * @author WilliamTrung
  */
 public class AI {
-    String id;
-    String message;
-
-    public AI(String id, String message) {
-        this.id = id;
-        this.message = message;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getMessage() {
-        return message;
-    }
+    private static final Pattern urlPattern = Pattern.compile(
+            "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
+            Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
     
     
     public static List<SlotDTO> checkChosenSlot(String[] uri, List<SlotDTO> slots) {
@@ -91,6 +83,30 @@ public class AI {
             }
         } else {
             list = null;
+        }
+        return list;
+    }
+    public static List<String> detectEmbededLinks(String description){
+        List<String> list = new ArrayList<>();
+        Matcher matcher = urlPattern.matcher(description);
+        String embed = "embed/";
+        String youtube ="watch?v=";
+        int count = 0;
+        int index = 0;
+        while (matcher.find()) {
+            int matchStart = matcher.start(1);
+            int matchEnd = matcher.end();
+            // now you have the offsets of a URL match
+            list.add(description.substring(index, matchStart));       
+            count++;
+            list.add(description.substring(matchStart, matchEnd));
+            if (list.get(count).contains(youtube)) {
+                String t = list.get(count);
+                String temp = t.replace(youtube, embed);
+                list.set(count, temp);
+            }           
+            count++;
+            index = matchEnd+1;
         }
         return list;
     }
