@@ -5,14 +5,12 @@
  */
 package Controller;
 
-import DAO.EventDAO;
 import DAO.FollowedEventDAO;
 import DTO.EventDTO;
 import DTO.UserDTO;
-import Extension.AI;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,41 +18,28 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author SE151264
+ * @author WilliamTrung
  */
-public class ViewEventDetailsController extends HttpServlet {
-
-    private final String ERROR = "error.jsp";
+@WebServlet(name = "FollowEventController", urlPatterns = {"/FollowEventController"})
+public class FollowEventController extends HttpServlet {
     private final String SUCCESS = "viewEventDetails.jsp";
-
+    private final String FAIL = "viewEventDetails.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = FAIL;
         try {
             HttpSession session = request.getSession();
-            int eventId = Integer.parseInt(request.getParameter("eventId"));
-            String search = request.getParameter("search");
-            int index = Integer.parseInt(request.getParameter("index"));
-            EventDAO edao = new EventDAO();
-            EventDTO event = edao.getEventById(eventId);
-            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-            if (event!=null) {
-                List<String> descStrings = AI.detectEmbededLinks(event.getDescription());
-                int follow = new FollowedEventDAO().checkFollow(user, event);
-                request.setAttribute("follow", follow);
-                request.setAttribute("DESCRIPTION", descStrings);
-                request.setAttribute("SELECTED_EVENT", event);
-                request.setAttribute("search", search);
-                request.setAttribute("index", index);
-                session.setAttribute("index", index);
+            EventDTO selected_event = (EventDTO)session.getAttribute("SELECTED_EVENT");
+            UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
+            FollowedEventDAO fDao = new FollowedEventDAO();
+            boolean check = fDao.followEvent(user, selected_event);
+            if (check) {
                 url=SUCCESS;
-            }else{
-                request.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");
             }
         } catch (Exception e) {
-            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve selected event!");
-        }finally{
+            log("Error at FollowEventController: "+e.toString());
+        } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

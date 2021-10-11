@@ -30,10 +30,11 @@
             <p>Start date: ${SELECTED_EVENT.startDatetime}</p>
             <p>Start time: ${SELECTED_EVENT.startSlot.startTime}</p>
             <p>End time: ${SELECTED_EVENT.endSlot.endTime}</p>
+            
             <p>   
                 <%
                     //test iframe
-                    String description = "event ngay 10-2-2021 Youtube:https://www.youtube.com/watch?v=MzboOkN8ojs anotherYoutube with space: https://www.youtube.com/watch?v=06-XXOTP3Gc&list=RD06-XXOTP3Gc&start_radio=1";
+                    String description = "https://www.youtube.com/watch?v=MzboOkN8ojs  https://youtu.be/kFZo7yJ2ONg event ngay 10-2-2021 Youtube:https://www.youtube.com/watch?v=MzboOkN8ojs anotherYoutube with space: https://www.youtube.com/watch?v=06-XXOTP3Gc&list=RD06-XXOTP3Gc&start_radio=1";
                     List<String> list = AI.detectEmbededLinks(description);
                     request.setAttribute("DESCRIPTION", list);
                     //end test

@@ -81,16 +81,16 @@ CREATE TABLE tblComments(
 	--replyTo nullable because user does not reply anytime
 	replyTo INT,
 )
-CREATE TABLE tblFollowing(
-	userId NVARCHAR(50) REFERENCES tblUsers,
-	eventId INT REFERENCES tblEvents,
-	follow BIT NOT NULL,
+CREATE TABLE tblFollowedEvent(
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
+	eventId INT REFERENCES tblEvents NOT NULL,
+	follow INT NOT NULL,
 	PRIMARY KEY (userId,eventId),
 )
 CREATE TABLE tblVotes(
 	userId NVARCHAR(50) REFERENCES tblUsers,
 	eventId INT REFERENCES tblEvents,
-	vote BIT NOT NULL,
+	vote INT NOT NULL,
 	PRIMARY KEY (userId,eventId),
 )
 CREATE TABLE tblChats(

@@ -91,6 +91,10 @@ public class AI {
         Matcher matcher = urlPattern.matcher(description);
         String embed = "embed/";
         String youtube ="watch?v=";
+        String youtube_share = "youtu.be";
+        String youtube_share_embeded = "www.youtube.com/"+embed;
+        //https://youtu.be/kFZo7yJ2ONg
+        //https://www.youtube.com/watch?v=kFZo7yJ2ONg&list=RDMMAlXfbVpDUdo
         int count = 0;
         int index = 0;
         while (matcher.find()) {
@@ -104,7 +108,12 @@ public class AI {
                 String t = list.get(count);
                 String temp = t.replace(youtube, embed);
                 list.set(count, temp);
-            }           
+            } else if (list.get(count).contains(youtube_share)) {
+                String t = list.get(count);
+                String temp = t.replace(youtube_share, youtube_share_embeded);
+                list.set(count, temp);
+            }
+  
             count++;
             index = matchEnd+1;
         }
