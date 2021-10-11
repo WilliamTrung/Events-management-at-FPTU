@@ -110,4 +110,12 @@ public class AI {
         }
         return list;
     }
+    
+    public static void main(String[] args) {
+        String url="https://www.youtube.com/watch?v=5Lm6NModzTM";
+        List<String> embed = detectEmbededLinks(url);
+        for (String s : embed) {
+            System.out.println(s);
+        }
+    }
 }

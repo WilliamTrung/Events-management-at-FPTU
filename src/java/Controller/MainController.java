@@ -5,17 +5,14 @@
  */
 package Controller;
 
-import DTO.EventDTO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 /**
  *
@@ -36,6 +33,7 @@ public class MainController extends HttpServlet {
     private final String EM_CREATE_EVENT_CHANGE_WEEK = "CalendarController";
     private final String EM_VIEW_EVENT_EDIT = "ViewOwnedEventController";
     private final String EM_UPDATE_EVENT= "UpdateEventController";
+    private final String USER_VIEW_POST = "ViewPostController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -72,7 +70,9 @@ public class MainController extends HttpServlet {
                 url = EM_CREATE_EVENT_CHANGE_WEEK;
             } else if (action.equals("Update Event")) {
                 url = EM_UPDATE_EVENT;
-            } 
+            } else if (action.equals("LoadPosts")){
+                url = USER_VIEW_POST;
+            }
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());

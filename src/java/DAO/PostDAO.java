@@ -5,10 +5,7 @@
  */
 package DAO;
 
-import DTO.EventDTO;
-import DTO.LocationDTO;
 import DTO.PostDTO;
-import DTO.SlotDTO;
 import DTO.UserDTO;
 import Utils.DBConnection;
 import static java.rmi.server.LogStream.log;
@@ -36,7 +33,7 @@ public class PostDAO {
                     + "					postId, userId, title, content, video, createDate,s.statusName AS status \n"
                     + "				FROM tblPosts e, tblStatusPost s \n"
                     + "				WHERE title like ? AND e.statusId = s.statusId)\n"
-                    + "SELECT postId, userId, title, content, video, createDatetime, status \n"
+                    + "SELECT postId, userId, title, content, video, createDate, status \n"
                     + "FROM tblPostPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*?";
             stm = conn.prepareStatement(sql);
             stm.setString(1, "%" + search + "%");
@@ -130,5 +127,80 @@ public class PostDAO {
             DBConnection.closeQueryConnection(conn, stm, null);
         }
         return check;
+    }
+
+    public PostDTO getPostById(String postId) {
+        PostDTO post = null;
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT userId, title, content, video, createDate, s.statusName\n"
+                    + "                    FROM tblPosts e, tblStatusPost s\n"
+                    + "                    WHERE e.postId=? AND e.statusId = s.statusId";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, postId);
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String video = rs.getString("video");
+                Date createDate = rs.getDate("createDate");
+                String statusName = rs.getString("statusName");
+
+                UserDTO user = new UserDAO().getUserById(userId);
+
+                post = new PostDTO(postId, user, title, content, video, createDate, statusName);
+            }
+        } catch (Exception e) {
+            log("Error at PostDAO - getPostById: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return post;
+    }
+
+    public int countPost() {
+        int rs = 0;
+        PostDAO dao = new PostDAO();
+        List<PostDTO> list = dao.getListPost("");
+        rs = list.size();
+        return rs;
+    }
+
+    private List<PostDTO> getListPost(String search) {
+        List<PostDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT postId, userId, title, content, video, createDate, s.statusName\n"
+                    + "                    FROM tblPosts e, tblStatusPost s\n"
+                    + "                    WHERE title LIKE ? AND e.statusId = s.statusId";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, "%" + search + "%");
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                String postId = rs.getString("postId");
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String content = rs.getString("content");
+                String video = rs.getString("video");
+                Date createDate = rs.getDate("createDate");
+                String statusName = rs.getString("statusName");
+
+                UserDTO user = new UserDAO().getUserById(userId);
+
+                list.add(new PostDTO(postId, user, title, content, video, createDate, statusName));
+            }
+        } catch (Exception e) {
+            log("Error at PostDAO - getListPostByPage: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return list;
     }
 }

@@ -26,7 +26,12 @@
         <c:url var="view_user" value="MainController">
             <c:param name="search" value=""></c:param>    
             <c:param name="action" value="LoadUsers"></c:param>           
-        </c:url>    
+        </c:url>   
+        <c:url var="view_post" value="MainController">
+            <c:param name="index" value="1"></c:param>   
+            <c:param name="search" value=""></c:param>  
+            <c:param name="action" value="LoadPosts"></c:param>      
+        </c:url>
         <c:url var="logoutLink" value="MainController">
             <c:param name="action" value="Logout"/>
         </c:url>
@@ -34,7 +39,8 @@
             <div>
                 <c:if test="${sessionScope.MODE ne 'ADMIN_MODE'}">
                     <a href="${view_event}"></i>Main Page</a>
-                    <a href="${view_event}">Events</a>   
+                    <a href="${view_event}">Events</a>  
+                    <a href="${view_post}">Posts</a>
                 </c:if>
                 <c:if test="${sessionScope.MODE eq 'USER_MODE'}">
                     <a href="${view_user}">Switch to Admin mode</a>
