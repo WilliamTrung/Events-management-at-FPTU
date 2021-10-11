@@ -26,9 +26,9 @@
         %>
         <form action="MainController" method="GET">
             <section>
-                Title: <input type="text" name="title"/> <p>${requestScope.title}</p></br>
-                Description: <input type="text" name="description"/> <p>${requestScope.description}</p></br> 
-                Location: <p>${requestScope.locationId}</p>
+                Title: <input type="text" name="title"/> <p>${requestScope.ERROR_TITLE}</p></br>
+                Description: <input type="text" name="description"/> <p>${requestScope.ERROR_DESCRIPTION}</p></br> 
+                Location: <p>${requestScope.ERROR_LOCATION}</p>
                 <select name="locationId">
                     <c:forEach var="location" items="${requestScope.LIST_LOCATION}">
                         <option value="${location.locationId}">
@@ -53,12 +53,14 @@
                         week = 0;
                     }
                     List<SlotDTO> slotList = new SlotDAO().getListSlots();
-                    List<String> daysOfWeek = new Calendar().getWeek(week);
+                    List<String> temp = new Calendar().getWeek(week);
+                    List<String> daysOfWeek = new Calendar().splitDay(temp);
                     request.setAttribute("LIST_DAY", daysOfWeek);
                     request.setAttribute("LIST_SLOT", slotList);
                     request.setAttribute("week", week);
                 %>
                 <table border="2">
+                    <input type="hidden" name="where" value="createEvent.jsp"/>
                     <input type="hidden" name="action" value="Change Week"/>
                     <input type="hidden" name="week" value="${requestScope.week}"/>
                     <button name="weekChange" value="-">Previous Week</button>

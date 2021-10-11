@@ -87,7 +87,45 @@ public class EventDAO {
         }
         return list;
     }
-    
+
+    public List<EventDTO> getListOwnedEvent(UserDTO user) throws SQLException {
+        List<EventDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName "
+                    + "   FROM tblEvents e, tblStatusEvent s "
+                    + "   WHERE userId = ? AND e.statusId = s.statusId";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, user.getUserId());
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                SlotDAO sDao = new SlotDAO();
+                int eventId = rs.getInt("eventId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String locationId = rs.getString("locationId");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDate = rs.getDate("startDate");
+                String startSlotId = rs.getString("startSlot");
+                String endSlotId = rs.getString("endSlot");
+                String status = rs.getString("statusName");
+
+                SlotDTO startSlot = sDao.getSlotById(startSlotId);
+                SlotDTO endSlot = sDao.getSlotById(endSlotId);
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getListOwnedEvent: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return list;
+    }
+
     public List<EventDTO> getListEventByPage(String search, int index, int pageSize) throws SQLException {
         List<EventDTO> list = new ArrayList<>();
         Connection conn = null;
@@ -123,6 +161,58 @@ public class EventDAO {
                 String status = rs.getString("status");
 
                 UserDTO user = new UserDAO().getUserById(userId);
+                LocationDTO location = new LocationDAO().getLocationById(locationId);
+                SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
+                SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
+
+                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getListEventByPage: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return list;
+    }
+
+    public List<EventDTO> getListEventByPageByOwner(UserDTO user, String search, int index, int pageSize) throws SQLException {
+        List<EventDTO> list = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDate) ) AS RowNum,\n"
+                    + "					eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName AS status \n"
+                    + "				FROM tblEvents e, tblStatusEvent s \n"
+                    + "				WHERE userId = ? AND title like ? AND e.statusId = s.statusId)\n"
+                    + "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, status \n"
+                    + "FROM tblEventPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*?";
+            stm = conn.prepareStatement(sql);
+            if (search == null) {
+                search = "";
+            }
+            stm.setString(1, user.getUserId());
+            stm.setString(2, "%" + search + "%");
+            //index*pageSize - (pageSize-1) AND index*pageSize
+            stm.setInt(3, index);
+            stm.setInt(4, pageSize);
+            stm.setInt(5, pageSize);
+            stm.setInt(6, index);
+            stm.setInt(7, pageSize);
+            rs = stm.executeQuery();
+            while (rs.next()) {
+                int eventId = rs.getInt("eventId");
+                String userId = rs.getString("userId");
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                String locationId = rs.getString("locationId");
+                Date createDatetime = rs.getDate("createDatetime");
+                Date startDate = rs.getDate("startDate");
+                String startSlotId = rs.getString("startSlot");
+                String endSlotId = rs.getString("endSlot");
+                String status = rs.getString("status");
+
                 LocationDTO location = new LocationDAO().getLocationById(locationId);
                 SlotDTO startSlot = new SlotDAO().getSlotById(startSlotId);
                 SlotDTO endSlot = new SlotDAO().getSlotById(endSlotId);
@@ -177,30 +267,32 @@ public class EventDAO {
         PreparedStatement stm = null;
         boolean check = false;
         try {
-            conn = Utils.DBConnection.getConnection1();
-            String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, startDate=?, startSlot=?, endSlot=?, statusId = (SELECT statusId FROM tblStatusEvent WHERE statusName = ?) "
-                    + "WHERE eventId=? AND userId=?";
-            stm = conn.prepareStatement(sql);
-            int eventId = newEvent.getEventId();
-            String userId = newEvent.getUser().getUserId();
-            String title = newEvent.getTitle();
-            String description = newEvent.getDescription();
-            String locationId = newEvent.getLocation().getLocationId();
-            Date startDate = newEvent.getStartDatetime();
-            String startSlotId = newEvent.getStartSlot().getSlotId();
-            String endSlotId = newEvent.getEndSlot().getSlotId();
-            String status = newEvent.getStatus();
+            if (newEvent.getUser() == null) {
+                check = false;
+            } else {
+                conn = Utils.DBConnection.getConnection();
+                String sql = "UPDATE tblEvents SET title=?, description=?, locationId=?, startDate=?, startSlot=?, endSlot=?, statusId = (SELECT statusId FROM tblStatusEvent WHERE statusName = ?) "
+                        + "WHERE eventId=?";
+                stm = conn.prepareStatement(sql);
+                int eventId = newEvent.getEventId();
+                String title = newEvent.getTitle();
+                String description = newEvent.getDescription();
+                String locationId = newEvent.getLocation().getLocationId();
+                Date startDate = newEvent.getStartDatetime();
+                String startSlotId = newEvent.getStartSlot().getSlotId();
+                String endSlotId = newEvent.getEndSlot().getSlotId();
+                String status = newEvent.getStatus();
 
-            stm.setString(1, title);
-            stm.setString(2, description);
-            stm.setString(3, locationId);
-            stm.setDate(4, startDate);
-            stm.setString(5, startSlotId);
-            stm.setString(6, endSlotId);
-            stm.setString(7, status);
-            stm.setInt(8, eventId);
-            stm.setString(9, userId);
-            check = stm.executeUpdate(sql) > 0;
+                stm.setString(1, title);
+                stm.setString(2, description);
+                stm.setString(3, locationId);
+                stm.setDate(4, startDate);
+                stm.setString(5, startSlotId);
+                stm.setString(6, endSlotId);
+                stm.setString(7, status);
+                stm.setInt(8, eventId);
+                check = stm.executeUpdate() > 0;
+            }
         } catch (Exception e) {
             log("Error at EventDAO - updateEvent: " + e.toString());
         } finally {
@@ -214,7 +306,7 @@ public class EventDAO {
         Connection conn = null;
         PreparedStatement stm = null;
         try {
-            conn = Utils.DBConnection.getConnection1();
+            conn = Utils.DBConnection.getConnection();
             if (conn != null) {
                 String sql = " DELETE tblEvents "
                         + " WHERE eventID=? ";
@@ -240,6 +332,20 @@ public class EventDAO {
             }
         } catch (SQLException ex) {
             log("Error at EventDAO - countListEvent: " + ex.toString());
+        }
+        return rs;
+    }
+
+    public int countListOwnedEvent(UserDTO user) {
+        int rs = 0;
+        EventDAO dao = new EventDAO();
+        try {
+            List<EventDTO> list = dao.getListOwnedEvent(user);
+            if (!list.isEmpty()) {
+                rs = list.size();
+            }
+        } catch (SQLException ex) {
+            log("Error at EventDAO - countListOwnedEvent: " + ex.toString());
         }
         return rs;
     }
@@ -283,10 +389,10 @@ public class EventDAO {
         return event;
     }
 
-        public static void main(String[] args) {
+    public static void main(String[] args) {
         EventDAO dao = new EventDAO();
         EventDTO event = dao.getEventById(2);
-            System.out.println(event.toString());
+        System.out.println(event.toString());
         try {
             List<EventDTO> list = dao.getListEvent("");
             for (EventDTO o : list) {

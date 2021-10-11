@@ -6,12 +6,10 @@
 package Controller;
 
 import DAO.EventDAO;
-import DAO.LocationDAO;
 import DTO.EventDTO;
-import DTO.LocationDTO;
+import Extension.Calendar;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,56 +21,39 @@ import javax.servlet.http.HttpSession;
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "CalendarController", urlPatterns = {"/CalendarController"})
-public class CalendarController extends HttpServlet {   
-    
+@WebServlet(name = "UpdateEventViewController", urlPatterns = {"/UpdateEventViewController"})
+public class UpdateEventViewController extends HttpServlet {
+    private final String ERROR = "error.jsp";
+    private final String SUCCESS = "updateEvent.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        final String FAIL = request.getParameter("where");
-        final String SUCCESS = request.getParameter("where");
-        String url = FAIL;
+        String url = ERROR;
         try {
             HttpSession session = request.getSession();
-            String weekChange = request.getParameter("weekChange");
-            String temp = request.getParameter("week");
-            EventDTO event = (EventDTO) session.getAttribute("SELECTED_EVENT");
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            String locationId = request.getParameter("locationId");
-
-            LocationDTO location;
-            if (locationId == null) {
-                location = event.getLocation();
-            } else {
-                location = new LocationDAO().getLocationById(locationId);
+            int eventId = Integer.parseInt(request.getParameter("eventId"));
+            String search = request.getParameter("search");
+            String temp = request.getParameter("index");
+            int index =1;
+            if (temp!=null && !temp.isEmpty()) {
+                index = Integer.parseInt(temp);
             }
-             
-            event.setTitle(title);
-            event.setDescription(description);
-            event.setLocation(location);
-            int week = 0;
-            if(temp!=null){
-                week = Integer.parseInt(temp);
+            EventDAO edao = new EventDAO();
+            EventDTO event = edao.getEventById(eventId);
+            if (event!=null) {
+                Calendar c= new Calendar();
+                int week = c.searchWeek(event.getStartDatetime());
+                request.setAttribute("week", week);
+                session.setAttribute("SELECTED_EVENT", event);
+                request.setAttribute("search", search);
+                session.setAttribute("index", index);
+                url=SUCCESS;
+            }else{
+                request.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");
             }
-            if (weekChange.equals("-")) {
-                if(week>0){
-                    week--;
-                }
-            } else {
-                week++;
-            }
-            /*
-            request.setAttribute("title", title);
-            request.setAttribute("description", description);
-            request.setAttribute("location", location);
-            */
-            session.setAttribute("SELECTED_EVENT", event);
-            request.setAttribute("week", week);
-            url = SUCCESS;
         } catch (Exception e) {
-            e.toString();
-        } finally {
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve selected event!");
+        }finally{
             request.getRequestDispatcher(url).forward(request, response);
         }
     }

@@ -18,6 +18,11 @@
             <c:param name="search" value=""></c:param>  
             <c:param name="action" value="LoadEvents"></c:param>           
         </c:url>
+        <c:url var="view_event_edit" value="MainController">
+            <c:param name="index" value="1"></c:param>   
+            <c:param name="search" value=""></c:param>  
+            <c:param name="action" value="LoadEventsEditing"></c:param>           
+        </c:url>
         <c:url var="view_user" value="MainController">
             <c:param name="search" value=""></c:param>    
             <c:param name="action" value="LoadUsers"></c:param>           
@@ -40,6 +45,7 @@
                 </c:if>
                 <c:if test="${sessionScope.CURRENT_USER.role eq 'Event Manager'}">
                     <a href="createEvent.jsp">Create Event</a>
+                    <a href="${view_event_edit}">Edit Event</a>
                 </c:if>
                 <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
                 <a href="${logoutLink}">Logout</a>  

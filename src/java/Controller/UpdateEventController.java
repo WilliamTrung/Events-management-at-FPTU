@@ -15,6 +15,7 @@ import DTO.UserDTO;
 import Extension.AI;
 import Extension.Calendar;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -29,23 +30,28 @@ import javax.servlet.http.HttpSession;
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "CreateEventController", urlPatterns = {"/CreateEventController"})
-public class CreateEventController extends HttpServlet {
+@WebServlet(name = "UpdateEventController", urlPatterns = {"/UpdateEventController"})
+public class UpdateEventController extends HttpServlet {
 
-    private final String ERROR = "createEvent.jsp";
     private final String SUCCESS = "fileUpload.jsp";
+    private final String FAIL = "UpdateEventViewController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        HttpSession session = request.getSession();
+        String url = FAIL;
         try {
+            HttpSession session = request.getSession();
+            String Id = request.getParameter("eventId");
+            int eventId = -1;
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String locationId = request.getParameter("locationId");
             String[] uri = request.getParameterValues("selectedTime");
             boolean check = true;
+            if (Id != null) {
+                eventId = Integer.parseInt(Id);
+            }
             if (title == null || title.equals("")) {
                 request.setAttribute("ERROR_TITLE", "Title must not be blank!");
                 check = false;
@@ -54,53 +60,80 @@ public class CreateEventController extends HttpServlet {
                 request.setAttribute("ERROR_DESCRIPTION", "Description must not be blank!");
                 check = false;
             }
-            if (locationId == null || locationId.equals("")) {
-                request.setAttribute("ERROR_LOCATION", "Location must be chosen!");
-                check = false;
-            }
+
+            EventDAO edao = new EventDAO();
+            EventDTO event;
+            EventDTO event_old = (EventDTO) session.getAttribute("SELECTED_EVENT");
+            LocationDTO location;
             if (check) {
                 //temp
                 SlotDAO sDao = new SlotDAO();
                 List<SlotDTO> list = sDao.getListSlots();
                 //end temp
                 //init
+                Date startDatetime = null;
                 SlotDTO startSlot = null;
                 SlotDTO endSlot = null;
-                check = false;
                 if (uri != null) {
-                    List<SlotDTO> slots = AI.checkChosenSlot(uri, list);
+                    List<SlotDTO> slots = AI.checkChosenUpdateSlot(uri, list);
                     if (slots == null) {
                         request.setAttribute("ERROR_MESSAGE", "Event must occur at present or in future!");
                     } else {
                         if (!slots.isEmpty()) {
+                            startDatetime = Date.valueOf(uri[0].substring(uri[0].indexOf("-")+1, uri[0].length()));
                             startSlot = slots.get(0);
                             endSlot = slots.get(1);
                         }
                         if (startSlot == null || endSlot == null) {
                             request.setAttribute("ERROR_MESSAGE", "Event must occur in one day!");
-                        } else {
-                            check = true;
+                            check = false;
                         }
                     }
                 } else {
-                    request.setAttribute("ERROR_MESSAGE", "No slot is chose!");
+                    startSlot = event_old.getStartSlot();
+                    endSlot = event_old.getEndSlot();
                 }
                 if (check) {
-                    UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-                    LocationDTO location = new LocationDAO().getLocationById(locationId);
-                    Date createDate = Date.valueOf(LocalDate.now());
-                    Calendar c = new Calendar();
-                    Date startDate = c.convertToDate(uri[0].split("-")[1]);
-                    EventDTO newEvent = new EventDTO(0, user, title, description, location, createDate, startDate, startSlot, endSlot, "Pending");
-                    EventDAO edao = new EventDAO();
-                    if (edao.createEvent(newEvent)) {
+                    location = new LocationDAO().getLocationById(locationId);
+                    if (location==null) {
+                        location=event_old.getLocation();
+                    }
+                    if (startDatetime==null) {
+                        startDatetime = event_old.getStartDatetime();
+                    }
+                    UserDTO user = (UserDTO)session.getAttribute("CURRENT_USER");
+                    event = new EventDTO(eventId, user, title, description, location, null, startDatetime, startSlot, endSlot, "Pending");
+
+                    if (edao.updateEvent(event)) {
                         url = SUCCESS;
-                        request.setAttribute("id", edao.getLastId());
+                        request.setAttribute("id", eventId);
                     }
                 }
+            } else {
+                if (locationId == null) {
+                    String locationTemp = request.getParameter("locationTemp");
+                    location = new LocationDAO().getLocationById(locationTemp);
+                } else {
+                    location = new LocationDAO().getLocationById(locationId);
+                }
+                String week = request.getParameter("week");
+                String search = request.getParameter("search");
+                String temp = request.getParameter("index");
+                int index = 1;
+                if (temp != null && !temp.isEmpty()) {
+                    index = Integer.parseInt(temp);
+                }
+                event = edao.getEventById(eventId);
+                request.setAttribute("week", week);
+                session.setAttribute("SELECTED_EVENT", event);
+                request.setAttribute("search", search);
+                request.setAttribute("index", index);
+                request.setAttribute("location", location);
+                url = FAIL;
             }
+
         } catch (Exception e) {
-            log("Error at CreateEventController: " + e.toString());
+            log("Error at UpdateEventController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

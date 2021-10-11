@@ -55,7 +55,7 @@ public class UploadController extends HttpServlet {
                 try {
                     // Parse the request to get file items.
                     List fileItems = upload.parseRequest(request);
-                    int id = -1;
+                    String id = "-1";
                     // Process the uploaded file items
                     Iterator i = fileItems.iterator();
                     while (i.hasNext()) {
@@ -64,7 +64,7 @@ public class UploadController extends HttpServlet {
                         if (fi.isFormField()) {
                             String name = fi.getFieldName();
                             if (name.equals("id")) {
-                                id = Integer.parseInt(fi.getString());
+                                id = fi.getString();
                             } 
                         } else {
                             // Get the uploaded file parameters

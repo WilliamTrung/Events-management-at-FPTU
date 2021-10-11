@@ -5,13 +5,14 @@
  */
 package DTO;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 /**
  *
  * @author Admin
  */
-public class EventDTO {
+public class EventDTO implements Serializable{
 
     private int eventId;
     private UserDTO user;

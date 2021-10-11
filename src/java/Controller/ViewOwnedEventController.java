@@ -7,8 +7,8 @@ package Controller;
 
 import DAO.EventDAO;
 import DTO.EventDTO;
+import DTO.UserDTO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,8 +23,10 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ViewOwnedEventController", urlPatterns = {"/ViewOwnedEventController"})
 public class ViewOwnedEventController extends HttpServlet {
+
     private final String FAIL = "viewOwnEvent.jsp";
     private final String SUCCESS = "viewOwnEvent.jsp";
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -32,21 +34,33 @@ public class ViewOwnedEventController extends HttpServlet {
         HttpSession session = request.getSession();
         try {
             String search = request.getParameter("search");
-            int index = Integer.parseInt(request.getParameter("index"));
-            int pageSize = 3;
+            Integer indexSession = (Integer) session.getAttribute("index");
+            String indexRequest = request.getParameter("index");
+            int index = 1;
+            if (indexRequest != null && !indexRequest.isEmpty()) {
+                index = Integer.parseInt(indexRequest);
+            } else if (indexSession != null) {
+                index = indexSession;
+            }
+            int pageSize = 6;
             EventDAO dao = new EventDAO();
-            List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
+            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+            List<EventDTO> list = dao.getListEventByPageByOwner(user, search, index, pageSize);
             if (list != null && !list.isEmpty()) {
+                int countList = new EventDAO().countListOwnedEvent(user);
+                int endPage = (int) Math.ceil((double) countList / pageSize);
+                session.setAttribute("endPage", endPage);
                 request.setAttribute("LIST_EVENT", list);
-                request.setAttribute("EVENT_MESSAGE", "Page"+index);
+                request.setAttribute("EVENT_MESSAGE", "Page" + index);
+                session.setAttribute("index", index);
                 request.setAttribute("Search", search);
                 url = SUCCESS;
             } else {
-                session.setAttribute("EVENT_MESSAGE", "No event");
+                request.setAttribute("EVENT_MESSAGE", "No event found!");
             }
         } catch (Exception e) {
             log("Error at ViewEventController: " + e.toString());
-            session.setAttribute("ERROR_MESSAGE", "ERROR at ViewEventController!");
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve events' information!");
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

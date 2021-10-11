@@ -29,16 +29,21 @@ public class ViewEventController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            HttpSession session = request.getSession();
             String search = request.getParameter("search");
-            int index = Integer.parseInt(request.getParameter("index"));
-            int pageSize = 3;
+            String tempIndex = request.getParameter("index");
+            int index = 1;
+            if (tempIndex!=null && !tempIndex.isEmpty()) {
+                index = Integer.parseInt(tempIndex);
+            }
+            int pageSize = 6;
             EventDAO dao = new EventDAO();
             List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
             if (list != null && !list.isEmpty()) {
                 request.setAttribute("LIST_EVENT", list);
                 request.setAttribute("EVENT_MESSAGE", "Page"+index);
                 request.setAttribute("Search", search);
-                request.setAttribute("index", index);
+                session.setAttribute("index", index);
                 url = SUCCESS;
             } else {
                 request.setAttribute("EVENT_MESSAGE", "No event");

@@ -5,6 +5,7 @@
  */
 package Controller;
 
+import DTO.EventDTO;
 import DTO.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -33,6 +34,8 @@ public class MainController extends HttpServlet {
     private final String USER_SEARCH_EVENT = "ViewEventController";
     private final String EM_CREATE_EVENT = "CreateEventController";
     private final String EM_CREATE_EVENT_CHANGE_WEEK = "CalendarController";
+    private final String EM_VIEW_EVENT_EDIT = "ViewOwnedEventController";
+    private final String EM_UPDATE_EVENT= "UpdateEventController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -42,7 +45,6 @@ public class MainController extends HttpServlet {
         String url = ERROR;
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-        
         try {
             if (action.equals("LoadUsers")) {
                 if (user.getRole().equals("Admin")) {
@@ -64,14 +66,20 @@ public class MainController extends HttpServlet {
                 url = ADMIN_CHANGE_STATUS;
             } else if (action.equals("Create Event")) {
                 url = EM_CREATE_EVENT;
-            } else if (action.equals("Change Week")) {
+            } else if (action.equals("LoadEventsEditing")) {
+                url = EM_VIEW_EVENT_EDIT;
+            }  else if (action.equals("Change Week")) {
                 url = EM_CREATE_EVENT_CHANGE_WEEK;
+            } else if (action.equals("Update Event")) {
+                url = EM_UPDATE_EVENT;
             } 
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());
+        } finally {
+            request.getRequestDispatcher(url).forward(request, response);
         }
-        request.getRequestDispatcher(url).forward(request, response);
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

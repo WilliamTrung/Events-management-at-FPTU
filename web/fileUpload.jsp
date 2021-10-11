@@ -13,9 +13,11 @@
         <title>Upload Picture</title>
     </head>
     <body>
-
-
         Choose your picture to upload: </br>
+        <c:if test="${not empty requestScope.id}">
+            <img src="./images/${id}.png" width="100" height="120" />
+        </c:if>  
+
         <form action="UploadController" method="POST" enctype = "multipart/form-data">
             <c:if test="${not empty requestScope.id}">
                 <input type="hidden" name="id" value="${requestScope.id}"/>
@@ -26,5 +28,12 @@
             <button type="submit" name="action" value="Upload File">Upload File</button>
         </form>
         <p>${requestScope.ERROR_MESSAGE}</p>
+        ${sessionScope.CURRENT_USER.role}
+        <c:if test="${sessionScope.CURRENT_USER.role eq 'Event Manager'}">
+            <button><a href="ViewOwnedEventController">Cancel</a></button>
+        </c:if>
+        <c:if test="${sessionScope.CURRENT_USER.role eq 'Mentor/Lecturer'}">
+            <button><a href="ViewOwnedPostController">Cancel</a></button>
+        </c:if>
     </body>
 </html>
