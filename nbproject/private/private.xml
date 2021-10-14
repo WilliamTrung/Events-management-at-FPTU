@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/SystemHandler.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/EventDAO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/EventDTO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DAO/CommentDAO.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewEventController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/DTO/SlotDTO.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/updateEvent.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewFollowedEventController.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/viewOwnEvent.jsp</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/MainController.java</file>
+            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/UpdateEventController.java</file>
         </group>
     </open-files>
 </project-private>

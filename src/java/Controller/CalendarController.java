@@ -24,8 +24,8 @@ import javax.servlet.http.HttpSession;
  * @author WilliamTrung
  */
 @WebServlet(name = "CalendarController", urlPatterns = {"/CalendarController"})
-public class CalendarController extends HttpServlet {   
-    
+public class CalendarController extends HttpServlet {
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -47,26 +47,27 @@ public class CalendarController extends HttpServlet {
             } else {
                 location = new LocationDAO().getLocationById(locationId);
             }
-             
-            event.setTitle(title);
-            event.setDescription(description);
-            event.setLocation(location);
+            if (event != null) {
+                event.setTitle(title);
+                event.setDescription(description);
+                event.setLocation(location);
+            } else {
+                request.setAttribute("title", title);
+                request.setAttribute("description", description);
+                request.setAttribute("location", location);
+            }
             int week = 0;
-            if(temp!=null){
+            if (temp != null) {
                 week = Integer.parseInt(temp);
             }
             if (weekChange.equals("-")) {
-                if(week>0){
+                if (week > 0) {
                     week--;
                 }
             } else {
                 week++;
             }
-            /*
-            request.setAttribute("title", title);
-            request.setAttribute("description", description);
-            request.setAttribute("location", location);
-            */
+
             session.setAttribute("SELECTED_EVENT", event);
             request.setAttribute("week", week);
             url = SUCCESS;

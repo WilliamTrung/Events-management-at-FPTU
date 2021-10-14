@@ -58,7 +58,9 @@
                             </option>
                         </c:forEach>
                     </select>
-
+                        <c:if test="${not empty requestScope.id}">
+            <img src="./images/${id}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
+        </c:if>  
                     <input type="reset" value="Reset"/>
                 </section>         
                 <section>
@@ -124,7 +126,8 @@
                     </table>
 
                 </section>
-                <input type="submit" name="action" value="Update Event"/>           
+                <input type="submit" name="action" value="Update Event"/>
+                <input type="submit" name="action" value="Remove Event"/>     
             </c:if>
             <button>
                 <a href="${back}">Back</a>

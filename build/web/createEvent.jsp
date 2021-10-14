@@ -26,17 +26,20 @@
         %>
         <form action="MainController" method="GET">
             <section>
-                Title: <input type="text" name="title"/> <p>${requestScope.ERROR_TITLE}</p></br>
-                Description: <input type="text" name="description"/> <p>${requestScope.ERROR_DESCRIPTION}</p></br> 
+                Title: <input type="text" name="title" value="${title}"/> <p>${requestScope.ERROR_TITLE}</p></br>
+                Description: <input type="text" name="description" value="${description}"/> <p>${requestScope.ERROR_DESCRIPTION}</p></br> 
                 Location: <p>${requestScope.ERROR_LOCATION}</p>
                 <select name="locationId">
+                    <c:if test="${empty location}">
+                        <option selected="" value="${location.locationId}">
+                        </option>
+                    </c:if>
                     <c:forEach var="location" items="${requestScope.LIST_LOCATION}">
                         <option value="${location.locationId}">
                             ${location.locationName}
                         </option>
                     </c:forEach>
                 </select>
-
                 <input type="reset" value="Reset"/>
             </section>         
             <section>

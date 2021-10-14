@@ -33,6 +33,7 @@
                 <h3>
                     <a href="ViewEventDetailsController?eventId=${event.eventId}&index=${index}">${event.title}</a>
                 </h3>
+                <p>${event.status}</p>
                 <p>${event.startDatetime}</p>
                 <p>${event.startSlot.getStart()}</p>
                 <p>${event.endSlot.getEnd()}</p>

@@ -41,7 +41,7 @@ CREATE TABLE tblEvents(
 	eventId INT IDENTITY(0,1) PRIMARY KEY,
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
 	title NVARCHAR(50) NOT NULL,
-	description NVARCHAR(200) NOT NULL,
+	description NVARCHAR(MAX) NOT NULL,
 	locationId INT REFERENCES tblLocations NOT NULL,
 	createDatetime DATETIME NOT NULL,
 	startDate DATE NOT NULL ,
@@ -57,11 +57,11 @@ CREATE TABLE tblFollowedEvent(
 );
 CREATE TABLE [dbo].[tblPosts](
 	[ID] [int] IDENTITY(0,1) NOT NULL,
-	[postId]  AS ('P'+right(CONVERT([varchar](4),[ID]),(7))) PERSISTED NOT NULL PRIMARY KEY,
+	[postId]  AS ('P'+right(CONVERT([varchar](9),[ID]),(9))) PERSISTED NOT NULL PRIMARY KEY,
 	[userId] [nvarchar](50) NULL,
 	[title] [nvarchar](50) NULL,
-	[content] [nvarchar](300) NULL,
-	[video] [nvarchar](100) NULL,
+	[content] [nvarchar](MAX) NULL,
+	[video] [nvarchar](MAX) NULL,
 	[createDate] [datetime] NOT NULL,
 	[statusId] [nvarchar](5) NULL
 )

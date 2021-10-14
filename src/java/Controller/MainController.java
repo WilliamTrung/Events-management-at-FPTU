@@ -33,6 +33,7 @@ public class MainController extends HttpServlet {
     private final String EM_CREATE_EVENT_CHANGE_WEEK = "CalendarController";
     private final String EM_VIEW_EVENT_EDIT = "ViewOwnedEventController";
     private final String EM_UPDATE_EVENT= "UpdateEventController";
+    private final String EM_REMOVE_EVENT= "RemoveEventController";
     private final String USER_VIEW_POST = "ViewPostController";
     private final String USER_VIEW_FOLLOWED_EVENT = "ViewFollowedEventController";
 
@@ -81,7 +82,9 @@ public class MainController extends HttpServlet {
                 url = USER_VIEW_POST;
             } else if (action.equals("LoadFollowedEvents")) {
                 url = USER_VIEW_FOLLOWED_EVENT;
-            } 
+            } else if (action.equals("Remove Event")){
+                url = EM_REMOVE_EVENT;
+            }  
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());
