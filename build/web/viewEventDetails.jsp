@@ -16,12 +16,21 @@
         <title>Event Details</title>
     </head>
     <body>
-        <c:url var="back" value="ViewEventController">
+        <c:url var="back_event" value="ViewEventController">
+            <c:param name="search" value="${requestScope.search}"></c:param>    
+            <c:param name="index" value="${requestScope.index}"></c:param>           
+        </c:url>
+        <c:url var="back_followed_event" value="ViewFollowedEventController">
             <c:param name="search" value="${requestScope.search}"></c:param>    
             <c:param name="index" value="${requestScope.index}"></c:param>           
         </c:url>
         <button>
-            <a href="${back}">Back</a>
+            <c:if test="${sessionScope.view_mode eq 'followed'}">
+                <a href="${back_followed_event}">Back</a>
+            </c:if>
+            <c:if test="${sessionScope.view_mode eq 'normal'}">
+                <a href="${back_event}">Back</a>
+            </c:if>            
         </button>
         <c:if test="${sessionScope.SELECTED_EVENT!=null}">
             <img src="./images/${sessionScope.SELECTED_EVENT.eventId}.png" onerror="this.src='./images/default.png'" width="100" height="120" />
@@ -36,7 +45,7 @@
             <p>   
                 <%
                     //test iframe
-                    String description = "https://www.youtube.com/watch?v=MzboOkN8ojs  https://youtu.be/kFZo7yJ2ONg event ngay 10-2-2021 Youtube:https://www.youtube.com/watch?v=MzboOkN8ojs anotherYoutube with space: https://www.youtube.com/watch?v=06-XXOTP3Gc&list=RD06-XXOTP3Gc&start_radio=1";
+                    String description = "https://www.youtube.com/watch?v=apC1bOLbzbY https://youtu.be/kFZo7yJ2ONg event ngay 10-2-2021 Youtube:https://www.youtube.com/watch?v=apC1bOLbzbY anotherYoutube with space: https://www.youtube.com/watch?v=06-XXOTP3Gc&list=RD06-XXOTP3Gc&start_radio=1";
                     List<String> list = AI.detectEmbededLinks(description);
                     request.setAttribute("DESCRIPTION", list);
                     //end test

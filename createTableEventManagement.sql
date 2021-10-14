@@ -1,4 +1,5 @@
-﻿--DROP TABLE
+﻿exec sp_help tblPosts
+--DROP TABLE
 DROP TABLE tblHistoryLogs;
 DROP TABLE tblFriendInvitation;
 
@@ -12,7 +13,8 @@ DROP TABLE tblSlots;
 DROP TABLE tblStatusFI;
 DROP TABLE tblStatusI;
 DROP TABLE tblFollowedEvent;
-
+DROP TABLE tblPosts;
+DROP TABLE tblComments
 
 --CREATE TABLE
 CREATE TABLE tblRoles(
@@ -52,6 +54,16 @@ CREATE TABLE tblFollowedEvent(
 	eventId INT REFERENCES tblEvents NOT NULL,
 	follow INT NOT NULL,
 	PRIMARY KEY (userId,eventId),
+);
+CREATE TABLE [dbo].[tblPosts](
+	[ID] [int] IDENTITY(0,1) NOT NULL,
+	[postId]  AS ('P'+right(CONVERT([varchar](4),[ID]),(7))) PERSISTED NOT NULL PRIMARY KEY,
+	[userId] [nvarchar](50) NULL,
+	[title] [nvarchar](50) NULL,
+	[content] [nvarchar](300) NULL,
+	[video] [nvarchar](100) NULL,
+	[createDate] [datetime] NOT NULL,
+	[statusId] [nvarchar](5) NULL
 )
 CREATE TABLE tblParticipants(
 	eventId INT REFERENCES tblEvents NOT NULL,
@@ -70,6 +82,14 @@ CREATE TABLE tblSlots(
 	startTime TIME NOT NULL,
 	endTime TIME NOT NULL
 )
+CREATE TABLE tblComments(
+	commentId INT IDENTITY(0,1) PRIMARY KEY,
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
+	postId VARCHAR(10) REFERENCES tblPosts,
+	eventId INT REFERENCES tblEvents,
+	commentDatetime DATETIME NOT NULL,
+	content NVARCHAR(100) NOT NULL
+)
 --demo untested
 CREATE TABLE tblContents(
 	contentId INT IDENTITY(0,1) PRIMARY KEY,
@@ -77,13 +97,8 @@ CREATE TABLE tblContents(
 	video NVARCHAR(100),
 	createDate DATETIME NOT NULL,
 )
-CREATE TABLE tblCommentEvent(
-	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
-	eventId INT REFERENCES tblEvents,
-	commentDatetime DATETIME NOT NULL,
-	content NVARCHAR(100) NOT NULL,
-	PRIMARY KEY(commentDatetime)
-)
+
+
 CREATE TABLE tblCommentPost(
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
 	postId INT REFERENCES tblPosts,
