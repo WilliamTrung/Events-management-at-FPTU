@@ -107,13 +107,16 @@ public class AI {
             if (list.get(count).contains(youtube)) {
                 String t = list.get(count);
                 String temp = t.replace(youtube, embed);
+                temp = temp.split("&list")[0];
+               
                 list.set(count, temp);
             } else if (list.get(count).contains(youtube_share)) {
                 String t = list.get(count);
                 String temp = t.replace(youtube_share, youtube_share_embeded);
+                temp = temp.split("&list")[0];
                 list.set(count, temp);
             }
-  
+            
             count++;
             index = matchEnd+1;
         }

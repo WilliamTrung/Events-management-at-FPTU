@@ -249,7 +249,7 @@ public class EventDAO {
             String sql = "WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by startDate) ) AS RowNum,\n"
                     + "					e.eventId, e.userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName AS status \n"
                     + "				FROM tblEvents e, tblStatusEvent s, tblFollowedEvent f \n"
-                    + "				WHERE title like ? AND e.statusId = s.statusId  AND f.userId = ? AND f.eventId = e.eventId)\n"
+                    + "				WHERE title like ? AND e.statusId = s.statusId  AND f.userId = ? AND f.eventId = e.eventId AND f.follow = 1)\n"
                     + "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, status \n"
                     + "FROM tblEventPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*? ";
             stm = conn.prepareStatement(sql);
