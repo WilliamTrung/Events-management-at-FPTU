@@ -34,12 +34,19 @@ public class MainController extends HttpServlet {
     private final String EM_VIEW_EVENT_EDIT = "ViewOwnedEventController";
     private final String EM_UPDATE_EVENT= "UpdateEventController";
     private final String USER_VIEW_POST = "ViewPostController";
+    private final String USER_VIEW_FOLLOWED_EVENT = "ViewFollowedEventController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String[] actions = request.getParameterValues("action");
-        String action = actions[actions.length-1];
+        String action ="";
+        if (actions == null) {
+            action = request.getParameter("action");
+        } else {
+            action = actions[actions.length-1];
+        }
+        
         String url = ERROR;
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
@@ -72,7 +79,9 @@ public class MainController extends HttpServlet {
                 url = EM_UPDATE_EVENT;
             } else if (action.equals("LoadPosts")){
                 url = USER_VIEW_POST;
-            }
+            } else if (action.equals("LoadFollowedEvents")) {
+                url = USER_VIEW_FOLLOWED_EVENT;
+            } 
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());

@@ -44,7 +44,7 @@ public class ViewEventDetailsController extends HttpServlet {
                 int follow = new FollowedEventDAO().checkFollow(user, event);
                 request.setAttribute("follow", follow);
                 request.setAttribute("DESCRIPTION", descStrings);
-                request.setAttribute("SELECTED_EVENT", event);
+                session.setAttribute("SELECTED_EVENT", event);
                 request.setAttribute("search", search);
                 request.setAttribute("index", index);
                 session.setAttribute("index", index);

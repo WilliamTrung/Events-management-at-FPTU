@@ -14,9 +14,16 @@
     </head>
     <body>
         <c:url var="view_event" value="MainController">
+            <c:param name="view_mode" value="normal"></c:param>   
             <c:param name="index" value="1"></c:param>   
             <c:param name="search" value=""></c:param>  
             <c:param name="action" value="LoadEvents"></c:param>           
+        </c:url>
+        <c:url var="view_followed_event" value="MainController">
+            <c:param name="view_mode" value="followed"></c:param>   
+            <c:param name="index" value="1"></c:param>   
+            <c:param name="search" value=""></c:param>  
+            <c:param name="action" value="LoadFollowedEvents"></c:param>           
         </c:url>
         <c:url var="view_event_edit" value="MainController">
             <c:param name="index" value="1"></c:param>   
@@ -40,6 +47,7 @@
                 <c:if test="${sessionScope.MODE ne 'ADMIN_MODE'}">
                     <a href="${view_event}"></i>Main Page</a>
                     <a href="${view_event}">Events</a>  
+                    <a href="${view_followed_event}">Following Events</a>  
                     <a href="${view_post}">Posts</a>
                 </c:if>
                 <c:if test="${sessionScope.MODE eq 'USER_MODE'}">
@@ -54,6 +62,7 @@
                     <a href="${view_event_edit}">Edit Event</a>
                 </c:if>
                 <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
+                
                 <a href="${logoutLink}">Logout</a>  
 
             </div> 

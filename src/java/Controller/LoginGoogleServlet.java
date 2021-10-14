@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final String SUCCESS = "mainPage.jsp";
+    private final String SUCCESS = "ViewEventController";
     private final String FAIL = "login.jsp";
 
     public LoginGoogleServlet() {
@@ -35,7 +35,7 @@ public class LoginGoogleServlet extends HttpServlet {
         String code;
         String url = FAIL;
         try {
-            int pageSize=3;
+            int pageSize=6;
             code = request.getParameter("code");
             if (code == null || code.isEmpty()) {
                 url = FAIL;
@@ -50,19 +50,22 @@ public class LoginGoogleServlet extends HttpServlet {
                         user = ud.loginUser(user);
                         if (user != null) {
                             HttpSession session = request.getSession();
+                            
                             EventDAO eDao = new EventDAO();
                             
                             List<EventDTO> list_event = eDao.getListEventByPage("", 1, pageSize);
                             List<SlotDTO> list_slot = new SlotDAO().getListSlots();
+
                             //check if login user is an admin
-                            String test = user.getRole();
                             if (user.getRole().equals("Admin")) {
                                 session.setAttribute("MODE", "USER_MODE");
                             }
-                            session.setAttribute("CURRENT_USER", user);
+                            session.setAttribute("CURRENT_USER", user);                           
+                            
                             request.setAttribute("LIST_EVENT", list_event);
                             request.setAttribute("LIST_SLOT", list_slot);
-                            request.setAttribute("index", 1);
+                            session.setAttribute("index", 1);
+                            session.setAttribute("view_mode", "normal");
                             int countList = eDao.countListEvent();
                             int endPage = (int) Math.ceil( ((double) countList/pageSize));
                             session.setAttribute("endPage", endPage);

@@ -40,7 +40,12 @@
         </c:if>
         <div class="switchpage">
             <c:forEach begin="1" end="${sessionScope.endPage}" var="i">
-                <a href="ViewEventController?index=${i}&search=${Search}">${i}</a>
+                <c:if test="${sessionScope.view_mode eq 'normal'}">
+                    <a href="ViewEventController?index=${i}&search=${Search}">${i}</a>
+                </c:if>
+                <c:if test="${sessionScope.view_mode eq 'followed'}">
+                    <a href="ViewFollowedEventController?index=${i}&search=${Search}">${i}</a>
+                </c:if>
             </c:forEach>
         </div>
     </body>

@@ -12,6 +12,14 @@
         <servlet-name>ViewEventDetailsController</servlet-name>
         <servlet-class>Controller.ViewEventDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewPostController</servlet-name>
+        <servlet-class>Controller.ViewPostController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewPostDetailsController</servlet-name>
+        <servlet-class>Controller.ViewPostDetailsController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>ViewEventDetailsController</servlet-name>
         <url-pattern>/ViewEventDetailsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPostController</servlet-name>
+        <url-pattern>/ViewPostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPostDetailsController</servlet-name>
+        <url-pattern>/ViewPostDetailsController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -32,18 +32,25 @@ public class ViewEventController extends HttpServlet {
             HttpSession session = request.getSession();
             String search = request.getParameter("search");
             String tempIndex = request.getParameter("index");
+            String view_mode = request.getParameter("view_mode");
             int index = 1;
-            if (tempIndex!=null && !tempIndex.isEmpty()) {
+            if (tempIndex != null && !tempIndex.isEmpty()) {
                 index = Integer.parseInt(tempIndex);
             }
             int pageSize = 6;
-            EventDAO dao = new EventDAO();
-            List<EventDTO> list = dao.getListEventByPage(search, index, pageSize);
+            EventDAO eDao = new EventDAO();
+            List<EventDTO> list = eDao.getListEventByPage(search, index, pageSize);
             if (list != null && !list.isEmpty()) {
+                int countList = eDao.countListEvent();
+                int endPage = (int) Math.ceil(((double) countList / pageSize));
+                session.setAttribute("endPage", endPage);
                 request.setAttribute("LIST_EVENT", list);
-                request.setAttribute("EVENT_MESSAGE", "Page"+index);
+                request.setAttribute("EVENT_MESSAGE", "Page" + index);
                 request.setAttribute("Search", search);
                 session.setAttribute("index", index);
+                if (view_mode != null) {
+                    session.setAttribute("view_mode", view_mode);
+                }               
                 url = SUCCESS;
             } else {
                 request.setAttribute("EVENT_MESSAGE", "No event");

@@ -11,6 +11,7 @@ DROP TABLE tblStatusEvent;
 DROP TABLE tblSlots;
 DROP TABLE tblStatusFI;
 DROP TABLE tblStatusI;
+DROP TABLE tblFollowedEvent;
 
 
 --CREATE TABLE
@@ -46,7 +47,12 @@ CREATE TABLE tblEvents(
 	endSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
 	statusId NVARCHAR(5) REFERENCES tblStatusEvent
 );
-
+CREATE TABLE tblFollowedEvent(
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
+	eventId INT REFERENCES tblEvents NOT NULL,
+	follow INT NOT NULL,
+	PRIMARY KEY (userId,eventId),
+)
 CREATE TABLE tblParticipants(
 	eventId INT REFERENCES tblEvents NOT NULL,
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
@@ -71,22 +77,21 @@ CREATE TABLE tblContents(
 	video NVARCHAR(100),
 	createDate DATETIME NOT NULL,
 )
-CREATE TABLE tblComments(
-	commentId INT IDENTITY(0,1) PRIMARY KEY,
-	eventId INT REFERENCES tblEvents,
-	contentId INT REFERENCES tblContents,
-	commentDate DATETIME NOT NULL,
-	content NVARCHAR(100) NOT NULL,
-	--replyTo should have the value of commentId
-	--replyTo nullable because user does not reply anytime
-	replyTo INT,
-)
-CREATE TABLE tblFollowedEvent(
+CREATE TABLE tblCommentEvent(
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
-	eventId INT REFERENCES tblEvents NOT NULL,
-	follow INT NOT NULL,
-	PRIMARY KEY (userId,eventId),
+	eventId INT REFERENCES tblEvents,
+	commentDatetime DATETIME NOT NULL,
+	content NVARCHAR(100) NOT NULL,
+	PRIMARY KEY(commentDatetime)
 )
+CREATE TABLE tblCommentPost(
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
+	postId INT REFERENCES tblPosts,
+	commentDatetime DATETIME NOT NULL,
+	content NVARCHAR(100) NOT NULL,
+	PRIMARY KEY(commentDatetime)
+)
+
 CREATE TABLE tblVotes(
 	userId NVARCHAR(50) REFERENCES tblUsers,
 	eventId INT REFERENCES tblEvents,

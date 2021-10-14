@@ -49,6 +49,29 @@ public class FollowedEventDAO {
         }
         return result;
     }
+    public int getFollowingEventCount(UserDTO user) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        int result = 0;
+        try {
+            conn = DBConnection.getConnection();
+            String sql = "SELECT COUNT(userId) as count "
+                    + "   FROM tblFollowedEvent "
+                    + "   WHERE follow = 1 AND userId = ?";
+            stm = conn.prepareStatement(sql);
+            stm.setString(1, user.getUserId());
+            rs = stm.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt("count");
+            }
+        } catch (Exception e) {
+            log("Error at EventDAO - getFollowingEventCount: " + e.toString());
+        } finally {
+            DBConnection.closeQueryConnection(conn, stm, rs);
+        }
+        return result;
+    }
 
     private boolean initFollow(UserDTO user, EventDTO event) {
         Connection conn = null;
@@ -138,41 +161,5 @@ public class FollowedEventDAO {
         }
         return check;
     }
-    public List<EventDTO> getFollowedEvents(UserDTO user){
-        List<EventDTO> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement stm = null;
-        ResultSet rs = null;
-        try {
-            conn = DBConnection.getConnection();
-            String sql = "SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName "
-                    + "   FROM tblEvents e, tblStatusEvent s, tblFollowedEvent f "
-                    + "   WHERE userId = ? AND e.statusId = s.statusId AND f.follow = 1 AND f.eventId = e.eventId";
-            stm = conn.prepareStatement(sql);
-            stm.setString(1, user.getUserId());
-            rs = stm.executeQuery();
-            while (rs.next()) {
-                SlotDAO sDao = new SlotDAO();
-                int eventId = rs.getInt("eventId");
-                String title = rs.getString("title");
-                String description = rs.getString("description");
-                String locationId = rs.getString("locationId");
-                Date createDatetime = rs.getDate("createDatetime");
-                Date startDate = rs.getDate("startDate");
-                String startSlotId = rs.getString("startSlot");
-                String endSlotId = rs.getString("endSlot");
-                String status = rs.getString("statusName");
-
-                SlotDTO startSlot = sDao.getSlotById(startSlotId);
-                SlotDTO endSlot = sDao.getSlotById(endSlotId);
-                LocationDTO location = new LocationDAO().getLocationById(locationId);
-                list.add(new EventDTO(eventId, user, title, description, location, createDatetime, startDate, startSlot, endSlot, status));
-            }
-        } catch (Exception e) {
-            log("Error at FollowedEventDAO - getFollowedEvents: " + e.toString());
-        } finally {
-            DBConnection.closeQueryConnection(conn, stm, rs);
-        }
-        return list;
-    }
+    
 }
