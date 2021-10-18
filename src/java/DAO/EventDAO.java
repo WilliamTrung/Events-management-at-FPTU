@@ -173,7 +173,6 @@ public class EventDAO {
                         boolean bool = stm.executeUpdate() > 0;
                         if(bool){
                             eventDTO.setStatus(status);
-                            int a = 0;
                         }
                     }
                     

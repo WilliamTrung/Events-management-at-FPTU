@@ -5,76 +5,57 @@
  */
 package Controller;
 
-import DAO.EventDAO;
 import DAO.LocationDAO;
-import DTO.EventDTO;
 import DTO.LocationDTO;
 import Extension.AI;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "CalendarController", urlPatterns = {"/CalendarController"})
-public class CalendarController extends HttpServlet {
+@WebServlet(name = "CreateLocationController", urlPatterns = {"/CreateLocationController"})
+public class CreateLocationController extends HttpServlet {
+
+    private final String SUCCESS = "ViewLocationController";
+    private final String FAIL = "ViewLocationController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        final String FAIL = request.getParameter("where");
-        final String SUCCESS = request.getParameter("where");
         String url = FAIL;
         try {
-            HttpSession session = request.getSession();
-            String weekChange = request.getParameter("weekChange");
-            String temp = request.getParameter("week");
-            EventDTO event = (EventDTO) session.getAttribute("SELECTED_EVENT");
-            String title = request.getParameter("title");
-            String description = request.getParameter("description");
-            String locationId = request.getParameter("locationId");
-            title = AI.inputVietnamese(title);
-            description = AI.inputVietnamese(description);
-            LocationDTO location;
-            if (locationId == null) {
-                location = event.getLocation();
-            } else {
-                location = new LocationDAO().getLocationById(locationId);
+            String locationName = request.getParameter("locationName");
+            String seat_temp = request.getParameter("seat");
+            locationName = AI.inputVietnamese(locationName);
+            int seat = 30;
+            boolean check = true;
+            if (locationName.isEmpty() || locationName.trim().isEmpty()) {
+                check = false;
             }
-            if (event != null) {
-                event.setTitle(title);
-                event.setDescription(description);
-                event.setLocation(location);
-            } else {
-                request.setAttribute("title", title);
-                request.setAttribute("description", description);
-                request.setAttribute("location", location);
+            if (seat_temp != null && !seat_temp.isEmpty()) {
+                seat = Integer.parseInt(seat_temp);
             }
-            int week = 0;
-            if (temp != null) {
-                week = Integer.parseInt(temp);
-            }
-            if (weekChange.equals("-")) {
-                if (week > 0) {
-                    week--;
+            if (check) {
+                LocationDTO location = new LocationDTO(null, seat, locationName);
+                LocationDAO lDao = new LocationDAO();
+                check = lDao.insertLocation(location);
+                if (check) {
+                    request.setAttribute("NOTIFICATION", "Add successfully!");
+                    url = SUCCESS;
                 }
             } else {
-                week++;
+                //set index pool to view
+                request.setAttribute("index", 1);
             }
-
-            session.setAttribute("SELECTED_EVENT", event);
-            request.setAttribute("week", week);
-            url = SUCCESS;
         } catch (Exception e) {
-            e.toString();
+            log("Error at CreateLocationController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

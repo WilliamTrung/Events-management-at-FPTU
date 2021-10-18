@@ -60,7 +60,6 @@
                     </c:forEach>
             </p>
             <p>Description: ${sessionScope.SELECTED_EVENT.description}</p>
-
             <p>Location: ${sessionScope.SELECTED_EVENT.location.locationName}</p>           
         </c:if>
         

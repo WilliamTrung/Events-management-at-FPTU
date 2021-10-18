@@ -26,6 +26,10 @@ public class MainController extends HttpServlet {
     private final String LOGOUT = "LogoutController";
     private final String ROLES_UPDATE_SELF = "UpdateSelfController";
     private final String ADMIN_SEARCH_USER = "ViewUserController";
+    private final String ADMIN_SEARCH_LOCATION = "ViewLocationController";
+    private final String ADMIN_CREATE_LOCATION = "CreateLocationController";   
+    private final String ADMIN_UPDATE_LOCATION = "UpdateLocationController";   
+    private final String ADMIN_REMOVE_LOCATION = "RemoveLocationController";
     private final String ADMIN_CHANGE_STATUS = "ChangeStatusController";
     private final String ADMIN_UPDATE_USER = "UpdateUserController";
     private final String USER_SEARCH_EVENT = "ViewEventController";
@@ -70,6 +74,14 @@ public class MainController extends HttpServlet {
                 url = ADMIN_UPDATE_USER;
             } else if (action.equals("ChangeStatus")) {
                 url = ADMIN_CHANGE_STATUS;
+            } else if (action.equals("Add Location")) {
+                url = ADMIN_CREATE_LOCATION;
+            } else if (action.equals("Update Location")) {
+                url = ADMIN_UPDATE_LOCATION;
+            } else if (action.equals("LoadLocations")) {
+                url = ADMIN_SEARCH_LOCATION;
+            } else if (action.equals("Remove Location")) {
+                url = ADMIN_REMOVE_LOCATION;
             } else if (action.equals("Create Event")) {
                 url = EM_CREATE_EVENT;
             } else if (action.equals("LoadEventsEditing")) {

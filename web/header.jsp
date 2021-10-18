@@ -19,6 +19,10 @@
             <c:param name="search" value=""></c:param>  
             <c:param name="action" value="LoadEvents"></c:param>           
         </c:url>
+        <c:url var="view_location" value="MainController"> 
+            <c:param name="search" value=""></c:param>    
+            <c:param name="action" value="LoadLocations"></c:param>            
+        </c:url>
         <c:url var="view_followed_event" value="MainController">
             <c:param name="view_mode" value="followed"></c:param>   
             <c:param name="index" value="1"></c:param>   
@@ -56,6 +60,7 @@
                 <c:if test="${sessionScope.MODE eq 'ADMIN_MODE'}">
                     <a href="${view_event}">Switch to User mode</a>
                     <a href="${view_user}">User Management</a>
+                    <a href="${view_location}">Location Management</a>
                 </c:if>
                 <c:if test="${sessionScope.CURRENT_USER.role eq 'Event Manager'}">
                     <a href="createEvent.jsp">Create Event</a>

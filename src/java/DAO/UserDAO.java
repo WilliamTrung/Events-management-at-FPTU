@@ -54,7 +54,7 @@ public class UserDAO {
             if (conn != null) {
                 String sql = "SELECT username, r.roleName, s.statusName "
                         + "FROM tblUsers u, tblStatusUser s, tblRoles r "
-                        + "WHERE userId = ? AND u.statusId = s.statusId AND u.roleId = r.roleId";
+                        + "WHERE u.userId = ? AND u.statusId = s.statusId AND u.roleId = r.roleId";
                 stm = conn.prepareStatement(sql);
                 stm.setString(1, user.getUserId());
 

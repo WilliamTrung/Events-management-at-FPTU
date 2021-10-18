@@ -14,19 +14,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  *
  * @author WilliamTrung
  */
 public class AI {
+
     private static final Pattern urlPattern = Pattern.compile(
             "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)",
             Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
-    
-    
+
+    public static String inputVietnamese(String input) {
+        try {
+            byte[] bytes = input.getBytes("ISO-8859-1");
+            input = new String(bytes, "UTF-8");
+        } catch (Exception e) {
+            e.toString();
+        }
+        return input;
+    }
+
     public static List<SlotDTO> checkChosenSlot(String[] uri, List<SlotDTO> slots) {
         List<SlotDTO> list = new ArrayList<>();
         Calendar c = new Calendar();
@@ -54,6 +63,7 @@ public class AI {
         }
         return list;
     }
+
     public static List<SlotDTO> checkChosenUpdateSlot(String[] uri, List<SlotDTO> slots) {
         List<SlotDTO> list = new ArrayList<>();
         /*
@@ -61,15 +71,15 @@ public class AI {
         int length = uri.length()-1;
         String temp = uri.substring(index+1, length+1);
         Date preDay = Date.valueOf(temp);
-*/
-        Date preDay = Date.valueOf(uri[0].substring(uri[0].indexOf("-")+1, uri[0].length()));
+         */
+        Date preDay = Date.valueOf(uri[0].substring(uri[0].indexOf("-") + 1, uri[0].length()));
         Date nextDay = Date.valueOf(LocalDate.now());
         if (!preDay.before(nextDay)) {
             SlotDTO startSlot = null;
             SlotDTO endSlot = null;
             boolean check = true;
             for (String str : uri) {
-                nextDay = Date.valueOf(str.substring(str.indexOf("-")+1, str.length()));
+                nextDay = Date.valueOf(str.substring(str.indexOf("-") + 1, str.length()));
                 if (!preDay.equals(nextDay)) {
                     check = false;
                     break;
@@ -86,13 +96,14 @@ public class AI {
         }
         return list;
     }
-    public static List<String> detectEmbededLinks(String description){
+
+    public static List<String> detectEmbededLinks(String description) {
         List<String> list = new ArrayList<>();
         Matcher matcher = urlPattern.matcher(description);
         String embed = "embed/";
-        String youtube ="watch?v=";
+        String youtube = "watch?v=";
         String youtube_share = "youtu.be";
-        String youtube_share_embeded = "www.youtube.com/"+embed;
+        String youtube_share_embeded = "www.youtube.com/" + embed;
         //https://youtu.be/kFZo7yJ2ONg
         //https://www.youtube.com/watch?v=kFZo7yJ2ONg&list=RDMMAlXfbVpDUdo
         int count = 0;
@@ -101,14 +112,14 @@ public class AI {
             int matchStart = matcher.start(1);
             int matchEnd = matcher.end();
             // now you have the offsets of a URL match
-            list.add(description.substring(index, matchStart));       
+            list.add(description.substring(index, matchStart));
             count++;
             list.add(description.substring(matchStart, matchEnd));
             if (list.get(count).contains(youtube)) {
                 String t = list.get(count);
                 String temp = t.replace(youtube, embed);
                 temp = temp.split("&list")[0];
-               
+
                 list.set(count, temp);
             } else if (list.get(count).contains(youtube_share)) {
                 String t = list.get(count);
@@ -116,15 +127,15 @@ public class AI {
                 temp = temp.split("&list")[0];
                 list.set(count, temp);
             }
-            
+
             count++;
-            index = matchEnd+1;
+            index = matchEnd + 1;
         }
         return list;
     }
-    
+
     public static void main(String[] args) {
-        String url="https://www.youtube.com/watch?v=5Lm6NModzTM";
+        String url = "https://www.youtube.com/watch?v=5Lm6NModzTM";
         List<String> embed = detectEmbededLinks(url);
         for (String s : embed) {
             System.out.println(s);

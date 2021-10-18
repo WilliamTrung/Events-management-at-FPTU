@@ -3,15 +3,17 @@
     Created on : Oct 7, 2021, 5:48:58 PM
     Author     : WilliamTrung
 --%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>View Your Events Page</title>
     </head>
     <body>
+        <p>Tiếng Việt</p>
         <%@include file="header.jsp" %>
         <p>${requestScope.EVENT_MESSAGE}</p>
         <c:if test="${not empty requestScope.LIST_EVENT}">

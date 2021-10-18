@@ -29,7 +29,6 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "UpdateEventController", urlPatterns = {"/UpdateEventController"})
 public class UpdateEventController extends HttpServlet {
-
     private final String SUCCESS = "UploadController";
     private final String FAIL = "UpdateEventViewController";
 
@@ -44,6 +43,8 @@ public class UpdateEventController extends HttpServlet {
             String title = request.getParameter("title");
             String description = request.getParameter("description");
             String locationId = request.getParameter("locationId");
+            title = AI.inputVietnamese(title);
+            description = AI.inputVietnamese(description);
             String[] uri = request.getParameterValues("selectedTime");
             boolean check = true;
             if (Id != null) {

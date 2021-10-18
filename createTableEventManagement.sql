@@ -82,6 +82,7 @@ CREATE TABLE tblSlots(
 	startTime TIME NOT NULL,
 	endTime TIME NOT NULL
 )
+
 CREATE TABLE tblComments(
 	commentId INT IDENTITY(0,1) PRIMARY KEY,
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
@@ -91,6 +92,10 @@ CREATE TABLE tblComments(
 	content NVARCHAR(100) NOT NULL
 )
 --demo untested
+CREATE TABLE tblUserPicture(
+	userId NVARCHAR(50) PRIMARY KEY REFERENCES tblUsers(userId),
+	picture NVARCHAR(MAX)
+)
 CREATE TABLE tblContents(
 	contentId INT IDENTITY(0,1) PRIMARY KEY,
 	content NVARCHAR(300),
