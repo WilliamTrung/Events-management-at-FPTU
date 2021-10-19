@@ -20,6 +20,22 @@
         <servlet-name>ViewPostDetailsController</servlet-name>
         <servlet-class>Controller.ViewPostDetailsController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddMoreEventCommentController</servlet-name>
+        <servlet-class>Controller.AddMoreEventCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddMorePostCommentController</servlet-name>
+        <servlet-class>Controller.AddMorePostCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMoreEventCommentController</servlet-name>
+        <servlet-class>Controller.LoadMoreEventCommentController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoadMorePostCommentController</servlet-name>
+        <servlet-class>Controller.LoadMorePostCommentController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
@@ -39,6 +55,22 @@
     <servlet-mapping>
         <servlet-name>ViewPostDetailsController</servlet-name>
         <url-pattern>/ViewPostDetailsController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddMoreEventCommentController</servlet-name>
+        <url-pattern>/AddMoreEventCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddMorePostCommentController</servlet-name>
+        <url-pattern>/AddMorePostCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMoreEventCommentController</servlet-name>
+        <url-pattern>/LoadMoreEventCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoadMorePostCommentController</servlet-name>
+        <url-pattern>/LoadMorePostCommentController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

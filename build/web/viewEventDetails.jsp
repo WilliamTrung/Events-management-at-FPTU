@@ -60,7 +60,27 @@
                     </c:forEach>
             </p>
             <p>Description: ${sessionScope.SELECTED_EVENT.description}</p>
-            <p>Location: ${sessionScope.SELECTED_EVENT.location.locationName}</p>           
+            <p>Location: ${sessionScope.SELECTED_EVENT.location.locationName}</p>  
+            
+            <div>
+                <img src="${sessionScope.CURRENT_USER.picture}">
+                <form action="MainController" method="POST">
+                    <input type="text" name="cmt">
+                    <input type="submit" name="action" value="AddEventComment"/>
+                </form>
+
+                <c:if test="${not empty LIST_COMMENT}">
+                    <c:forEach var="cmt" varStatus="count" items="${LIST_COMMENT}">
+                        <img src="${cmt.user.picture}">
+                        ${cmt.user.username}: ${cmt.content}<br>
+                    </c:forEach>   
+                </c:if>
+                <c:if test="${sessionScope.END_OF_COMMENT}">
+                    <button>
+                        <a href="LoadMoreEventCommentController?countListCmt=${LIST_COMMENT.size()}">View more 10 comment</a>
+                    </button>
+                </c:if>
+            </div>
         </c:if>
         
     </body>

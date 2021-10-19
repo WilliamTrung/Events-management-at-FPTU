@@ -30,7 +30,26 @@
                 <iframe width="560" height="315" src="${url}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </c:forEach>
 
-            </c:if>
+            <div>
+                <img src="${sessionScope.CURRENT_USER.picture}">
+                <form action="MainController" method="POST">
+                    <input type="text" name="cmt">
+                    <input type="submit" name="action" value="AddPostComment"/>
+                </form>
+
+                <c:if test="${not empty LIST_COMMENT}">
+                    <c:forEach var="cmt" varStatus="count" items="${LIST_COMMENT}">
+                        <img src="${cmt.user.picture}">
+                        ${cmt.user.username}: ${cmt.content}<br>
+                    </c:forEach>   
+                </c:if>
+                <c:if test="${sessionScope.END_OF_COMMENT}">
+                    <button>
+                        <a href="LoadMorePostCommentController?countListCmt=${LIST_COMMENT.size()}">View more 10 comment</a>
+                    </button>
+                </c:if>
+            </div>
+        </c:if>
         <button>
             <a href="${back}">Back</a>
         </button>
