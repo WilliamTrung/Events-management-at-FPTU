@@ -1,4 +1,32 @@
 ﻿exec sp_help tblPosts
+--query
+  WITH tblEventPage AS (SELECT (ROW_NUMBER() over (order by ABS( DATEDIFF(DAY, startDate, GETDATE())), statusName)) AS RowNum,
+  eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, s.statusName AS status
+  FROM tblEvents e, tblStatusEvent s
+ WHERE  e.statusId = s.statusId)
+
+SELECT eventId, userId, title, description, locationId, createDatetime, startDate, startSlot, endSlot, status
+FROM tblEventPage WHERE RowNum BETWEEN ?*?-(?-1) AND ?*?
+--testing
+DROP TABLE tblTest
+CREATE TABLE tblTest(
+	eventId INT IDENTITY(0,1) PRIMARY KEY,
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
+	title NVARCHAR(50) NOT NULL,
+	description NVARCHAR(MAX) NOT NULL,
+	locationId INT REFERENCES tblLocations NOT NULL,
+	createDatetime DATETIME NOT NULL,
+	startDate DATE NOT NULL ,
+	startSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
+	endSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
+	statusId NVARCHAR(5) REFERENCES tblStatusEvent(statusId) on update cascade);
+	as 
+    CASE 
+		WHEN startDate <= GETDATE() THEN 'Expire'
+		WHEN startDate = GETDATE() THEN 'On-going'
+		ELSE 'Pending' 
+	END
+);
 --DROP TABLE
 DROP TABLE tblHistoryLogs;
 DROP TABLE tblFriendInvitation;
@@ -47,7 +75,12 @@ CREATE TABLE tblEvents(
 	startDate DATE NOT NULL ,
 	startSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
 	endSlot NVARCHAR(1) REFERENCES tblSlots(SlotId) NOT NULL,
-	statusId NVARCHAR(5) REFERENCES tblStatusEvent
+	status as 
+    CASE 
+		WHEN startDate <= GETDATE() THEN 'Expire'
+		WHEN startDate = GETDATE() THEN 'On-going'
+		ELSE 'Pending' 
+	END
 );
 CREATE TABLE tblFollowedEvent(
 	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
@@ -146,7 +179,9 @@ INSERT INTO tblLocations(seat, locationName) VALUES(50,'LocationName')
 INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'102340646113497938153', N'anhtnse151264@fpt.edu.vn', N'anhtnse151264', N'A', N'US')
 INSERT [dbo].[tblUsers] ([userId], [email], [username], [statusId], [roleId]) VALUES (N'100244481500661777938', N'trungntse151134@fpt.edu.vn', N'trungntse151134', N'A', N'US')
 --insert status event
-INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'AP', N'Approve')
+INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'P', N'Pending')
+INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'OG', N'On-going')
+INSERT [dbo].[tblStatusEvent] ([statusId], [statusName]) VALUES (N'E', N'Expire')
 --insert locations
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 1',50)
 INSERT [dbo].[tblLocations] ([locationName], [seat]) VALUES (N'Thư viện tầng 2',50)

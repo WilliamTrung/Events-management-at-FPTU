@@ -9,6 +9,7 @@ import DAO.CommentDAO;
 import DTO.CommentDTO;
 import DTO.PostDTO;
 import DTO.UserDTO;
+import Extension.AI;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class AddMorePostCommentController extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
             PostDTO post= (PostDTO) session.getAttribute("SELECTED_POST");
             Date cmtDatetime= Date.valueOf(LocalDate.now());
+            comment = AI.inputVietnamese(comment);
             CommentDTO cmt= new CommentDTO(comment, user, cmtDatetime);
             
             if(post!=null){
