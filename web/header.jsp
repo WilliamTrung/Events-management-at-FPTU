@@ -19,6 +19,9 @@
             <c:param name="search" value=""></c:param>  
             <c:param name="action" value="LoadEvents"></c:param>           
         </c:url>
+        <c:url var="view_mainpage" value="MainController">
+            <c:param name="action" value="LoadMainPage"></c:param>           
+        </c:url>
         <c:url var="view_location" value="MainController"> 
             <c:param name="search" value=""></c:param>    
             <c:param name="action" value="LoadLocations"></c:param>            
@@ -49,7 +52,7 @@
         <c:if test="${not empty sessionScope.CURRENT_USER}">
             <div>
                 <c:if test="${sessionScope.MODE ne 'ADMIN_MODE'}">
-                    <a href="${view_event}"></i>Main Page</a>
+                    <a href="${view_mainpage}"></i>Main Page</a>
                     <a href="${view_event}">Events</a>  
                     <a href="${view_followed_event}">Following Events</a>  
                     <a href="${view_post}">Posts</a>

@@ -24,6 +24,6 @@
                 response.sendRedirect("login.jsp");
             }
         %>
-        <%@include file="viewEvent.jsp" %>
+        <%@include file="mainPageEventPost.jsp" %>
     </body>
 </html>

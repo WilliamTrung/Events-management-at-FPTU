@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 public class LoginGoogleServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    private final String SUCCESS = "ViewEventController";
+    private final String SUCCESS = "ViewMainPageController";
     private final String FAIL = "login.jsp";
 
     public LoginGoogleServlet() {

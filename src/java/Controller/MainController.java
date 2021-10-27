@@ -39,6 +39,7 @@ public class MainController extends HttpServlet {
     private final String EM_UPDATE_EVENT= "UpdateEventController";
     private final String EM_REMOVE_EVENT= "RemoveEventController";
     private final String USER_VIEW_POST = "ViewPostController";
+    private final String USER_VIEW_MAINPAGE = "ViewMainPageController";
     private final String USER_VIEW_FOLLOWED_EVENT = "ViewFollowedEventController";
     private final String ADD_MORE_EVENT_COMMENT = "AddMoreEventCommentController";
     private final String ADD_MORE_POST_COMMENT = "AddMorePostCommentController";
@@ -70,6 +71,8 @@ public class MainController extends HttpServlet {
                 url = USER_SEARCH_EVENT;
             } else if (action.equals("Logout")) {
                 url = LOGOUT;
+            } else if (action.equals("LoadMainPage")) {
+                url = USER_VIEW_MAINPAGE;
             } else if (action.equals("UpdateUserName")) {
                 url = ROLES_UPDATE_SELF;
             } else if (action.equals("Confirm Update")) {
@@ -98,7 +101,7 @@ public class MainController extends HttpServlet {
                 url = USER_VIEW_FOLLOWED_EVENT;
             } else if (action.equals("Remove Event")){
                 url = EM_REMOVE_EVENT;
-            }  else if (action.equals("AddEventComment")){
+            } else if (action.equals("AddEventComment")){
                 url = ADD_MORE_EVENT_COMMENT;
             } else if (action.equals("AddPostComment")){
                 url = ADD_MORE_POST_COMMENT;
