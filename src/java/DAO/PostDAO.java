@@ -28,6 +28,9 @@ public class PostDAO {
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
+            if(search == null){
+                search = "";
+            }
             conn = DBConnection.getConnection();
             String sql = "WITH tblPostPage AS (SELECT (ROW_NUMBER() over (order by createDate) ) AS RowNum,\n"
                     + "					postId, userId, title, content, video, createDate,s.statusName AS status \n"
