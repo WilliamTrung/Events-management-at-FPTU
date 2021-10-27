@@ -7,6 +7,7 @@ package Extension;
 
 import DAO.SlotDAO;
 import DTO.SlotDTO;
+import DTO.UserDTO;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -96,7 +97,13 @@ public class AI {
         }
         return list;
     }
-
+    /*
+    public static boolean isMentor(UserDTO user){
+        String email = user.getEmail();
+        String prefix = email.split("@")[0];
+        
+    }
+*/
     public static List<String> detectEmbededLinks(String description) {
         List<String> list = new ArrayList<>();
         Matcher matcher = urlPattern.matcher(description);

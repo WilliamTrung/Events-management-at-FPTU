@@ -5,8 +5,10 @@
  */
 package Controller;
 
+import DAO.CommentDAO;
 import DAO.EventDAO;
 import DAO.FollowedEventDAO;
+import DTO.CommentDTO;
 import DTO.EventDTO;
 import DTO.UserDTO;
 import Extension.AI;
@@ -36,20 +38,37 @@ public class ViewEventDetailsController extends HttpServlet {
             int eventId = Integer.parseInt(request.getParameter("eventId"));
             String search = request.getParameter("search");
             int index = Integer.parseInt(request.getParameter("index"));
+            String countListCmtString = request.getParameter("countListCmt");
+            int countListCmt=0;
+            if(countListCmtString!=null){
+                countListCmt= Integer.parseInt(countListCmtString);
+            }
+            int indexCmt=1;
+            
             EventDAO edao = new EventDAO();
             EventDTO event = edao.getEventById(eventId);
+            CommentDAO cdao = new CommentDAO();
+            if(countListCmt>=10 && countListCmt<=cdao.countEventComment(eventId)){
+                indexCmt=countListCmt/10;
+                session.setAttribute("END_OF_COMMENT", true);
+            }else{
+                session.setAttribute("END_OF_COMMENT", false);
+            }
+            List<CommentDTO> listShortComment= cdao.getShortListEventComment(eventId, indexCmt, 10);
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-            if (event!=null) {
+            if (event!=null && listShortComment!=null) {
                 List<String> descStrings = AI.detectEmbededLinks(event.getDescription());
                 int follow = new FollowedEventDAO().checkFollow(user, event);
                 request.setAttribute("follow", follow);
                 request.setAttribute("DESCRIPTION", descStrings);
                 session.setAttribute("SELECTED_EVENT", event);
+                session.setAttribute("LIST_COMMENT", listShortComment);
                 request.setAttribute("search", search);
                 request.setAttribute("index", index);
                 session.setAttribute("index", index);
                 url=SUCCESS;
-            }else{
+            }
+            else{
                 request.setAttribute("ERROR_MESSAGE", "Error at ViewEventDetailsController");
             }
         } catch (Exception e) {

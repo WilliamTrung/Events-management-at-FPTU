@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -37,6 +38,7 @@ public class ViewPostDetailsController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
         try {
+            HttpSession session = request.getSession();
             String postId = request.getParameter("postId");
             String search = request.getParameter("search");
             String tempIndex = request.getParameter("index");
@@ -49,7 +51,7 @@ public class ViewPostDetailsController extends HttpServlet {
             if (post != null) {
                 List<String> video = Extension.AI.detectEmbededLinks(post.getVideo());
                 request.setAttribute("LIST_VIDEO", video);
-                request.setAttribute("SELECTED_POST", post);
+                session.setAttribute("SELECTED_POST", post);
                 request.setAttribute("Search", search);
                 request.setAttribute("index", index);
                 url = SUCCESS;
