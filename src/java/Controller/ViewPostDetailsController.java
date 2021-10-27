@@ -42,18 +42,32 @@ public class ViewPostDetailsController extends HttpServlet {
             String postId = request.getParameter("postId");
             String search = request.getParameter("search");
             String tempIndex = request.getParameter("index");
+	    int countListCmt=0;
+            if(countListCmtString!=null){
+                countListCmt= Integer.parseInt(countListCmtString);
+            }
+            int indexCmt=1;
             int index = 1;
             if (tempIndex!=null && !tempIndex.isEmpty()) {
                 index = Integer.parseInt(tempIndex);
             }
             PostDAO pDao = new PostDAO();
             PostDTO post = pDao.getPostById(postId);
+CommentDAO cdao = new CommentDAO();
+            if(countListCmt>=10 && countListCmt<=cdao.countPostComment(postId)){
+                indexCmt=countListCmt/10;
+                session.setAttribute("END_OF_COMMENT", true);
+            }else{
+                session.setAttribute("END_OF_COMMENT", false);
+            }
+            List<CommentDTO> listShortComment= cdao.getShortListPostComment(postId, indexCmt, 10);
             if (post != null) {
                 List<String> video = Extension.AI.detectEmbededLinks(post.getVideo());
                 request.setAttribute("LIST_VIDEO", video);
                 session.setAttribute("SELECTED_POST", post);
                 request.setAttribute("Search", search);
                 request.setAttribute("index", index);
+                session.setAttribute("LIST_COMMENT", listShortComment);
                 url = SUCCESS;
             } else {
                 request.setAttribute("ERROR_MESSAGE", "Error at ViewPostDetailsController");

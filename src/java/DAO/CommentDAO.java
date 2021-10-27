@@ -218,15 +218,15 @@ public class CommentDAO {
         return flag;
     }
 
-    public static void main(String[] args) {
-        CommentDAO dao= new CommentDAO();
-        try {
-            List<CommentDTO> list= dao.getShortListEventComment(1,1,10);
-            for (CommentDTO o : list) {
-                System.out.println(o.toString());
-            }
-        } catch (SQLException ex) {
-           
-        }  
-    }
+//    public static void main(String[] args) {
+//        CommentDAO dao= new CommentDAO();
+//        try {
+//            List<CommentDTO> list= dao.getShortListEventComment(1,1,10);
+//            for (CommentDTO o : list) {
+//                System.out.println(o.toString());
+//            }
+//        } catch (SQLException ex) {
+//           
+//        }  
+//    }
 }
