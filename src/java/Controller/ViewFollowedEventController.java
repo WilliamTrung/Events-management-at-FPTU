@@ -24,8 +24,8 @@ import javax.servlet.http.HttpSession;
  */
 @WebServlet(name = "ViewFollowedEventController", urlPatterns = {"/ViewFollowedEventController"})
 public class ViewFollowedEventController extends HttpServlet {
-    private final String SUCCESS = "mainPage.jsp";
-    private final String FAIL = "mainPage.jsp";
+    private final String SUCCESS = "viewEvent.jsp";
+    private final String FAIL = "viewEvent.jsp";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
