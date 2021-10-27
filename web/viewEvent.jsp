@@ -23,7 +23,8 @@
             response.setDateHeader("Expires", 0);
         %>
     </head>
-    <body>     
+    <body> 
+        <%@include file="header.jsp" %>
         <p>${requestScope.EVENT_MESSAGE}</p>
         
         <c:if test="${not empty requestScope.LIST_EVENT}">

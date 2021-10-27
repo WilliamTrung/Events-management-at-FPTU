@@ -16,6 +16,7 @@
         <title>Post in FPT University</title>
     </head>
     <body>     
+        <%@include file="header.jsp" %>
         <p>${requestScope.POSTMESSAGE}</p>
         
         <c:if test="${not empty requestScope.LIST_POST}">

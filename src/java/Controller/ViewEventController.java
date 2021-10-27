@@ -21,8 +21,8 @@ import javax.servlet.http.HttpSession;
  */
 public class ViewEventController extends HttpServlet {
 
-    private final String ERROR = "mainPage.jsp";
-    private final String SUCCESS = "mainPage.jsp";
+    private final String ERROR = "viewEvent.jsp";
+    private final String SUCCESS = "viewEvent.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

@@ -54,7 +54,7 @@ public class ViewPostController extends HttpServlet {
                 request.setAttribute("LIST_POST", list);
                 url=SUCCESS;
             }else{
-                session.setAttribute("POSTMESSAGE", "List is empty");
+                request.setAttribute("POSTMESSAGE", "List is empty");
             }
         } catch (Exception e) {
             log("Error at ViewPostController: " + e.toString());
