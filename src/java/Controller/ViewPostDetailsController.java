@@ -5,7 +5,9 @@
  */
 package Controller;
 
+import DAO.CommentDAO;
 import DAO.PostDAO;
+import DTO.CommentDTO;
 import DTO.PostDTO;
 import java.io.IOException;
 import java.util.List;
@@ -42,6 +44,7 @@ public class ViewPostDetailsController extends HttpServlet {
             String postId = request.getParameter("postId");
             String search = request.getParameter("search");
             String tempIndex = request.getParameter("index");
+            String countListCmtString = request.getParameter("countListCmt");
 	    int countListCmt=0;
             if(countListCmtString!=null){
                 countListCmt= Integer.parseInt(countListCmtString);
