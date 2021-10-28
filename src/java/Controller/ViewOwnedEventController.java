@@ -47,7 +47,7 @@ public class ViewOwnedEventController extends HttpServlet {
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
             List<EventDTO> list = dao.getListEventByPageByOwner(user, search, index, pageSize);
             if (list != null && !list.isEmpty()) {
-                int countList = new EventDAO().countListOwnedEvent(user);
+                int countList = new EventDAO().countListFollowedEvent(user);
                 int endPage = (int) Math.ceil((double) countList / pageSize);
                 session.setAttribute("endPage", endPage);
                 request.setAttribute("LIST_EVENT", list);

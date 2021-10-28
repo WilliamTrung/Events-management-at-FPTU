@@ -503,6 +503,19 @@ public class EventDAO {
         }
         return rs;
     }
+    public int countListFollowedEvent(UserDTO user) {
+        int rs = 0;
+        EventDAO dao = new EventDAO();
+        try {
+            List<EventDTO> list = dao.getListFollowedEvent("",user);
+            if (!list.isEmpty()) {
+                rs = list.size();
+            }
+        } catch (SQLException ex) {
+            log("Error at EventDAO - countListFollowedEvent: " + ex.toString());
+        }
+        return rs;
+    }
 
     public EventDTO getEventById(int eventId) {
         EventDTO event = null;

@@ -98,6 +98,7 @@ public class CreateEventController extends HttpServlet {
                         request.setAttribute("id", edao.getLastId());
                     }
                 }
+                
             }
         } catch (Exception e) {
             log("Error at CreateEventController: " + e.toString());

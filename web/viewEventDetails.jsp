@@ -44,22 +44,25 @@
             <button name="follow" value="${follow}"><a href="FollowEventController">${follow == 1?'Following':'Follow'}</a></button>
             <p>   
                 <%
+                    /*
                     //test iframe
                     String description = "https://www.youtube.com/watch?v=apC1bOLbzbY https://youtu.be/kFZo7yJ2ONg event ngay 10-2-2021 Youtube:https://www.youtube.com/watch?v=apC1bOLbzbY anotherYoutube with space: https://www.youtube.com/watch?v=06-XXOTP3Gc&list=RD06-XXOTP3Gc&start_radio=1";
                     List<String> list = AI.detectEmbededLinks(description);
                     request.setAttribute("DESCRIPTION", list);
                     //end test
+*/
                 %>
+
                 <c:forEach var="desc" varStatus="counter" items="${DESCRIPTION}">
                     <c:if test="${counter.count % 2 != 0}">
-                        ${desc}
+                        ${desc}<br>
                     </c:if>
                     <c:if test="${counter.count % 2 == 0}">
-                        <iframe width="560" height="315" src="${desc}" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="560" height="315" src="${desc}" frameborder="0" allowfullscreen></iframe><br>
                         </c:if>
                     </c:forEach>
             </p>
-            <p>Description: ${sessionScope.SELECTED_EVENT.description}</p>
+            <!--<p>Description: ${sessionScope.SELECTED_EVENT.description}</p>-->
             <p>Location: ${sessionScope.SELECTED_EVENT.location.locationName}</p>  
             
             <div>

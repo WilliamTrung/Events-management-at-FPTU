@@ -4,6 +4,7 @@
     Author     : WilliamTrung
 --%>
 
+<%@page import="DAO.EventDAO"%>
 <%@page import="DAO.SlotDAO"%>
 <%@page import="DTO.SlotDTO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -19,6 +20,7 @@
         <title>Create Event</title>
     </head>
     <body>
+        
         <%@include file="header.jsp" %>
         <%
             List<LocationDTO> locationList = new LocationDAO().getListLocations("");
