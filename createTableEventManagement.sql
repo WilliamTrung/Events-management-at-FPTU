@@ -42,7 +42,8 @@ DROP TABLE tblStatusFI;
 DROP TABLE tblStatusI;
 DROP TABLE tblFollowedEvent;
 DROP TABLE tblPosts;
-DROP TABLE tblComments
+DROP TABLE tblComments;
+DROP TABLE tblParticipants;
 
 --CREATE TABLE
 CREATE TABLE tblRoles(
@@ -100,9 +101,8 @@ CREATE TABLE [dbo].[tblPosts](
 )
 CREATE TABLE tblParticipants(
 	eventId INT REFERENCES tblEvents NOT NULL,
-	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,
-	seatNumber INT NOT NULL,
-	
+	userId NVARCHAR(50) REFERENCES tblUsers NOT NULL,	
+	joinStatus INT NOT NULL,
 	PRIMARY KEY(eventId, userId)
 )
 CREATE TABLE tblLocations(

@@ -5,11 +5,11 @@
  */
 package Controller;
 
-import DAO.EventDAO;
+import DAO.FollowedEventDAO;
+import DAO.JoinEventDAO;
 import DTO.EventDTO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,46 +21,46 @@ import javax.servlet.http.HttpSession;
  *
  * @author WilliamTrung
  */
-@WebServlet(name = "ViewOwnedEventController", urlPatterns = {"/ViewOwnedEventController"})
-public class ViewOwnedEventController extends HttpServlet {
+@WebServlet(name = "JoinEventController", urlPatterns = {"/JoinEventController"})
+public class JoinEventController extends HttpServlet {
 
-    private final String FAIL = "viewOwnEvent.jsp";
-    private final String SUCCESS = "viewOwnEvent.jsp";
+    private final String SUCCESS = "viewEventDetails.jsp";
+    private final String FAIL = "viewEventDetails.jsp";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = FAIL;
-        HttpSession session = request.getSession();
         try {
-            String search = request.getParameter("search");
-            Integer indexSession = (Integer) session.getAttribute("index");
-            String indexRequest = request.getParameter("index");
-            int index = 1;
-            if (indexRequest != null && !indexRequest.isEmpty()) {
-                index = Integer.parseInt(indexRequest);
-            } else if (indexSession != null) {
-                index = indexSession;
-            }
-            int pageSize = 6;
-            EventDAO dao = new EventDAO();
+            HttpSession session = request.getSession();
+            EventDTO selected_event = (EventDTO) session.getAttribute("SELECTED_EVENT");
             UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-            List<EventDTO> list = dao.getListEventByPageByOwner(user, search, index, pageSize);
-            if (list != null && !list.isEmpty()) {
-                int countList = new EventDAO().countListOwnedEvent(user);
-                int endPage = (int) Math.ceil((double) countList / pageSize);
-                session.setAttribute("endPage", endPage);
-                request.setAttribute("LIST_EVENT", list);
-                request.setAttribute("EVENT_MESSAGE", "Page" + index);
-                session.setAttribute("index", index);
-                request.setAttribute("Search", search);
-                url = SUCCESS;
-            } else {
-                request.setAttribute("EVENT_MESSAGE", "No event found!");
+            JoinEventDAO jeD = new JoinEventDAO();
+            FollowedEventDAO fDao = new FollowedEventDAO();
+            int check = -1;
+            boolean check_seat = jeD.checkSeat(selected_event, user);
+            //check seat = true if there is any seat available
+            if (check_seat) {
+                check = jeD.checkJoinEvent(selected_event, user);
+                if (check == -1) {
+                    if (jeD.joinEvent(selected_event, user)) {
+                        check = 1;
+                        url = SUCCESS;
+                    }
+                } else {
+                    if (jeD.updateJoinEvent(selected_event, user, check)) {
+                        check = check == 1 ? 0 : 1;
+                        url = SUCCESS;
+                    }
+
+                }
             }
+
+            int follow = fDao.checkFollow(user, selected_event);
+            request.setAttribute("follow", follow);
+            request.setAttribute("join", check);
         } catch (Exception e) {
-            log("Error at ViewEventController: " + e.toString());
-            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve events' information!");
+            log("Error at JoinEventController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

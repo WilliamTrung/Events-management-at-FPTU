@@ -42,6 +42,7 @@
             <p>Start time: ${sessionScope.SELECTED_EVENT.startSlot.startTime}</p>
             <p>End time: ${sessionScope.SELECTED_EVENT.endSlot.endTime}</p>
             <button name="follow" value="${follow}"><a href="FollowEventController">${follow == 1?'Following':'Follow'}</a></button>
+            <button class="btn" name="join" title="Join in this event" value="${join}"><i class="fas fa-heart"></i><a href="JoinEventController">${join == 1?'Joined':'Join'}</a></button>     
             <p>   
                 <%
                     /*
