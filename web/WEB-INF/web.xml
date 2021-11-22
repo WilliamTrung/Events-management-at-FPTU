@@ -36,6 +36,10 @@
         <servlet-name>LoadMorePostCommentController</servlet-name>
         <servlet-class>Controller.LoadMorePostCommentController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreatePostController</servlet-name>
+        <servlet-class>Controller.CreatePostController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>LoadMorePostCommentController</servlet-name>
         <url-pattern>/LoadMorePostCommentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreatePostController</servlet-name>
+        <url-pattern>/CreatePostController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

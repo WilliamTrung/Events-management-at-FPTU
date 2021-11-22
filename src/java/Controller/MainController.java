@@ -43,6 +43,7 @@ public class MainController extends HttpServlet {
     private final String USER_VIEW_FOLLOWED_EVENT = "ViewFollowedEventController";
     private final String ADD_MORE_EVENT_COMMENT = "AddMoreEventCommentController";
     private final String ADD_MORE_POST_COMMENT = "AddMorePostCommentController";
+    private final String MT_CREATE_POST = "CreatePostController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -105,7 +106,9 @@ public class MainController extends HttpServlet {
                 url = ADD_MORE_EVENT_COMMENT;
             } else if (action.equals("AddPostComment")){
                 url = ADD_MORE_POST_COMMENT;
-            } 
+            } else if (action.equals("Create Post")) {
+                url = MT_CREATE_POST;
+            }
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");
             log("Error at MainController: " + e.toString());

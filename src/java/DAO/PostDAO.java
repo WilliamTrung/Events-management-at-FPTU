@@ -101,7 +101,7 @@ public class PostDAO {
         return check;
     }
 
-    public boolean insertPosrt(PostDTO newPost) {
+    public boolean insertPost(PostDTO newPost) {
         Connection conn = null;
         PreparedStatement stm = null;
         boolean check = false;
