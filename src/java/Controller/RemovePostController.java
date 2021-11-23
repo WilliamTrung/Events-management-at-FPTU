@@ -6,68 +6,35 @@
 package Controller;
 
 import DAO.PostDAO;
-import DTO.PostDTO;
-import DTO.UserDTO;
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author SE151264
  */
-public class CreatePostController extends HttpServlet {
+@WebServlet(name = "RemovePostController", urlPatterns = {"/RemovePostController"})
+public class RemovePostController extends HttpServlet {
 
-    private final String ERROR = "createPost.jsp";
     private final String SUCCESS = "ViewOwnedPostController";
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    private final String FAIL = "ViewOwnedPostController";
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
-        HttpSession session = request.getSession();
+        String url = FAIL;
         try {
-            String title = request.getParameter("title");
-            String content = request.getParameter("content");
-            String video = request.getParameter("video");
-            boolean check = true;
-            if (title == null || title.equals("")) {
-                request.setAttribute("ERROR_TITLE", "Title must not be blank!");
-                check = false;
-            }
-            if (content == null || content.equals("")) {
-                request.setAttribute("ERROR_DESCRIPTION", "Description must not be blank!");
-                check = false;
-            }
-            if (video == null) {
-                video="";
-            }
+            String postId = request.getParameter("postId");
+            PostDAO Dao = new PostDAO();
+            boolean check = Dao.deletePost(postId);
             if (check) {
-                UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-                Date createDate = Date.valueOf(LocalDate.now());
-                PostDTO post= new PostDTO("", user, title, content, video, createDate, "Active");
-                PostDAO pdao = new PostDAO();
-                if (pdao.insertPost(post)) {
-                    url = SUCCESS;
-                }
+                url = SUCCESS;
             }
-
         } catch (Exception e) {
-            log("Error at CreatePostController: " + e.toString());
+            log("Error at RemovePostController: " + e.toString());
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

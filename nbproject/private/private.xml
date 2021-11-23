@@ -2,16 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/LogoutController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/RemoveEventController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/updateEvent.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/UploadController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/ViewPostDetailsController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/CalendarController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/MainController.java</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/web/createEvent.jsp</file>
-            <file>file:/C:/Users/Loliizabezt/Documents/GitHub/Events-management-at-FPTU/EventManagementFPT/src/java/Controller/CreateEventController.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

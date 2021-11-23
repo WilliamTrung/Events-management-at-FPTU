@@ -46,6 +46,11 @@
             <c:param name="search" value=""></c:param>  
             <c:param name="action" value="LoadPosts"></c:param>      
         </c:url>
+        <c:url var="view_post_edit" value="MainController">
+            <c:param name="index" value="1"></c:param>   
+            <c:param name="search" value=""></c:param>  
+            <c:param name="action" value="LoadPostsEditing"></c:param>           
+        </c:url>
         <c:url var="logoutLink" value="MainController">
             <c:param name="action" value="Logout"/>
         </c:url>
@@ -69,8 +74,12 @@
                     <a href="createEvent.jsp">Create Event</a>
                     <a href="${view_event_edit}">Edit Event</a>
                 </c:if>
+                <c:if test="${sessionScope.CURRENT_USER.role eq 'Mentor/Lecturer'}">
+                    <a href="createPost.jsp">Create Post</a>
+                    <a href="${view_post_edit}">Edit Post</a>
+                </c:if>
                 <a href="viewSelf.jsp">${sessionScope.CURRENT_USER.username}</a>
-                
+
                 <a href="${logoutLink}">Logout</a>  
 
             </div> 

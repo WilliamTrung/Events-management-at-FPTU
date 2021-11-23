@@ -9,9 +9,9 @@ import DAO.PostDAO;
 import DTO.PostDTO;
 import DTO.UserDTO;
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,53 +21,46 @@ import javax.servlet.http.HttpSession;
  *
  * @author SE151264
  */
-public class CreatePostController extends HttpServlet {
+@WebServlet(name = "ViewOwnedPostController", urlPatterns = {"/ViewOwnedPostController"})
+public class ViewOwnedPostController extends HttpServlet {
 
-    private final String ERROR = "createPost.jsp";
-    private final String SUCCESS = "ViewOwnedPostController";
+    private final String FAIL = "viewOwnPost.jsp";
+    private final String SUCCESS = "viewOwnPost.jsp";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ERROR;
+        String url = FAIL;
         HttpSession session = request.getSession();
         try {
-            String title = request.getParameter("title");
-            String content = request.getParameter("content");
-            String video = request.getParameter("video");
-            boolean check = true;
-            if (title == null || title.equals("")) {
-                request.setAttribute("ERROR_TITLE", "Title must not be blank!");
-                check = false;
+            String search = request.getParameter("search");
+            Integer indexSession = (Integer) session.getAttribute("index");
+            String indexRequest = request.getParameter("index");
+            int index = 1;
+            if (indexRequest != null && !indexRequest.isEmpty()) {
+                index = Integer.parseInt(indexRequest);
+            } else if (indexSession != null) {
+                index = indexSession;
             }
-            if (content == null || content.equals("")) {
-                request.setAttribute("ERROR_DESCRIPTION", "Description must not be blank!");
-                check = false;
+            int pageSize = 6;
+            PostDAO dao = new PostDAO();
+            UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
+            List<PostDTO> list = dao.getListPostByPageByOwner(user, search, index, pageSize);
+            if (list != null && !list.isEmpty()) {
+                int countList = new PostDAO().countListOwnedEvent(user);
+                int endPage = (int) Math.ceil((double) countList / pageSize);
+                session.setAttribute("endPage", endPage);
+                request.setAttribute("LIST_POST", list);
+                request.setAttribute("EVENT_MESSAGE", "Page" + index);
+                session.setAttribute("index", index);
+                request.setAttribute("Search", search);
+                url = SUCCESS;
+            } else {
+                request.setAttribute("EVENT_MESSAGE", "No post found!");
             }
-            if (video == null) {
-                video="";
-            }
-            if (check) {
-                UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-                Date createDate = Date.valueOf(LocalDate.now());
-                PostDTO post= new PostDTO("", user, title, content, video, createDate, "Active");
-                PostDAO pdao = new PostDAO();
-                if (pdao.insertPost(post)) {
-                    url = SUCCESS;
-                }
-            }
-
         } catch (Exception e) {
-            log("Error at CreatePostController: " + e.toString());
+            log("Error at ViewPostController: " + e.toString());
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve posts' information!");
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

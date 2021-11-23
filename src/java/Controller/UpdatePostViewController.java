@@ -7,11 +7,10 @@ package Controller;
 
 import DAO.PostDAO;
 import DTO.PostDTO;
-import DTO.UserDTO;
+import Extension.Calendar;
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,53 +20,37 @@ import javax.servlet.http.HttpSession;
  *
  * @author SE151264
  */
-public class CreatePostController extends HttpServlet {
+@WebServlet(name = "UpdatePostViewController", urlPatterns = {"/UpdatePostViewController"})
+public class UpdatePostViewController extends HttpServlet {
 
-    private final String ERROR = "createPost.jsp";
-    private final String SUCCESS = "ViewOwnedPostController";
+    private final String ERROR = "error.jsp";
+    private final String SUCCESS = "updatePost.jsp";
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = ERROR;
-        HttpSession session = request.getSession();
         try {
-            String title = request.getParameter("title");
-            String content = request.getParameter("content");
-            String video = request.getParameter("video");
-            boolean check = true;
-            if (title == null || title.equals("")) {
-                request.setAttribute("ERROR_TITLE", "Title must not be blank!");
-                check = false;
+            HttpSession session = request.getSession();
+            String postId = request.getParameter("postId");
+            String search = request.getParameter("search");
+            String temp = request.getParameter("index");
+            int index = 1;
+            if (temp != null && !temp.isEmpty()) {
+                index = Integer.parseInt(temp);
             }
-            if (content == null || content.equals("")) {
-                request.setAttribute("ERROR_DESCRIPTION", "Description must not be blank!");
-                check = false;
+            PostDAO dao = new PostDAO();
+            PostDTO post = dao.getPostById(postId);
+            if (post != null) {
+                session.setAttribute("SELECTED_POST", post);
+                request.setAttribute("search", search);
+                session.setAttribute("index", index);
+                url = SUCCESS;
+            } else {
+                request.setAttribute("ERROR_MESSAGE", "Error at ViewPosttDetailsController");
             }
-            if (video == null) {
-                video="";
-            }
-            if (check) {
-                UserDTO user = (UserDTO) session.getAttribute("CURRENT_USER");
-                Date createDate = Date.valueOf(LocalDate.now());
-                PostDTO post= new PostDTO("", user, title, content, video, createDate, "Active");
-                PostDAO pdao = new PostDAO();
-                if (pdao.insertPost(post)) {
-                    url = SUCCESS;
-                }
-            }
-
         } catch (Exception e) {
-            log("Error at CreatePostController: " + e.toString());
+            request.setAttribute("ERROR_MESSAGE", "Cannot retrieve selected post!");
         } finally {
             request.getRequestDispatcher(url).forward(request, response);
         }

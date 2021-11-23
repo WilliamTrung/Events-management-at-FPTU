@@ -44,6 +44,9 @@ public class MainController extends HttpServlet {
     private final String ADD_MORE_EVENT_COMMENT = "AddMoreEventCommentController";
     private final String ADD_MORE_POST_COMMENT = "AddMorePostCommentController";
     private final String MT_CREATE_POST = "CreatePostController";
+    private final String MT_UPDATE_POST = "UpdatePostController";
+    private final String MT_REMOVE_POST = "RemovePostController";
+    private final String MT_VIEW_POST_EDIT = "ViewOwnedPostController";
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -108,6 +111,12 @@ public class MainController extends HttpServlet {
                 url = ADD_MORE_POST_COMMENT;
             } else if (action.equals("Create Post")) {
                 url = MT_CREATE_POST;
+            }else if (action.equals("Update Post")) {
+                url = MT_UPDATE_POST;
+            } else if (action.equals("Remove Post")) {
+                url = MT_REMOVE_POST;
+            }else if (action.equals("LoadPostsEditing")) {
+                url = MT_VIEW_POST_EDIT;
             }
         } catch (Exception e) {
             request.setAttribute("ERROR_MESSAGE", "An error has occured in MainController!");

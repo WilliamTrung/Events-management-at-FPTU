@@ -40,6 +40,22 @@
         <servlet-name>CreatePostController</servlet-name>
         <servlet-class>Controller.CreatePostController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdatePostController</servlet-name>
+        <servlet-class>Controller.UpdatePostController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RemovePostController</servlet-name>
+        <servlet-class>Controller.RemovePostController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewOwnedPostController</servlet-name>
+        <servlet-class>Controller.ViewOwnedPostController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdatePostViewController</servlet-name>
+        <servlet-class>Controller.UpdatePostViewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginGoogleServlet</servlet-name>
         <url-pattern>/LoginGoogleServlet</url-pattern>
@@ -79,6 +95,22 @@
     <servlet-mapping>
         <servlet-name>CreatePostController</servlet-name>
         <url-pattern>/CreatePostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePostController</servlet-name>
+        <url-pattern>/UpdatePostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemovePostController</servlet-name>
+        <url-pattern>/RemovePostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewOwnedPostController</servlet-name>
+        <url-pattern>/ViewOwnedPostController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdatePostViewController</servlet-name>
+        <url-pattern>/UpdatePostViewController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
